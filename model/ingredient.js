@@ -27,7 +27,7 @@ const checkInt = function(fieldName) {
  */
 const IngredientSchema = new Schema({
     name: {type: String, required: true},
-    fdc_id: {type: String, required: true, unique: true},
+    fdc_id: {type: String, required:true, unique: true},
     image_url: {type: String},
     //fridge_id: {type: Schema.Types.ObjectId, ref:"Fridge", required: true},
     
@@ -45,5 +45,5 @@ const IngredientSchema = new Schema({
         total_monosaturated_fats: {type: Number, required: true, validate: checkInt("total_mono_fats")}
     }
 });
-
-export default mongoose.model("Ingredient", IngredientSchema);
+const Ingredient = mongoose.model("Ingredient", IngredientSchema);
+export default Ingredient;
