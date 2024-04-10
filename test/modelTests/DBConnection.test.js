@@ -9,9 +9,9 @@ describe("Database Connection", function() {
         this.timeout(5000);
         return new Promise(function(resolve, reject) {
             mongoose.connect(dbURL).then(() => {
-                // mongoose.disconnect().catch((error) => {
-                //     reject(error);
-                // });
+                mongoose.disconnect().catch((error) => {
+                    reject(error);
+                });
 
                resolve();
             }).catch((error) => {

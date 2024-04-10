@@ -27,7 +27,7 @@ const checkInt = function(fieldName) {
  */
 const IngredientSchema = new Schema({
     name: {type: String, required: true},
-    fdc_id: {type: String, required: true, unique: true},
+    fdc_id: {type: String, required:true, unique: true},
     image_url: {type: String},
     //fridge_id: {type: Schema.Types.ObjectId, ref:"Fridge", required: true},
     
