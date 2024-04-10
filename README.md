@@ -12,7 +12,18 @@ This project aims to create a comprehensive tool for managing groceries, integra
 - **Nutritional Information Display**: Macronutrient and calorie counts for each recipe.
 - **Grocery List Generation**: Automated generation of shopping lists based on recipe selection or inventory needs.
 
+## Documentation
+https://tylerdelrosario.github.io/PantryPal/
+
 ## Getting Started
+A `.env` file must be created before starting up the server. The following parameters must be added:
+`DB_URL`
+`GOOGLE_SECRET`
+`GOOGLE_ID`
+`GOOGLE_SCOPE`
+`GOOGLE_REDIRECT`
+
+The values for these variables are on discord. Message @TylerDelRosario if you need help setting this up.
 
 ### Prerequisites
 
