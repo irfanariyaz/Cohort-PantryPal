@@ -17,10 +17,7 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     user_id: {type: String, required: true, unique: true},
     name: {type: String, required: true},
-    profile_pic: {type: String},
-
-    fridge: {type: Schema.Types.ObjectId, ref: "Fridge"},
-    meal_plan: [{type: Schema.Types.ObjectId, ref: "Meal"}]
+    profile_pic: {type: String}
 });
 
 export default mongoose.model("User", UserSchema); 
