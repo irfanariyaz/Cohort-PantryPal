@@ -13,7 +13,7 @@ const Schema = mongoose.Schema;
 const RecipeSchema = new Schema({
     route_id: {type: String, required: true, unique: true},
     name: {type: String, required: true},
-    instructions: [{type: Schema.Types.ObjectId, ref:"Instruction"}],
+    instructions:[{type:Array, required:true}],
     ingredients: [{type: Schema.Types.ObjectId, ref:"Ingredient"}]
 });
 
