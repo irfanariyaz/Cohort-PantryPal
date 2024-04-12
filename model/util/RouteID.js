@@ -33,7 +33,7 @@ const RouteID = async function(length, model) {
         //its particularly important that model is always a mongoose Model.
         if (Object.getPrototypeOf(model) === mongoose.Model) {
             let unique = true;
-            const result = await model.findById(ID).catch((e) => {
+            const result = await model.findOne({routeID: ID}).catch((e) => {
                 throw new Error("ServerError: " + e.message);
             });
 

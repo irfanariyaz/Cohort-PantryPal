@@ -7,7 +7,8 @@ const RecipeIngredientSchema = new Schema({
     measurement: {
         type: String,
         enum: ['ounce', 'cup', 'pound', 'tablespoon'],
-        default: 'ounce'
+        default: 'ounce',
+        required: true
     },
     amount: {type:Number, required: true},
     description: {type: String, required: true}
