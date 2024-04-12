@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import Recipe from './../model/recipe.js';
 import Ingredient from './../model/ingredient.js';
+import data from './placeholder_data/recipes.js';
 import 'dotenv/config';
 
 // Function to fetch MongoDB ObjectIds of ingredients
@@ -38,51 +39,40 @@ const getOrCreateIngredientIds =async function (ingredientNames) {
   }
 }
 
-const apiKey = process.env.API_KEY;
-const getRecipeByName = async(name)=>{
-   const url = `https://api.spoonacular.com/recipes/complexSearch?query=${name}&number=10&apiKey=${apiKey}`;
-   const response = await fetch(url); 
-   const data = await response.json();
-  return data.results;
-};
+const RecipeController = function() {
+  function readRecipe(req, res) {
+    const ID = req.query.id;
 
-// const getRecipeByName = async(name)=>{  
-//    const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`
-//    const response = await fetch(url);
-//    const res = await response.json();
-//    const data = res.meals;
-   
-//    //create recipe object
-   
-//     data.forEach(recipeItem => {
-//    const ingredients = Object.keys(recipeItem)
-//               .filter(key => key.startsWith('strIngredient') && recipeItem[key])
-//               .map(key => recipeItem[key]);
-//    console.log("ingredients",ingredients);
-//     //get Or Create ingredient ids from database
-//    const ingredientIds = getOrCreateIngredientIds(ingredients);
-//   // ingredientIds.then(ids => console.log("ids", ids));
-   
-//     //get the instruction?
+    for (const key of Object.keys(data)) {
+      const recipe = data[key];
+      console.log(recipe);
+      if (recipe.route_id === ID) {
+        res.json(JSON.stringify(recipe));
+      }
+    }
+    res.status(500).send();
+  }
+
+  function readAll(req, res) {
+    res.json(data);
+  }
+
+  function createRecipe(req, res) {
+    
+  }
+
+  function deleteRecipe(req, res) {
+
+  }
+
+  return {
+    create: createRecipe,
+    readAll: readAll,
+    read: readRecipe,
+    delete: deleteRecipe
+  }
+}
 
 
- 
-//     //create recipe object and save to database   
-//     const recipe = new Recipe({
-//       route_id :recipeItem.idMeal,
-//       name : recipeItem.strMeal,
-//       ingredients :ingredientIds.then(res=>res),
-//       instructions :recipeItem.strInstructions,
-//    }); 
-//    console.log("Recipe",recipe);
-//     recipe.save();
-//   })
-  
-//    return data.meals;
-//    }
-   
 
-   
-// const getRecipeByName =(query)=> results;
-
-export default getRecipeByName;
+export default RecipeController();

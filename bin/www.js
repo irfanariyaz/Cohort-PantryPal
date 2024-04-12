@@ -7,7 +7,6 @@ import debugMiddleware from 'debug';
 const debug = debugMiddleware('express-template:server');
 import http from 'http';
 import path from 'path';
-global.appRoot = path.resolve(__dirname);
 
 /**
  * Normalize a port into a number, string, or false.
