@@ -13,8 +13,15 @@ const Schema = mongoose.Schema;
 const RecipeSchema = new Schema({
     route_id: {type: String, required: true, unique: true},
     name: {type: String, required: true},
-    instructions:[{type:Array, required:true}],
-    ingredients: [{type: Schema.Types.ObjectId, ref:"Ingredient"}]
+    instructions: [{type: Schema.Types.ObjectId, ref:"Instruction"}],
+    ingredients: [{type: Schema.Types.ObjectId, ref:"RecipeIngredient"}],
+    category: {
+        type: String,
+        enum: ["Dinner", "Dessert", "Breakfast", "Chicken"],
+        required: true
+    },
+    prep_time: {type: Number, required: true},
+    cook_time: {type: Number, required: true}
 });
 
 RecipeSchema.virtual("url").get(function() {
