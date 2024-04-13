@@ -1,7 +1,7 @@
 
 import express from 'express';
 import  {getRecipeByName, getIngredient, getRecipesById}  from '../../controller/RecipeController.js';
-import{data} from './dummydata.js'
+//import{data} from './dummydata.js'
 import Recipe from '../../model/recipe.js';
 import mongoose from "mongoose";
 const router = express.Router();
@@ -29,7 +29,7 @@ router.get('/findByName', async(req, res) =>{
     const {name}=req.query;
     console.log(name);
 
-    const data = await getRecipeByName(name).then(
+   const data = await getRecipeByName(name).then(
         (response) => {
             console.log(response.length, "elemts to add");
             res.json(response);
