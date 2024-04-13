@@ -9,9 +9,13 @@ const Schema = mongoose.Schema;
  * @property date {Date} A date that points to a specific day that the meal is tied to.
  */
 const MealSchema = new Schema({
-    owner_id: {type: Schema.Types.ObjectId, ref:"User", required: true},
+    fridge_id: {type: Schema.Types.ObjectId, ref:"Fridge", required: true},
     recipe_id: {type: Schema.Types.ObjectId, ref:"Recipe", required: true},
-    date: {type: Date}
+    day: {
+        type: String,
+        enum: ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"],
+        default: "monday"
+    }
 });
 
 export default mongoose.model("Meal", MealSchema);;

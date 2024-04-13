@@ -11,6 +11,7 @@ import ingredientsRouter from "./routes/ingredient/ingredients.js"
 import recipeRouter from "./routes/recipe/recipe.js"
 import loginRouter from './routes/login.js';
 import registerRouter from './routes/register.js';
+import fridgeRouter from './routes/fridge/fridge.js';
 import {fileURLToPath} from 'url';
 import cors from 'cors';
 
@@ -22,7 +23,7 @@ const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -41,5 +42,6 @@ app.use('/auth/google', googleRouter);
 app.use('/recipes',recipeRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
+app.use('/fridge', fridgeRouter);
 
 export default app;
