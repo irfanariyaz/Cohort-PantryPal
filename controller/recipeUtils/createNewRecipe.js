@@ -9,23 +9,23 @@ async function createRecipe(data) {
     try {
       for (const recipeItem of data) {
         const connect = await mongoose.connect(process.env.DB_URL);
-        console.log("open connection");
+        
               //check if recipe exists in database
         await Recipe.findOne({ route_id: recipeItem.idMeal })
           .then(async(recipe) => {
             if (recipe) {
-              console.log("Recipe already exists in database:", recipe.name);
+              //console.log("Recipe already exists in database:", recipe.name);
             } else {
               const ingredients = Object.keys(recipeItem)
                 .filter(
                   (key) => key.startsWith("strIngredient") && recipeItem[key] && recipeItem[key]!=" "
                 )
                 .map((key) => recipeItem[key]);
-             // console.log("ingredients::", ingredients);
+     
               // get the ingredient ids from the database
               await findIngredientIds(ingredients)
                 .then(async (ingredientIds) => {
-                 // console.log("Ingredient IDs:", ingredientIds);
+             
                   //get the instructions from the recipeItem.strInstructions
                 
                   const instructions = recipeItem.strInstructions.split(/\r?\n\r?\n|\r?\n/);
@@ -34,7 +34,7 @@ async function createRecipe(data) {
                   const measurements = Object.keys(recipeItem)
                 .filter((key) => key.startsWith("strMeasure") && recipeItem[key] &&  recipeItem[key]!=' ')
                 .map((key) => recipeItem[key]);
-             // console.log("measurements::", measurements);
+            //create a recipe object and save it to the database
                   const recipe = await Recipe.create({
                     route_id: recipeItem.idMeal,
                     name: recipeItem.strMeal,
@@ -66,7 +66,7 @@ async function createRecipe(data) {
       console.log("error in creating recipe", error);
     } finally {
       // mongoose.connection.close();
-      console.log("connection closed");
+     // console.log("connection closed");
     }
   }
 
@@ -84,7 +84,6 @@ async function createRecipe(data) {
            .then(async (ingredient) => {
           if (ingredient) {
             // If ingredient found, push its ID to the array
-          //  console.log(ingredientName, " found in database");
             ingredientIds.push(ingredient._id);
           } else {
             //create a new ingredient object  item function

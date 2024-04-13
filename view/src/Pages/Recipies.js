@@ -4,7 +4,6 @@ import axios from "axios";
 function Recipies() {
   const [searchTerm, setSearchTerm] = useState("");
   const [recipes, setRecipes] = useState([]);
-  const url = "http://localhost:3001/recipes/findByName";
   const categories = [
     "Beef",
     "Chicken",
@@ -27,12 +26,11 @@ function Recipies() {
     // Perform search logic here
     console.log("Search term:", searchTerm);
     // Update the recipes state with the search  results using axios
+    
+    const url = `http://localhost:3001/recipes/${searchTerm}`;
+    //got to the recipe controller in backend to get the recipes based on user's search
     axios
-      .get(url, {
-        params: {
-          name: searchTerm,
-        },
-      })
+      .get(url)
       .then((response) => {
         console.log("response from server",response.data.length,response.data);
         setRecipes(response.data);
