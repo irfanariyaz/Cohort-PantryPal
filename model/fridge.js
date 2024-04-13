@@ -14,7 +14,8 @@ const Schema = mongoose.Schema;
 const FridgeSchema = new Schema({
     routeID: {type: String, required: true, unique: true},
     owner_id: {type: Schema.Types.ObjectId, ref: "User", required: true},
-    ingredients: [{type: Schema.Types.ObjectId, ref: "FridgeIngredient"}]
+    ingredients: [{type: Schema.Types.ObjectId, ref: "FridgeIngredient"}],
+    meal_plan: [{type: Schema.Types.ObjectId, ref: "Meal"}]
 });
 
 FridgeSchema.virtual("url").get(function() {

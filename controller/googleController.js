@@ -5,8 +5,8 @@
 */
 import mongoose from 'mongoose';
 import User from '../model/user.js';
-// import Fridge from '../model/fridge.js';
-// import RouteID from '../model/util/RouteID.js';
+import Fridge from '../model/fridge.js';
+import RouteID from '../model/util/RouteID.js';
 import 'dotenv/config';
 
 /**A controller for creating users who registered with google oauth.
@@ -36,11 +36,21 @@ const create_google_user = async function(req, res){
                 profile_pic: req.google.profilePicture
             });
             
-            await user.save().then((result) => {
-                const userID = result._id;
+            await user.save().then(async (result) => {
+                //For every new user, create new fridge.
+                //Assigns new userID to fridge.
+                const fridge = new Fridge({
+                    routeID: await RouteID(11, Fridge),
+                    owner_id: result
+                });
+
+                //Save fridge to DB.
+                await fridge.save().catch((error) => {
+                    console.error(error);
+                });
 
                 req.session.userID = userID;
-                res.redirect("http://localhost:3000/auth/google/user");
+                res.redirect("http://localhost:3001/auth/google/user");
             }).catch((err) => {throw err});
         } else {
             const user = checkForDupe[0];
@@ -51,7 +61,7 @@ const create_google_user = async function(req, res){
 
     } catch (error) {
         console.log(error);
-        next(error);
+        res.status(400);
     }
 }
 

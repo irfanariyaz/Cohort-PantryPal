@@ -19,9 +19,7 @@ const RecipeSchema = new Schema({
         type: String,
         enum: ["Dinner", "Dessert", "Breakfast", "Chicken"],
         required: true
-    },
-    prep_time: {type: Number, required: true},
-    cook_time: {type: Number, required: true}
+    }
 });
 
 RecipeSchema.virtual("url").get(function() {
