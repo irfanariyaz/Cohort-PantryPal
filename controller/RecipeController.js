@@ -33,14 +33,24 @@ export const getRecipesById = async (id) => {
   mongoose.connect(process.env.DB_URL);
  const recipeList =  await Recipe.find({ ingredients: { $in: [id] } })
   .then((res)=>{
-    console.log(res.length);
-    
+    console.log(res.length);    
     return res;
 })
 return recipeList;
 }
-
-
+//get recipes based on category
+export const getRecipesByCategory = async(category)=>{
+  mongoose.connect(process.env.DB_URL);
+  const recipeList  = await Recipe.find({category:category})
+    .then((response)=>{
+        console.log(response.length);
+        return response;       
+        }).catch((error)=>{ 
+            console.log("error when returning recipe results based on category:",error,);
+        })
+       
+  return recipeList;
+}
 
 
 // export default {getRecipeByName,getRecipeByIngredient};
