@@ -3,13 +3,9 @@ import readline from 'readline';
 
 async function lineReader() {
     const foodFile = fs.createReadStream("./FoodCSV/foundation_food.csv");
-    const set = {
-
-    };
-
-    const refObj = {
-
-    };
+    const ordered = [];
+    const set = {};
+    const refObj = {};
 
     const reader = readline.createInterface({
         input: foodFile,
@@ -43,12 +39,13 @@ async function lineReader() {
         }
     }
 
-    const ordered = Object.keys(refObj).sort().reduce((obj, key) => {
+    ordered = Object.keys(refObj).sort().reduce((obj, key) => {
         obj[key] = refObj[key];
         return obj;
     }, {});
 
-    console.log(ordered);
+    return ordered;
 }
 
-lineReader();
+const dictionary = await lineReader();
+export default dictionary;
