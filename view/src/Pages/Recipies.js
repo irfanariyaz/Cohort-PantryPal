@@ -34,9 +34,9 @@ function Recipies() {
         },
       })
       .then((response) => {
-        console.log(response);
+        console.log("response from server",response.data.length,response.data);
         setRecipes(response.data);
-        console.log(recipes);
+        // console.log(recipes);
       });
   };
   return (
@@ -47,7 +47,7 @@ function Recipies() {
           <div className="flex  items-center mb-8">
             <h2 className="text-2xl font-bold mx-2">Search for recipes </h2>
             <div>
-              <form className="flex space-x-4" onSubmit={handleSubmit}>
+              <form className="flex space-x-4 mb-3" onSubmit={handleSubmit}>
                 <input
                   type="text"
                   className="px-4 py-2 border border-gray-300 rounded-md"
@@ -84,8 +84,8 @@ function Recipies() {
           {Array.from(recipes, (recipe, index) => (
             <div key={index} className="bg-gray-500 p-4 rounded-lg space-y-2">
               <div className="text-center">
-                <img src={recipe.image} alt="" className="" />
-                <h3 className="text-lg font-semibold">{recipe.title}</h3>
+                <img src={recipe.strMealThumb} alt="" className="" />
+                <h3 className="text-lg font-semibold">{recipe.strMeal}</h3>
                 <span>♥</span>
               </div>
               <p># Calories</p>

@@ -1,8 +1,9 @@
 
 import express from 'express';
-import  getRecipeByName  from '../../controller/RecipeController.js';
+import  {getRecipeByName, getIngredient, getRecipesById}  from '../../controller/RecipeController.js';
 import{data} from './dummydata.js'
 import Recipe from '../../model/recipe.js';
+import mongoose from "mongoose";
 const router = express.Router();
 // routes for recipes
 // -route for getting 10 recipes based on name(Eg:/chicken,/pasta)
@@ -27,17 +28,32 @@ const router = express.Router();
 router.get('/findByName', async(req, res) =>{
     const {name}=req.query;
     console.log(name);
-    const data = await getRecipeByName(name);
-    console.log(data);
-    res.json(data);
+
+    const data = await getRecipeByName(name).then(
+        (response) => {
+            console.log(response.length, "elemts to add");
+            res.json(response);
+            })
+     
+    
 });
 //recipe based on ingredient/ingredients
-router.get('/findByIngredients', (req, res) =>{
-    const { ingredients}=req.query;
-    console.log(ingredients);
-    //const response = await getRecipeByIngredient(query);
-    res.json({});
+router.get('/getIngredient', async(req, res) =>{
+    const { ingredient}=req.query;
+    console.log(ingredient);
+    const response = await getIngredient(ingredient);
+    res.json(response);
 });
+router.get('/getRecipes/:id',async(req,res)=>{
+    const id = req.params.id;
+    console.log(id);
+    const recipes = await getRecipesById(id)
+    .then((response)=>{
+        res.json(response);
+    });
+   
+})
+
 
 
 export default router;
