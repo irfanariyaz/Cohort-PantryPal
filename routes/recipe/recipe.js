@@ -1,7 +1,6 @@
 
 import express from 'express';
 import  {getRecipeByName, getIngredient, getRecipesById}  from '../../controller/RecipeController.js';
-// import RecipeController  from '../../controller/RecipeController.js';
 import{data} from './dummydata.js'
 import Recipe from '../../model/recipe.js';
 import mongoose from "mongoose";
@@ -45,7 +44,6 @@ router.get('/getIngredient', async(req, res) =>{
     const response = await getIngredient(ingredient);
     res.json(response);
 });
-
 router.get('/getRecipes/:id',async(req,res)=>{
     const id = req.params.id;
     console.log(id);
@@ -55,46 +53,7 @@ router.get('/getRecipes/:id',async(req,res)=>{
     });
    
 })
-router.post('/create', async (req, res) => {
-    const data = req.body;
-    console.log(data);
 
-});
-
-router.post('/delete', async (req, res) => {
-    const recipe_id = req.query.id;
-    console.log(recipe_id);
-
-
-});
-
-
-
-router.post('/update', async (req, res) => {
-    const recipe = req.body;
-    
-});
-
-router.get('/read', async (req, res) => {
-    RecipeController.read(req, res);
-});
-
-
-
-// router.get('/findByName', async(req, res) =>{
-//     const {name}=req.query;
-//     console.log(name);
-//     const data = await getRecipeByName(name);
-//     console.log(data);
-//     res.json(data);
-// });
-// //recipe based on ingredient/ingredients
-// router.get('/findByIngredients', (req, res) =>{
-//     const { ingredients}=req.query;
-//     console.log(ingredients);
-//     //const response = await getRecipeByIngredient(query);
-//     res.json({});
-// });
 
 
 export default router;
