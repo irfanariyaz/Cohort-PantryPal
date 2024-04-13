@@ -1,6 +1,113 @@
+
+
+import { set } from "mongoose";
+import React, { useEffect, useState } from "react";
+
 function Pantry() {
+  const [query, setQuery] = useState('');
+  const [ingredients, setIngredients] = useState([]);
+  const [ingredient, setIngredient] = useState('');
+  const [recipes, setRecipes] = useState([]);
+ 
+  const handleItemClick = async(ingredient) => {
+  console.log("reached handleclick",ingredient);
+  setIngredients([]);
+  setIngredient(ingredient);  
+}
+
+  useEffect(() => {
+    const fetchIngredients = async () => {
+      const url = `http://localhost:3001/recipes/getIngredient?ingredient=${query}`
+      console.log("rendering useEffect");
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        if (ingredients !== data) {
+          setIngredients(data);
+        }
+      } catch (error) {
+        console.error('Error fetching ingredients:', error);
+        setIngredients([]);
+      }
+    };
+
+    if (query !== '') {
+      fetchIngredients();
+    
+    } else {
+      console.log("inside else in useEffect");
+    setIngredients([]);
+    }
+  }, [query]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    //search the db with recipes with this ingredient
+    const id = Object.values(ingredient);
+    console.log(id);
+    const url = `http://localhost:3001/recipes/getRecipes/${id}`;
+    fetch(url)
+      .then(response =>response.json())
+      .then((data) => {
+       // console.log(data);
+        setRecipes(data);
+        console.log(recipes);
+      setIngredient('');
+      setQuery('');
+    })
+      .catch(error => console.error(error));
+  }
+
   return (
+//adding a search bar to get the recipes having the ingresient we searched
     <div className="p-8">
+      <div>
+        <form action="" className=" flex space-x-4" onSubmit={handleSubmit}>
+        <input type="text" className="px-4 py-2 border border-gray-300 rounded-md "
+               value={ingredient?Object.keys(ingredient):query}
+               onChange={(e)=>setQuery(e.target.value)}
+               placeholder="Type to search ingredients..." />
+      <div>
+        {ingredients.map((ingredient, index) => (
+          <div key={index} onClick={() => handleItemClick(ingredient)} >
+            {Object.keys(ingredient)}
+          </div>
+        ))}
+  
+      </div>
+      <button  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-400">
+               Search</button>
+        </form>
+      
+    </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+      {recipes.length==0 && <p>No recipes found with this ingredient.</p>}
+          {/* Placeholder for recipe cards */}
+          {recipes?.map((recipe,index)=>(
+              <div key={index} className="bg-gray-500 p-4 rounded-lg space-y-2">
+              <div className="text-center">
+                //<img src={recipe.image} alt="" className="" />
+                <span>♥</span>
+                <h3 className="text-lg font-semibold">{recipe.name}</h3>
+                <h3 className="text-lg font-semibold">{recipe.category}</h3>
+              </div>
+              <p># Calories</p>
+              <button className="text-indigo-600 hover:text-indigo-800">
+                View Ingredients
+              </button>
+              <div className="flex space-x-2">
+                {/* Tags */}
+                <span className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold">
+                  TAG 1
+                </span>
+                <span className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold">
+                  TAG 2
+                </span>
+              </div>
+            </div>
+          ))}
+   
+        </div>
       <h2 className="text-2xl font-bold mb-6">My Ingredients</h2>
       <div className="grid grid-cols-2 gap-4 mb-6">
         {/* My Ingredients cards */}
