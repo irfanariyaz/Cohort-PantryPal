@@ -13,6 +13,7 @@ import loginRouter from './routes/login.js';
 import registerRouter from './routes/register.js';
 import {fileURLToPath} from 'url';
 import cors from 'cors';
+import conn from './DbConnect/conn.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -41,5 +42,7 @@ app.use('/auth/google', googleRouter);
 app.use('/recipes',recipeRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
+
+
 
 export default app;
