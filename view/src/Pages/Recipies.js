@@ -30,7 +30,7 @@ function Recipies() {
     console.log("Search term:", searchTerm);
     // Update the recipes state with the search  results using axios
     
-    const url = `http://localhost:3001/recipes/category/${searchTerm}`;
+    const url = `http://localhost:3001/recipes/${searchTerm}`;
     //got to the recipe controller in backend to get the recipes based on user's search
     axios
       .get(url)
@@ -68,7 +68,7 @@ function Recipies() {
           {/* Placeholder for category cards */}
           {Array.from(categories, (category, index) => (
             <div className="">
-            <img src={category.strCategoryThumb} alt="" width={"100px"} onClick={()=>handleCategory(category.strCategory)}/>
+            <img src={category.strCategoryThumb} className="cursor-pointer" alt="category image" width={"100px"} onClick={()=>handleCategory(category.strCategory)}/>
             <p className="w-full" key={index}>{category.strCategory}</p>
             </div>
           ))}

@@ -52,5 +52,24 @@ export const getRecipesByCategory = async(category)=>{
   return recipeList;
 }
 
+//get recipes based on name
+export const getRecipesByName = async(name)=>{
+    await mongoose.connect(process.env.DB_URL).catch((error) => {
+      console.error(error);
+      res.status(500).send(error);
+  });
+  const recipeList = await Recipe.find({name: new RegExp(`\\b${name}\\w*`, "i")})
+    .then((response)=>{
+        console.log(response.length);
+        return response;
+        } 
+    ).catch((error)=>{
+        console.log("error when returning recipe results based on name:", error,);
+    } 
+    )
+    return recipeList;
+
+}
+
 
 // export default {getRecipeByName,getRecipeByIngredient};

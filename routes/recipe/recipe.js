@@ -1,6 +1,8 @@
 
 import express from 'express';
-import  {getIngredient, getRecipesById,getRecipesByCategory}  from '../../controller/RecipeController.js';
+import  {getIngredient, getRecipesById,
+        getRecipesByCategory,getRecipesByName}  
+        from '../../controller/RecipeController.js';
 //import{data} from './dummydata.js'
 import Recipe from '../../model/recipe.js';
 import mongoose from "mongoose";
@@ -58,6 +60,16 @@ router.get('/category/:category',async(req, res)=>{
     const category = req.params.category;    
     //get recipes from db based on category
     const recipes = await getRecipesByCategory(category)
+        .then((response)=>{
+            res.json(response)
+        });
+});
+
+//endpoint to get recipes based on user searched term
+router.get('/:search',async(req, res)=>{
+    const search = req.params.search;
+    //get recipes from db based on  the search term
+    const recipes = await getRecipesByName(search)
         .then((response)=>{
             res.json(response)
         });
