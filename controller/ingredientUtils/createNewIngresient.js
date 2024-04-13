@@ -1,3 +1,4 @@
+import e from "cors";
 import Ingredient from "../../model/ingredient.js";
 import "dotenv/config";
 ///function to create a new ingredient
@@ -11,15 +12,16 @@ const createnewIngredient = async (ingredientName) => {
         try {
             const response = await fetch(url);
             const data = await response.json();
-            if (data.foods && data.foods.length > 0) {
+            
+            if (data.foods && data.foods.length > 0 ) {
             const foodItem = data.foods[0]; // Assuming we use the first matched food item
-            console.log("found the item from USDA", foodItem.fdcId);
+            // console.log("found the item from USDA", foodItem);
             //check if the ingredient already exists in the database
             const existingIngredient = await Ingredient.findOne({
                 fdc_id: foodItem.fdcId,
             });
             if (existingIngredient) {
-                console.log("ingredient already in db");
+                console.log(existingIngredient.name," already in db");
                 result = existingIngredient;
             } else {
                 //get the nutrients of the ingredient and save to db
@@ -33,8 +35,23 @@ const createnewIngredient = async (ingredientName) => {
                 result = ingredient;
                 });
             }
-            } else {
-            throw new Error("Food item not found");
+            }else{
+                //create a new Ingredient with 0 nutrients if you dont have the ingredient in the USDA api
+                const ingredient = await Ingredient.create({
+                    name: ingredientName,
+                    fdc_id: Math.floor(Math.random() * 1000) + 1,
+                    nutrients: {
+                        calories: 0,
+                        cholesterol: 0,
+                        protein: 0,
+                        total_fat: 0,
+                        carbohydrates: 0,
+                        total_saturated_fats: 0,
+                        total_trans_fats: 0,
+                        total_monosaturated_fats: 0,
+                    },
+                })
+                result = ingredient;
             }
         } catch (error) {
             console.error("Error searching for food item:", error);
@@ -60,7 +77,6 @@ const getNutrientValues = async (nutrients) => {
         switch (nutrient.nutrientName) {
         case "Protein":
             nutrientValues.protein = Math.floor(nutrient.value);
-            console.log("", typeof nutrient.value);
             break;
         case "Total lipid (fat)":
             nutrientValues.total_fat = Math.floor(nutrient.value);
