@@ -1,5 +1,6 @@
 /**@module model/fridge*/
 import mongoose from "mongoose";
+import User from "./user.js";
 const Schema = mongoose.Schema;
 
 /**
@@ -11,9 +12,10 @@ const Schema = mongoose.Schema;
  * @property ingredients {array} A list of ObjectIDs that references ingredients from the ingredient document.
  */
 const FridgeSchema = new Schema({
-    route_id: {type: String, required: true, unique: true},
+    routeID: {type: String, required: true, unique: true},
     owner_id: {type: Schema.Types.ObjectId, ref: "User", required: true},
-    ingredients: [{type: Schema.Types.ObjectId, ref: "Ingredient"}]
+    ingredients: [{type: Schema.Types.ObjectId, ref: "FridgeIngredient"}],
+    meal_plan: [{type: Schema.Types.ObjectId, ref: "Meal"}]
 });
 
 FridgeSchema.virtual("url").get(function() {

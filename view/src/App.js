@@ -1,7 +1,7 @@
 import "./App.css";
 import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import Login from './Login';
+import Login from './Login.js';
 import Home from './Home';
 
 import Dashboard from "./Pages/Dashboard";
@@ -22,6 +22,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/pantry" element={<Pantry />} />
               <Route path="/recipes" element={<Recipes />} />
+              <Route path="/login" element={<Login />} />
             </Routes>
           </main>
         </div>

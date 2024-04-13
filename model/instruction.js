@@ -9,6 +9,7 @@ const Schema = mongoose.Schema;
  */
 const InstructionSchema = new Schema({
     recipe_id: {type: Schema.Types.ObjectID, ref: "Recipe", required: true},
+    index: {type: Number, required: true},
     task: {type: String, required: true}
 });
 

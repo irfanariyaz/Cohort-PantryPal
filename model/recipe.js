@@ -14,7 +14,12 @@ const RecipeSchema = new Schema({
     route_id: {type: String, required: true, unique: true},
     name: {type: String, required: true},
     instructions: [{type: Schema.Types.ObjectId, ref:"Instruction"}],
-    ingredients: [{type: Schema.Types.ObjectId, ref:"Ingredient"}]
+    ingredients: [{type: Schema.Types.ObjectId, ref:"RecipeIngredient"}],
+    category: {
+        type: String,
+        enum: ["Dinner", "Dessert", "Breakfast", "Chicken"],
+        required: true
+    }
 });
 
 RecipeSchema.virtual("url").get(function() {
