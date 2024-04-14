@@ -2,32 +2,10 @@ import mongoose from "mongoose";
 import Recipe from "./../model/recipe.js";
 import Ingredient from "./../model/ingredient.js";
 import "dotenv/config";
-import conn from '../DbConnect/conn.js'
-import createnewIngredient from "./ingredientUtils/createNewIngresient.js";
-import createRecipe from "./recipeUtils/createNewRecipe.js";
+
+
 
 const apiKey = process.env.API_KEY;
-// const getRecipeByName = async(name)=>{
-//    const url = `https://api.spoonacular.com/recipes/complexSearch?query=${name}&number=10&apiKey=${apiKey}`;
-//    const response = await fetch(url);
-//    const data = await response.json();
-//   return data.results;
-// };
-
-
-export const getRecipeByName = async (name) => {  
-      const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`;
-      //const url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${name}`;
-     // const url = `https://www.themealdb.com/api/json/v1/1/search.php?f=${name}`;
-      const response = await fetch(url);
-      const res = await response.json();
-      if (res.meals === null) {
-        return [];
-      } else {
-       // createRecipe(res.meals);//this is a method to create a recipe if you have a list of recipe response
-        return res.meals;
-      }
-};
 
 //function to return 10 ingredient based on the name you type in the search bar
 export const getIngredient = async (ingredientName) => {
@@ -58,11 +36,42 @@ export const getRecipesById = async (id) => {
   mongoose.connect(process.env.DB_URL);
  const recipeList =  await Recipe.find({ ingredients: { $in: [id] } })
   .then((res)=>{
-    console.log(res.length);
-    //recipeList.push(res);
+    console.log(res.length);    
     return res;
 })
 return recipeList;
+}
+//get recipes based on category
+export const getRecipesByCategory = async(category)=>{
+  mongoose.connect(process.env.DB_URL);
+  const recipeList  = await Recipe.find({category:category})
+    .then((response)=>{
+        console.log(response.length);
+        return response;       
+        }).catch((error)=>{ 
+            console.log("error when returning recipe results based on category:",error,);
+        })
+       
+  return recipeList;
+}
+
+//get recipes based on name
+export const getRecipesByName = async(name)=>{
+    await mongoose.connect(process.env.DB_URL).catch((error) => {
+      console.error(error);
+      res.status(500).send(error);
+  });
+  const recipeList = await Recipe.find({name: new RegExp(`\\b${name}\\w*`, "i")})
+    .then((response)=>{
+        console.log(response.length);
+        return response;
+        } 
+    ).catch((error)=>{
+        console.log("error when returning recipe results based on name:", error,);
+    } 
+    )
+    return recipeList;
+
 }
 
 

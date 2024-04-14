@@ -1,38 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Recipies() {
   const [searchTerm, setSearchTerm] = useState("");
   const [recipes, setRecipes] = useState([]);
-  const url = "http://localhost:3001/recipes/findByName";
-  const categories = [
-    "Beef",
-    "Chicken",
-    "Dessert",
-    "Lamb",
-    "Miscellaneous",
-    "Pasta",
-    "Pork",
-    "Seafood",
-    "Side",
-    "Starter",
-    "Vegan",
-    "Vegetarian",
-    "Breakfast",
-    "Goat",
-  ];
+  const [categories,setCategories] = useState([]);
 
+  useEffect(() => {
+    const url = 'https://www.themealdb.com/api/json/v1/1/categories.php';
+    fetch(url).then(res=>res.json()).then(data=>{
+      console.log(data.categories);
+      setCategories(data.categories);
+    })
+    },[])
+    const handleCategory = (category) => {
+      const url = `http://localhost:3001/recipes/category/${category}`;
+      axios
+      .get(url)
+      .then((response) => {
+        console.log("response from server",response.data.length,response.data);
+        setRecipes(response.data);
+        // console.log(recipes);
+      });
+    }
   const handleSubmit = (event) => {
     event.preventDefault();
     // Perform search logic here
     console.log("Search term:", searchTerm);
     // Update the recipes state with the search  results using axios
+    
+    const url = `http://localhost:3001/recipes/${searchTerm}`;
+    //got to the recipe controller in backend to get the recipes based on user's search
     axios
-      .get(url, {
-        params: {
-          name: searchTerm,
-        },
-      })
+      .get(url)
       .then((response) => {
         console.log("response from server",response.data.length,response.data);
         setRecipes(response.data);
@@ -66,7 +67,10 @@ function Recipies() {
         <div className="flex space-x-4 mb-8 ">
           {/* Placeholder for category cards */}
           {Array.from(categories, (category, index) => (
-            <div key={index} className="flex-wrap bg-gray-300 h-24 w-auto">{category}</div>
+            <div className="">
+            <img src={category.strCategoryThumb} className="cursor-pointer" alt="category image" width={"100px"} onClick={()=>handleCategory(category.strCategory)}/>
+            <p className="w-full" key={index}>{category.strCategory}</p>
+            </div>
           ))}
         </div>
       </section>
@@ -84,8 +88,8 @@ function Recipies() {
           {Array.from(recipes, (recipe, index) => (
             <div key={index} className="bg-gray-500 p-4 rounded-lg space-y-2">
               <div className="text-center">
-                <img src={recipe.strMealThumb} alt="" className="" />
-                <h3 className="text-lg font-semibold">{recipe.strMeal}</h3>
+                <img src={recipe.image} alt="" className="" />
+                <h3 className="text-lg font-semibold">{recipe.name}</h3>
                 <span>♥</span>
               </div>
               <p># Calories</p>
