@@ -16,6 +16,7 @@ function Recipies() {
     },[])
     const handleCategory = (category) => {
       const url = `http://localhost:3001/recipes/category/${category}`;
+      console.log("response reached from category end");
       axios
       .get(url)
       .then((response) => {
@@ -30,7 +31,7 @@ function Recipies() {
     console.log("Search term:", searchTerm);
     // Update the recipes state with the search  results using axios
     
-    const url = `http://localhost:3001/recipes/${searchTerm}`;
+    const url = `http://localhost:3001/recipes/search/${searchTerm}`;
     //got to the recipe controller in backend to get the recipes based on user's search
     axios
       .get(url)
@@ -90,22 +91,24 @@ function Recipies() {
               <div className="text-center">
                 <img src={recipe.image} alt="" className="" />
                 <h3 className="text-lg font-semibold">{recipe.name}</h3>
-                <span>♥</span>
+                {/* <span>♥</span> */}
               </div>
-              <p># Calories</p>
+              {/* <p># Calories</p>
               <button className="text-indigo-600 hover:text-indigo-800">
                 View Ingredients
-              </button>
+              </button> */}
               <div className="flex space-x-2">
                 {/* Tags */}
                 <span className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold">
-                  TAG 1
+                  {recipe.category}
                 </span>
-                <span className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold">
+                {/* <span className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold">
                   TAG 2
-                </span>
-              </div>
-            </div>
+                </span> */}
+                  </div>
+                  <button className="bg-black px-3 py-2 text-white rounded-sm font-semibold" >Add to Meal Plan</button>
+       
+                  </div>
           ))}
         </div>
       </section>
