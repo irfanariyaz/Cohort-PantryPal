@@ -1,7 +1,9 @@
 
 import express from 'express';
-import  {getRecipeByName, getIngredient, getRecipesById}  from '../../controller/RecipeController.js';
-import{data} from './dummydata.js'
+import  {getIngredient, getRecipesById,
+        getRecipesByCategory,getRecipesByName}  
+        from '../../controller/RecipeController.js';
+//import{data} from './dummydata.js'
 import Recipe from '../../model/recipe.js';
 import mongoose from "mongoose";
 const router = express.Router();
@@ -29,7 +31,7 @@ router.get('/findByName', async(req, res) =>{
     const {name}=req.query;
     console.log(name);
 
-    const data = await getRecipeByName(name).then(
+   const data = await getRecipeByName(name).then(
         (response) => {
             console.log(response.length, "elemts to add");
             res.json(response);
@@ -46,7 +48,6 @@ router.get('/getIngredient', async(req, res) =>{
 });
 router.get('/getRecipes/:id',async(req,res)=>{
     const id = req.params.id;
-    console.log(id);
     const recipes = await getRecipesById(id)
     .then((response)=>{
         res.json(response);
@@ -54,6 +55,24 @@ router.get('/getRecipes/:id',async(req,res)=>{
    
 })
 
+//endpoint to get recipes based on user category
+router.get('/category/:category',async(req, res)=>{
+    const category = req.params.category;    
+    //get recipes from db based on category
+    const recipes = await getRecipesByCategory(category)
+        .then((response)=>{
+            res.json(response)
+        });
+});
 
+//endpoint to get recipes based on user searched term
+router.get('/:search',async(req, res)=>{
+    const search = req.params.search;
+    //get recipes from db based on  the search term
+    const recipes = await getRecipesByName(search)
+        .then((response)=>{
+            res.json(response)
+        });
+});
 
 export default router;
