@@ -10,6 +10,7 @@ import Recipes from "./Pages/Recipies";
 import Navbar from "./Pages/Components/Navbar";
 import Sidebar from "./Pages/Components/Sidebar";
 import Meal from "./Pages/Meal.js";
+import ShowRecipeItem from "./Pages/ShowRecipeItem";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/pantry" element={<Pantry />} />
               <Route path="/recipes" element={<Recipes />} />
+              <Route path="/recipeX" element={<ShowRecipeItem />} />
               <Route path="/login" element={<Login />} />
               <Route path="/meal" element={<Meal />} />
             </Routes>
