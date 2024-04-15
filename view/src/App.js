@@ -9,6 +9,7 @@ import Pantry from "./Pages/Pantry";
 import Recipes from "./Pages/Recipies";
 import Navbar from "./Pages/Components/Navbar";
 import Sidebar from "./Pages/Components/Sidebar";
+import Meal from "./Pages/Meal.js";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/pantry" element={<Pantry />} />
               <Route path="/recipes" element={<Recipes />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/meal" element={<Meal />} />
             </Routes>
           </main>
         </div>
