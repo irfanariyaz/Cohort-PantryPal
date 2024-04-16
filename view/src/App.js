@@ -6,9 +6,8 @@ import Home from "./Pages/Home";
 
 import Dashboard from "./Pages/Dashboard";
 import Pantry from "./Pages/Pantry";
-import Recipes from "./Pages/Recipies";
+import Recipes from "./Pages/Recipes";
 import Navbar from "./Pages/Components/Navbar";
-import Sidebar from "./Pages/Components/Sidebar";
 import ShowRecipeItem from "./Pages/ShowRecipeItem";
 
 function App() {
@@ -60,7 +59,6 @@ function Layout({ children }) {
     <>
       {location.pathname !== "/" && <Navbar />}
       <div className="flex">
-        {location.pathname !== "/" && <Sidebar />}
         <main className="flex-1">{children}</main>
       </div>
     </>
