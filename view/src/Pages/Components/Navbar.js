@@ -15,7 +15,7 @@ function Pantry() {
             <div className="flex items-center">
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                 {/* Additional text or menu items can go here */}
-                <span>User's Name</span>
+                <span>Login</span>
               </div>
             </div>
           </div>

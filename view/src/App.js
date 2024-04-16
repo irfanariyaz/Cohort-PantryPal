@@ -1,7 +1,7 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./Login.js";
+import Login from "./Pages/Login";
 import Home from "./Home";
 
 import Dashboard from "./Pages/Dashboard";
@@ -12,7 +12,6 @@ import Sidebar from "./Pages/Components/Sidebar";
 import ShowRecipeItem from "./Pages/ShowRecipeItem";
 
 function App() {
-  // hello
   return (
     <Router>
       <div className="flex flex-col h-screen">
@@ -21,6 +20,7 @@ function App() {
           <Sidebar />
           <main className="p-4 overflow-auto w-full">
             <Routes>
+              <Route path="/" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/pantry" element={<Pantry />} />
               <Route path="/recipes" element={<Recipes />} />
