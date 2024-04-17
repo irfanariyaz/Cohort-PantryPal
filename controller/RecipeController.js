@@ -4,8 +4,6 @@ import Ingredient from "./../model/ingredient.js";
 import "dotenv/config";
 import{ObjectId} from "mongodb";
 
-
-
 const apiKey = process.env.API_KEY;
 
 //function to return 10 ingredient based on the name you type in the search bar
@@ -105,6 +103,18 @@ export const getAllIngredientNames = async(list ) => {
     }
 return result;
 }
+
+// Controller method to get a recipe by its ID
+export const getRecipeById = async (id) => {
+    try {
+        mongoose.connect(process.env.DB_URL);
+        const recipe = await Recipe.findById(id);
+        return recipe;
+    } catch (error) {
+        console.error("Error fetching recipe by ID:", error);
+        throw error;
+    }
+};
 
 //function to return the recipe based on the users selected ingredients
 export const getRecipesByIngredientList = async(list,select)=>{
