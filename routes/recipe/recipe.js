@@ -1,7 +1,7 @@
 
 import express from 'express';
 import  {getIngredient, getRecipesById,
-        getRecipesByCategory,getRecipesByName}  
+        getRecipesByCategory,getRecipesByName, getRecipeById}  
         from '../../controller/RecipeController.js';
 //import{data} from './dummydata.js'
 import Recipe from '../../model/recipe.js';
@@ -74,5 +74,24 @@ router.get('/:search',async(req, res)=>{
             res.json(response)
         });
 });
+
+//will get the recipe properties to show the user the description of the recipe such as: instructions, macros, etc
+router.get('/findById/:id', async (req, res) => {
+    const { id } = req.params; // Access route parameter ":id" using req.params
+    console.log(id);
+
+    try {
+        const recipe = await getRecipeById(id);
+        if (recipe) {
+            res.json(recipe);
+        } else {
+            res.status(404).json({ error: "Recipe not found" });
+        }
+    } catch (error) {
+        console.error("Error fetching recipe by ID:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
 
 export default router;

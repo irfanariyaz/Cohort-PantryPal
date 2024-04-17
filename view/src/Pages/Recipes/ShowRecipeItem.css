@@ -15,6 +15,7 @@
 }
 .recipe-ingredient, .recipe-macros, .recipe-instruction {
     font-weight: bold;
+    margin-top: 30px;
   }
 
   .recipe-macro {
