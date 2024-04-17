@@ -1,8 +1,8 @@
 import "./App.css";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import Login from './Login.js';
-import Home from './Home';
+import Login from "./Login.js";
+import Home from "./Home";
 
 import Dashboard from "./Pages/Dashboard";
 import Pantry from "./Pages/Pantry";
@@ -10,6 +10,8 @@ import Recipes from "./Pages/Recipies";
 import Navbar from "./Pages/Components/Navbar";
 import Sidebar from "./Pages/Components/Sidebar";
 import ShowRecipeItem from "./Pages/Recipes/ShowRecipeItem";
+import Meal from "./Pages/Meal.js";
+// import ShowRecipeItem from "./Pages/ShowRecipeItem";
 
 function App() {
   return (
@@ -25,6 +27,7 @@ function App() {
               <Route path="/recipes" element={<Recipes />} />
               <Route path="/recipes/:id" element={<ShowRecipeItem />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/meal" element={<Meal />} />
             </Routes>
           </main>
         </div>

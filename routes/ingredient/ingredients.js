@@ -12,7 +12,7 @@ const router = express.Router();
 // Endpoint to get all ingredients
 router.get('/', (req, res) =>{
  res.json(ingredients);
-}   );
+});
 
 
 

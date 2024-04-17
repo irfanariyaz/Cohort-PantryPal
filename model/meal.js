@@ -15,6 +15,11 @@ const MealSchema = new Schema({
         type: String,
         enum: ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"],
         default: "monday"
+    },
+    mealtimes:{
+        type: String,
+        enum: ["breakfast", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"],
+        default: "monday"
     }
 });
 
