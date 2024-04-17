@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Recipe from "./../model/recipe.js";
 import Ingredient from "./../model/ingredient.js";
 import "dotenv/config";
+import{ObjectId} from "mongodb";
 
 const apiKey = process.env.API_KEY;
 
@@ -11,7 +12,10 @@ export const getIngredient = async (ingredientName) => {
   //get the ingredient id from the database
   //get 10 recipes with that ingredient
   //return the recipes
-  mongoose.connect(process.env.DB_URL)
+  mongoose.connect(process.env.DB_URL).catch((error) => {
+    console.error(error);
+  });
+
   await Ingredient.find({ name: new RegExp(`\\b${ingredientName}\\w*`, "i") }).limit(10)
         .then((res)=>{
           //get the ingredient names
@@ -51,7 +55,7 @@ export const getRecipesByCategory = async(category)=>{
 }
 
 //get recipes based on name
-export const getRecipesByName = async(name)=>{
+export const getRecipesByName = async(name) => {
     await mongoose.connect(process.env.DB_URL).catch((error) => {
       console.error(error);
       res.status(500).send(error);
@@ -68,6 +72,37 @@ export const getRecipesByName = async(name)=>{
     return recipeList;
 
 }
+export const getAllIngredientNames = async(list ) => {  
+  const ingredients = (list.split(","));
+  const result=[];
+  mongoose.connect(process.env.DB_URL);
+  for(const name of ingredients){{
+    if(name){
+      const ingredientList = await Ingredient.find({name:new RegExp(`\\b${name}\\w*`, "i")})
+      .then((res)=>{
+        console.log("results ",res.length);
+        const names = res.map(el => el.name);
+        console.log("names",names);
+        const namesLow = names.map(el => el.toLowerCase());
+          if(!namesLow.includes(name.toLowerCase())){
+            names.push(name);
+           }
+           return names;
+        
+       })
+      .catch((error)=>{
+          console.log("error when returning ingredient results based on name:", error,);
+      }
+      );
+      result.push(ingredientList);
+      }
+   console.log(result);
+  
+    }
+    
+    }
+return result;
+}
 
 // Controller method to get a recipe by its ID
 export const getRecipeById = async (id) => {
@@ -80,4 +115,59 @@ export const getRecipeById = async (id) => {
         throw error;
     }
 };
+
+//function to return the recipe based on the users selected ingredients
+export const getRecipesByIngredientList = async(list,select)=>{
+ const result = await  mongoose.connect(process.env.DB_URL);
+ console.log("connected to database",list);
+ const ingredientIds = [];
+//loop through the list of ingredients
+ for(const ingredient of list){
+      //get the ingredient id from the database
+      const ingredientId = await Ingredient.findOne({ name: new RegExp(`\\b${ingredient}\\w*`, "i") });
+       //add the ingredient id to the list
+      if(ingredientId){
+          ingredientIds.push(ingredientId._id);
+      }
+  }
+  console.log(ingredientIds);
+  if (ingredientIds.length === 0) {
+    return [];
+  }else{
+    console.log("true or false",select);
+   //returns 20 recipes 
+   if(select==="true"){
+    console.log("reached if");
+    console.log(select);
+    const recipes = await Recipe.find({ ingredients: { $all: ingredientIds } }).limit(20);
+    console.log(recipes.length);
+    return recipes;
+   }else{
+    console.log("reached else");
+    console.log(select);
+    const recipes = await Recipe.find({ingredients:{$in: ingredientIds}}).limit(20);
+    console.log(recipes.length);
+    mongoose.disconnect();
+    console.log("disconnected from database")
+    return recipes;
+   }
+   
+   //console.log(recipes.length);
+   mongoose.disconnect;
+    
+  }
+  
+}
+ 
+  // mongoose.connection.close();
+  // console.log("disconnected from database");
+  // return res;
+  
+
+ 
+  //get the ingredient ids from the database
+ 
+  //return the recipes
+ 
+
 // export default {getRecipeByName,getRecipeByIngredient};

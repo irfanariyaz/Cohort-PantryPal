@@ -17,6 +17,12 @@ function Sidebar() {
         <NavLink to="/pantry" className={getNavLinkClass}>
           Pantry
         </NavLink>
+        <NavLink to="/recipes" className={getNavLinkClass}>
+          Recipes
+        </NavLink>
+        <NavLink to="/meal" className={getNavLinkClass}>
+          MealPrep
+        </NavLink>
       </nav>
     </div>
   );

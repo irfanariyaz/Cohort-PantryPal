@@ -27,7 +27,7 @@ const createnewIngredient = async (ingredientName) => {
                 //get the nutrients of the ingredient and save to db
                 await getNutrientValues(foodItem.foodNutrients).then(async (res) => {
                 const ingredient = await Ingredient.create({
-                    name: foodItem.description,
+                    name: ingredientName,
                     fdc_id: foodItem.fdcId,
                     nutrients: res,
                 });

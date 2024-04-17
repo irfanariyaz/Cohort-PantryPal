@@ -14,7 +14,6 @@ import registerRouter from './routes/register.js';
 import fridgeRouter from './routes/fridge/fridge.js';
 import {fileURLToPath} from 'url';
 import cors from 'cors';
-import conn from './DbConnect/conn.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
