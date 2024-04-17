@@ -1,20 +1,27 @@
 
 
-import { set } from "mongoose";
 import React, { useEffect, useState } from "react";
+import MyIngredient from "./PantryComponent/MyIngredient";
 
 function Pantry() {
+  //TEST FRIDGE ID TEMPORARY
+  const fridgeID = "661853c65b4692301c252675";
+  //########################
+
   const [query, setQuery] = useState('');
   const [ingredients, setIngredients] = useState([]);
   const [ingredient, setIngredient] = useState('');
   const [recipes, setRecipes] = useState([]);
+
+  const [myIngredrients, setPantry] = useState([]);
  
   const handleItemClick = async(ingredient) => {
-  console.log("reached handleclick",ingredient);
-  setIngredients([]);
-  setIngredient(ingredient);  
-}
+    console.log("reached handleclick",ingredient);
+    setIngredients([]);
+    setIngredient(ingredient);  
+  }
 
+  //SEARCH HOOK
   useEffect(() => {
     const fetchIngredients = async () => {
       const url = `http://localhost:3001/recipes/getIngredient?ingredient=${query}`
@@ -32,13 +39,29 @@ function Pantry() {
     };
 
     if (query !== '') {
-      fetchIngredients();
-    
+      fetchIngredients();  
     } else {
-      console.log("inside else in useEffect");
+    console.log("inside else in useEffect");
     setIngredients([]);
     }
   }, [query]);
+
+  //PANTRY HOOK FOR "MY INGREDIENTS"
+  useEffect(() => {
+    const fetchPantry = async () => {
+      const endpoint = "/fridge/ingredient?fridgeID=" + fridgeID;
+
+      const res = await fetch(endpoint).catch((error) => {
+        console.error(error);
+      });
+      const data = await res.json();
+
+      setPantry(data);
+      console.log(myIngredrients);
+    }
+
+    fetchPantry();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -115,24 +138,11 @@ function Pantry() {
    
         </div>
       <h2 className="text-2xl font-bold mb-6">My Ingredients</h2>
-      <div className="grid grid-cols-2 gap-4 mb-6">
+      <div className="flex flex-wrap justify-around">
         {/* My Ingredients cards */}
-        <div className="bg-gray-300 p-4 rounded-lg space-y-2">
-          <div className="flex justify-between items-center">
-            <h3 className="text-lg font-semibold">Tomatoes</h3>
-            <div className="flex items-center">
-              <button className="bg-gray-400 w-6 h-6 flex justify-center items-center mr-2">
-                +
-              </button>
-              <button className="bg-gray-400 w-6 h-6 flex justify-center items-center">
-                -
-              </button>
-            </div>
-          </div>
-          <p>3 in Pantry</p>
-          <p>Carbs: #g</p>
-          <p>Protein: #g</p>
-        </div>
+        {myIngredrients.map((ingr) => {
+          return <MyIngredient key={ingr._id} data={ingr}/>
+        })}
       </div>
 
       <h2 className="text-2xl font-bold mb-6">Ingredients I Need</h2>

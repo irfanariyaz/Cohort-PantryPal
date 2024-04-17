@@ -15,6 +15,14 @@ router.post("/ingredient/delete", (req, res) => {
     FridgeController.removeIngredient(req, res);
 });
 
+router.post("/ingredient/inc", (req, res) => {
+    FridgeController.incrementIngredient(req, res);
+});
+
+router.post("/ingredient/dec", (req, res) => {
+    FridgeController.decrementIngredient(req, res);
+});
+
 router.get("/meal", (req, res) => {
     FridgeController.readMeals(req, res);
 });

@@ -72,26 +72,60 @@ const FridgeController = () => {
             console.error(error);
             res.status(400).send("Ingredient not found.");
         });
-
-        mongoose.disconnect();
     }
 
     //
     async function readAllFridgeIngredients(req, res) {
         const fridgeID = req.query.fridgeID;
+        await mongoose.connect(process.env.DB_URL).then( async () => {
+            await FridgeIngredient.find({fridgeID: fridgeID}).lean().exec().then(async (pantry) => {
+                for await (const ingr of pantry) {
+                    const item = await Ingredient.findById(ingr.ingredientID).exec().then((data) => {
+                        ingr.name = data.name;
+                        ingr.nutrients = data.nutrients;
+                    }).catch((error) => {
+                        console.error(error);
+                        res.status(500).send();
+                    });
+                }
+
+                //Needs to be sorted since order isn't consistent.
+                res.json(pantry.sort((a, b) => {
+                    return a.name.localeCompare(b.name);
+                }));
+            }).catch((error) => {
+                console.error(error);
+                res.status(400).send("Ingredients not found.");
+            });
+        }).catch((error) => {
+            console.error(error);
+            res.status(500).send(error);
+        });
+    }
+
+    async function incrementIngredient(req, res) {
+        const ingredientID = req.body.ingredientID;
+        console.log(ingredientID);
         await mongoose.connect(process.env.DB_URL).catch((error) => {
             console.error(error);
             res.status(500).send(error);
         });
 
-        await FridgeIngredient.find({fridgeID: fridgeID}).exec().then((pantry) => {
-            res.json(pantry);
+        await FridgeIngredient.findOneAndUpdate({_id: ingredientID}, {$inc: {amount: 1}}).exec().then(() => {
+            res.status(200).send("success");
         }).catch((error) => {
-            console.error(error);
-            res.status(400).send("Ingredients not found.");
+            res.status(500).send(error);
         });
+    }
 
-        mongoose.disconnect();
+    async function decrementIngredient(req, res) {
+        const ingredientID = req.body.ingredientID;
+
+        await FridgeIngredient.findOneAndUpdate({_id: ingredientID}, {$inc: {amount: -1}}).exec().then(() => {
+            res.status(200).send("success");
+        }).catch((error) => {
+            res.status(500).send(error);
+        });
     }
 
     //Adds recipe to meal plan.
@@ -147,7 +181,13 @@ const FridgeController = () => {
 
     //Reads all meals within meal plan.
     async function readMeals(req, res) {
+        const fridgeID = req.body.fridgeID;
 
+        await Meal.find({}).exec().then((mealPlan) => {
+            res.status(200).send(res.json(mealPlan));
+        }).catch((error) => {
+            res.status(500).send(error);
+        });
     }
 
     //Removes relevant ingredients from fridge after user has "completed" a meal.
@@ -165,6 +205,8 @@ const FridgeController = () => {
         addIngredient: addFridgeIngredient,
         readIngredient: readAllFridgeIngredients,
         removeIngredient: removeFridgeIngredient,
+        incrementIngredient: incrementIngredient,
+        decrementIngredient: decrementIngredient,
         addMeal: addMeal,
         deleteMeal: removeMeal,
         readMeals: readMeals

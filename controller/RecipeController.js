@@ -56,7 +56,7 @@ export const getRecipesByCategory = async(category)=>{
 }
 
 //get recipes based on name
-export const getRecipesByName = async(name)=>{
+export const getRecipesByName = async(name) => {
     await mongoose.connect(process.env.DB_URL).catch((error) => {
       console.error(error);
       res.status(500).send(error);

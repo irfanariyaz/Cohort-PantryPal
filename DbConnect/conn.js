@@ -9,9 +9,5 @@ try {
 } catch(e) {
   console.error(e);
 }
-finally{
-  client.close();
-  console.log("client closed");
-}
 
 export default conn;
