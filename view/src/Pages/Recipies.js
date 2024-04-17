@@ -92,9 +92,9 @@ function Recipies() {
           {Array.from(recipes, (recipe, index) => (
             <div key={index} className="bg-gray-500 p-4 rounded-lg space-y-2">
               <div className="text-center">
-              <NavLink to="/recipeX" >
-              <img src={recipe.image} alt="" className="" />
-        </NavLink>
+              <NavLink to={`/recipes/${recipe._id}`} >
+                <img src={recipe.image} alt="" className="" />
+              </NavLink>
              
                 <h3 className="text-lg font-semibold">{recipe.name}</h3>
                 {/* <span>♥</span> */}
