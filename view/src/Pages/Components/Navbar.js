@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-function Pantry() {
+function Navbar() {
   return (
     <div>
       {/* Links to navigate */}
@@ -30,14 +30,14 @@ function Pantry() {
                     to="/pantry"
                     class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                   >
-                    Team
+                    Pantry
                   </NavLink>
-                  <NavLink
+                  {/* <NavLink
                     to="/recipes"
                     class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                   >
                     Projects
-                  </NavLink>
+                  </NavLink> */}
                 </div>
               </div>
             </div>
@@ -167,7 +167,7 @@ function Pantry() {
               Reports
             </a>
           </div>
-          <div class="border-t border-gray-700 pb-3 pt-4">
+          {/* <div class="border-t border-gray-700 pb-3 pt-4">
             <div class="flex items-center px-5">
               <div class="flex-shrink-0">
                 <img
@@ -226,11 +226,11 @@ function Pantry() {
                 Sign out
               </a>
             </div>
-          </div>
+          </div> */}
         </div>
       </nav>
     </div>
   );
 }
 
-export default Pantry;
+export default Navbar;
