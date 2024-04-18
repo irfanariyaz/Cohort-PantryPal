@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import MyIngredient from "./PantryComponent/MyIngredient";
 import axios from 'axios';
 import { set } from "mongoose";
-function Pantry() {
+function Pantry(props) {
   //TEST FRIDGE ID TEMPORARY
-  const fridgeID = "661853c65b4692301c252675";
+  const fridgeID = props.profile.fridgeID._id;
   //########################
 
   const [query, setQuery] = useState('');

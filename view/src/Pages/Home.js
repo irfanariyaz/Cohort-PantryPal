@@ -15,9 +15,10 @@ function Home() {
               the joy of home-cooked meals. With Pantry Pal, every ingredient
               counts, from the store to your door.
             </p>
-            <Link
-              to="/dashboard"
-              className="inline-flex items-center justify-center pe-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg hover:text-green-600 focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800"
+            {/*Instead of an a tag, this would probably just be a link to the login page.*/}
+            <a
+              href="http://localhost:3001/auth/google"
+              className="inline-flex items-center justify-center pe-5 py-3 mr-3 text-base font-medium text-center text-text-green-600 rounded-lg focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800"
             >
               Start Simplifying
               <svg
@@ -32,7 +33,7 @@ function Home() {
                   clipRule="evenodd"
                 ></path>
               </svg>
-            </Link>
+            </a>
           </div>
           <div class="hidden lg:flex lg:col-span-5 lg:justify-center">
             <img src={myImage} class=" w-[85%]" alt="mockup"></img>

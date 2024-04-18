@@ -34,7 +34,7 @@ function MyIngredient(props) {
       const newAmount = Convert(measure, oldMeasure, amount);
 
       async function convertAmount() {
-        const url = "http://localhost:3001/fridge/ingredient/amount";
+        const url = "/fridge/ingredient/amount";
         const kv = [];
 
         kv.push(encodeURIComponent("ingredientID") + "=" + encodeURIComponent(props.data._id));
@@ -60,7 +60,7 @@ function MyIngredient(props) {
     }
 
     async function changeAmount(counter) {
-      let url = "http://localhost:3001/fridge/ingredient";
+      let url = "/fridge/ingredient";
       if (counter) {
         url += "/inc";
       } else {

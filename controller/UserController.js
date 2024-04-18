@@ -13,8 +13,18 @@ async function readUserFromSession(req, res) {
             res.status(500).send(error);
         });
     
-        await User.find({_id: userID}).exec().then((user) => {
-            res.json(user);
+        await User.findOne({_id: userID}).exec().then(async (user) => {
+            await Fridge.findOne({owner_id: user._id}).select('routeID').exec().then((fridgeID) => {
+                const profile = {
+                    profile: user,
+                    fridgeID: fridgeID
+                }
+                console.log(profile);
+                res.json(profile);
+            }).catch((error) => {
+                console.error(error);
+                res.status(500).send(error);
+            });
         }).catch((error) => {
             console.error(error);
             res.status(500).send(error);
@@ -23,27 +33,7 @@ async function readUserFromSession(req, res) {
 }
 
 async function readUserFridgeID(req, res) {
-    const userID = req.session.userID;
-    if(!userID){
-        res.status(302).send("Not logged in");
-    }
-
-    await mongoose.connect(process.env.DB_URL).catch((error) => {
-        console.error(error);
-        res.status(500).send(error);
-    });
-
-    await User.find({user_id: userID}).exec().catch((error) => {
-        console.error(error);
-        res.status(500).send(error);
-    });
-
-    await Fridge.find({owner_id: user._id}).select('routeID').exec().then((id) => {
-        res.status(200).json(id);
-    }).catch((error) => {
-        console.error(error);
-        res.status(500).send(error);
-    });
+    res.status(404).send();
 }
 
 export default {
