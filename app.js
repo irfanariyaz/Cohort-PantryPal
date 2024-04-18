@@ -30,13 +30,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
     secret: "testSign", //Used to sign sessionIDs. Will change later. -Tyler
-    resave: false,
-    saveUninitialized: true,
-    cookie: { path: '/', httpOnly: true, secure: false, maxAge: (1000 * 60 * 60 * 24)}
+    cookie: {maxAge: (1000 * 60 * 60 * 24)}
 }));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
 app.use('/ingredient', ingredientsRouter);
 app.use('/auth/google', googleRouter);
 app.use('/recipes',recipeRouter);

@@ -1,12 +1,12 @@
-function convertFromPounds(measurement, pound) {
+function convertToPounds(measurement, pound) {
     switch(measurement) {
         case("tablespoon"):
-            return Math.ceil(pound * 32);
+            return Number(Math.round((pound / 32)+'e2')+'e-2');
         case("ounce"):
-            return Math.ceil(pound * 16);
+            return Number(Math.round((pound / 16)+'e2')+'e-2');
         case("cup"):
-            return Math.ceil(pound * 2);
+            return Number(Math.round((pound / 2)+'e2')+'e-2');
     }
 }
 
-export default convertFromPounds;
+export default convertToPounds;

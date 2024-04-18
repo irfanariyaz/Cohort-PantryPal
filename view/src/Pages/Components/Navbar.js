@@ -1,4 +1,21 @@
-function Pantry() {
+function Navbar(props) {
+  function Link() {
+    return (<a href="http://localhost:3001/auth/google">Log In</a>);
+  }
+
+  function ProfilePic() {
+    return (<img className="h-10 w-10 rounded-full" src={props.data[0].profile_pic}></img>);
+  }
+
+  function Nav() {
+    console.log(props.data[0]);
+    if (props.data[0]) {
+      return <ProfilePic />
+    } else {
+      return <Link />
+    }
+  }
+
   return (
     <div>
       {/* Links to navigate */}
@@ -15,7 +32,7 @@ function Pantry() {
             <div className="flex items-center">
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                 {/* Additional text or menu items can go here */}
-                <span>User's Name</span>
+                <Nav />
               </div>
             </div>
           </div>
@@ -25,4 +42,4 @@ function Pantry() {
   );
 }
 
-export default Pantry;
+export default Navbar;

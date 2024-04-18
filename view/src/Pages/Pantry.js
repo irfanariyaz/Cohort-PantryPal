@@ -14,6 +14,7 @@ function Pantry() {
   const [queryList,setquerytList]=useState([]);
   const [ingSelectList,setIngSelectList] = useState([]);
   const [list,setlist]= useState([]);
+  const [myIngredrients, setPantry] = useState([]); 
   const [selected,setSelected] = useState(false);
  
  
@@ -227,6 +228,7 @@ console.log("selectes",selected);
           ))}
         </div>
       <h2 className="text-2xl font-bold mb-6">My Ingredients</h2>
+      
       <div className="flex flex-wrap justify-around">
         {/* My Ingredients cards */}
         {myIngredrients.map((ingr) => {

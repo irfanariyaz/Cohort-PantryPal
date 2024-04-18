@@ -1,12 +1,12 @@
-function convertFromCup(measurement, cup) {
+function convertToCup(measurement, cup) {
     switch(measurement) {
-        case("tbsp"):
-            return Math.ceil(cup * 16);
+        case("tablespoon"):
+            return Number(Math.round((cup / 16)+'e2')+'e-2');
         case("ounce"):
-            return Math.ceil(cup * 8);
+            return Number(Math.round((cup / 8)+'e2')+'e-2');
         case("pound"):
-            return Math.ceil(cup / 2);
+            return Number(Math.round((cup * 2)+'e2')+'e-2');
     }
 }
 
-export default convertFromCup;
+export default convertToCup;

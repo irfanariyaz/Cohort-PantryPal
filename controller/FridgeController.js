@@ -128,6 +128,30 @@ const FridgeController = () => {
         });
     }
 
+    //Used for converting different measurements(ounces to cups. cups to tbsp etc.)
+    async function updateIngredientAmount(req, res) {
+        const ingredientID = req.body.ingredientID;
+        const measure = req.body.measure;
+        const amount = req.body.amount;
+
+        await mongoose.connect(process.env.DB_URL).catch((error) => {
+            console.error(error);
+            res.status(500).send(error);
+        });
+
+        await FridgeIngredient.findOneAndUpdate({_id: ingredientID}, 
+            {$set: {
+            amount: amount,
+            measurement: measure
+            }})
+            .exec().then(() => {
+            res.status(200).send("success");
+        }).catch((error) => {
+            console.error(error);
+            res.status(500).send(error);
+        });
+    }
+
     //Adds recipe to meal plan.
     async function addMeal(req, res) {
         const fridgeID = req.query.routeID;
@@ -207,6 +231,7 @@ const FridgeController = () => {
         removeIngredient: removeFridgeIngredient,
         incrementIngredient: incrementIngredient,
         decrementIngredient: decrementIngredient,
+        updateIngredientAmount: updateIngredientAmount,
         addMeal: addMeal,
         deleteMeal: removeMeal,
         readMeals: readMeals

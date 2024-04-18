@@ -50,12 +50,12 @@ const create_google_user = async function(req, res){
                 });
 
                 req.session.userID = userID;
-                res.redirect("http://localhost:3001/auth/google/user");
+                res.redirect("http://localhost:3000");
             }).catch((err) => {throw err});
         } else {
             const user = checkForDupe[0];
             req.session.userID = user._id;
-            res.send(user);
+            res.redirect("http://localhost:3000");
         }
             
 

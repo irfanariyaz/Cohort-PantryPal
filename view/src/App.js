@@ -14,10 +14,24 @@ import Meal from "./Pages/Meal.js";
 // import ShowRecipeItem from "./Pages/ShowRecipeItem";
 
 function App() {
-  return (
-    <Router>
-      <div className="flex flex-col h-screen">
-        <Navbar />
+  const [profile, setProfile] = useState(false);
+
+  useEffect(() => {
+    async function fetchUserProfile() {
+      const url = "/user/profile";
+      await fetch(url).then(async (res) => {
+        setProfile(await res.json());
+      }).catch((error) => {
+        console.error(error);
+      });
+    }
+
+    fetchUserProfile();
+  }, []);
+
+  function Protected() {
+    if (profile) {
+      return (
         <div className="flex flex-1 overflow-hidden">
           <Sidebar />
           <main className="p-4 overflow-auto w-full">
@@ -31,6 +45,19 @@ function App() {
             </Routes>
           </main>
         </div>
+      );
+    } else {
+      return (
+        <h1 className="text-center text-lg">Please Login</h1>
+      );
+    }
+  }
+
+  return (
+    <Router>
+      <div className="flex flex-col h-screen">
+        <Navbar data={profile}/>
+        <Protected />
       </div>
     </Router>
   );

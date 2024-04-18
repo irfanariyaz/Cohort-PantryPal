@@ -1,9 +1,15 @@
 import express from 'express';
+import UserController from '../controller/UserController.js';
 const router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/profile', function(req, res) {
+  console.log(req.session.userID);
+  UserController.readProfile(req, res);
+});
+
+router.get('/fridge', function(req, res) {
+  UserController.readFridge(req, res);
 });
 
 export default router;
