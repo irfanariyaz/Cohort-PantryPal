@@ -1,18 +1,12 @@
-<<<<<<< HEAD
-
-import express from 'express';
-import  {getIngredient, getRecipesById,
-        getRecipesByCategory,getRecipesByName, getRecipeById}  
-        from '../../controller/RecipeController.js';
-=======
 import express from "express";
 import {
   getIngredient,
   getRecipesById,
   getRecipesByCategory,
   getRecipesByName,
+  getRecipeById
 } from "../../controller/RecipeController.js";
->>>>>>> bray
+
 //import{data} from './dummydata.js'
 import Recipe from "../../model/recipe.js";
 import mongoose from "mongoose";
@@ -78,7 +72,6 @@ router.get("/search/:search", async (req, res) => {
   });
 });
 
-<<<<<<< HEAD
 //will get the recipe properties to show the user the description of the recipe such as: instructions, macros, etc
 router.get('/findById/:id', async (req, res) => {
     const { id } = req.params; // Access route parameter ":id" using req.params
@@ -99,6 +92,3 @@ router.get('/findById/:id', async (req, res) => {
 
 
 export default router;
-=======
-export default router;
->>>>>>> bray

@@ -98,7 +98,7 @@ function Dashboard() {
           {Array.from(recipes, (recipe, index) => (
             <div key={index} className="bg-gray-500 p-4 rounded-lg space-y-2">
               <div className="text-center">
-                <NavLink to="/recipeX">
+                <NavLink to="/recipe/:id">
                   <img src={recipe.image} alt="" className="" />
                 </NavLink>
 
