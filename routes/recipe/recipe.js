@@ -1,23 +1,41 @@
+import express from "express";
+import {
+  getIngredient,
+  getRecipesById,
+  getRecipesByCategory,
+  getRecipesByName,
+  getRecipeById
+} from "../../controller/RecipeController.js";
 
-import express from 'express';
-import  {getIngredient, getRecipesById,
-        getRecipesByCategory,getRecipesByName,
-        getAllIngredientNames,getRecipesByIngredientList
-      }  from '../../controller/RecipeController.js';
+//import{data} from './dummydata.js'
+import Recipe from "../../model/recipe.js";
+import mongoose from "mongoose";
+
 const router = express.Router();
+// routes for recipes
+// -route for getting 10 recipes based on name(Eg:/chicken,/pasta)
+// -this returns 10 cicken/pasta recipes with a id,title,
+// - response example -
+/* {
+        "id": 637876,
+        "title": "Chicken 65",
+        "image": "https://img.spoonacular.com/recipes/637876-312x231.jpg",
+        "imageType": "jpg"
+    },
+*/
 
 
 // router.get('/findByName', async(req, res) =>{
 //     //destructure the query parameters for name of the recipe
-//     const {name}=req.query;    
+//     const {name}=req.query;
 //     console.log(name);
 //     //const data = await getRecipeByName(name);
 //     console.log(data);
 //     res.json(data);
 // });
-router.get('/findByName', async(req, res) =>{
-    const {name}=req.query;
-    console.log(name);
+router.get("/findByName", async (req, res) => {
+  const { name } = req.query;
+  console.log(name);
 
    const data = await getRecipeByName(name).then(
         (response) => {
@@ -25,6 +43,7 @@ router.get('/findByName', async(req, res) =>{
             res.json(response);
             })   
 });
+
 //recipe based on  one ingredient
 router.get('/getIngredient', async(req, res) =>{
     const { ingredient}=req.query;
@@ -32,6 +51,7 @@ router.get('/getIngredient', async(req, res) =>{
     const response = await getIngredient(ingredient);
     res.json(response);
 });
+
 //endpoint to get recipes based on ingredient id
 router.get('/getRecipes/:id',async(req,res)=>{
     const id = req.params.id;

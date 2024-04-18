@@ -11,8 +11,8 @@ function Sidebar() {
   return (
     <div className="w-64 h-screen bg-gray-200 p-5">
       <nav className="space-y-2">
-        <NavLink to="/dashboard" className={getNavLinkClass}>
-          Dashboard
+        <NavLink to="/recipes" className={getNavLinkClass}>
+        Recipes
         </NavLink>
         <NavLink to="/pantry" className={getNavLinkClass}>
           Pantry
