@@ -9,7 +9,6 @@ function conversion(toMeasurement, fromMeasurement, amount) {
             return ounce(fromMeasurement, amount);
         
         case("cup"):
-        console.log("HERE", fromMeasurement, amount);
             return cup(fromMeasurement, amount);
 
         case("tablespoon"):

@@ -6,6 +6,8 @@ function convertFromTableSpoon(measurement, tbsp) {
             return Math.ceil(tbsp * 16);
         case("pound"):
             return Math.ceil(tbsp * 31.63);
+        default:
+            return tbsp;
     }
 }
 
