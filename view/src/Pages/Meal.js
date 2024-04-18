@@ -8,9 +8,34 @@ function Pantry() {
   const [ingSelectList,setIngSelectList] = useState([]);
   const [list,setlist]= useState([]);
   const [selected,setSelected] = useState(false);
- 
- 
 
+  const [showIngredientNeeded,setShowIngreedientNeeded] = useState(false);
+  const [IngredientSelected,setIngredientSelected] = useState('');
+  const[IngredientsNeeded,setIngredientneeded]=  useState([]);
+
+  useEffect(()=>{
+   const   fetchrecipe = async () => {
+        const url = `http://localhost:3001/recipes/findById/${IngredientSelected}`;
+        const response = await axios.get(url);
+        const data = await response.data.ingredients;
+        console.log("response to ingredient got",data);
+        const iNeed = data.filter((item) => !list.includes(item));
+        const iHave = list.filter((item) => data.includes(item));
+       
+        setIngredientneeded([iHave,iNeed]);
+        console.log("ingredients needed", IngredientsNeeded);
+        
+    }
+    if(IngredientSelected){
+        fetchrecipe();
+        setShowIngreedientNeeded(true);
+    }
+    
+  }
+    ,[IngredientSelected]);
+ 
+ 
+console.log("IngredientSelected=",IngredientSelected);
 //function to handle when user types the list of ingredients with comma and press the search button
   const handleQueryClick = async(query) => {
    const  url = `http://localhost:3001/recipes/ingredients/${queryList}`;
@@ -97,7 +122,7 @@ console.log("selectes",selected);
                  </button>
             </div>             
             ))}  
-            <label for="apple">
+            <label htmlFor="apple">
           <input type="checkbox" id="selected" name="checkbox" value="selected"className="mr-3" onClick={()=>setSelected(!selected)}/>
             include all ingredient in one recipe
        </label>        
@@ -108,13 +133,13 @@ console.log("selectes",selected);
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-l lg:grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
           {/* Placeholder for recipe cards */}
 
           {Array.from(recipes, (recipe, index) => (
             <div key={index} className="bg-gray-500 p-3 rounded-lg space-y-2 ">
               <div className="text-start">
-                <img src={recipe.image} alt="" className="cursor-pointer" />
+                <img src={recipe.image} alt="" className="cursor-pointer" onClick={()=>setIngredientSelected(recipe._id)}/>
                 <h3 className="text-md font-semibold  mt-1">
                 {recipe.name<20? recipe.name:recipe.name.substring(0,20)+"..."}
                 </h3>
@@ -133,20 +158,38 @@ console.log("selectes",selected);
                   </div>
           ))}
         </div>
+        
 
-      <h2 className="text-2xl font-bold mb-6">Ingredients I Need</h2>
+      {showIngredientNeeded &&
+      <div className="">
+      <h2 className="text-2xl font-bold mb-6">Ingredients I Need to make this recipe</h2>
       <div className="grid grid-cols-2 gap-4 mb-6">
         {/* Ingredients I Need cards */}
         <div className="bg-gray-300 p-4 rounded-lg space-y-2">
-          <h3 className="text-lg font-semibold">Avocado</h3>
-          <p>0 in Pantry</p>
-          <p>Carbs: #g</p>
-          <p>Protein: #g</p>
-          <button className="text-indigo-600 hover:text-indigo-800">
-            Add to Pantry
-          </button>
+      
+          <div className="flex justify-around">
+              <div>
+                <h3 className="text-lg font-semibold">I have</h3>
+                  {IngredientsNeeded[0]?.map((name, index) =>(
+                    <div key={index} className="flex justify-between items-center mb-1">
+                        <p>{name}</p>
+                    </div>
+                    ))}
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold">I need</h3>
+                  {IngredientsNeeded[1]?.map((name, index) =>(
+                    <div key={index} className="flex justify-between items-center mb-1">
+                        <p>{name}</p>
+                  
+                    </div>))}
+              </div>
+          </div>
+          
         </div>
       </div>
+      </div>    
+       }
 
       <h2 className="text-2xl font-bold mb-6">Other Ingredients</h2>
       <div className="grid grid-cols-2 gap-4 mb-6">
@@ -158,7 +201,8 @@ console.log("selectes",selected);
           <p>Carbs: #g</p>
           <p>Protein: #g</p>
           <button className="text-indigo-600 hover:text-indigo-800">
-            Add to Cart
+            Add
+             to Cart
           </button>
         </div>
       </div>

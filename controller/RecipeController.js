@@ -4,8 +4,6 @@ import Ingredient from "./../model/ingredient.js";
 import "dotenv/config";
 import{ObjectId} from "mongodb";
 
-
-
 const apiKey = process.env.API_KEY;
 
 //function to return 10 ingredient based on the name you type in the search bar
@@ -14,7 +12,10 @@ export const getIngredient = async (ingredientName) => {
   //get the ingredient id from the database
   //get 10 recipes with that ingredient
   //return the recipes
-  mongoose.connect(process.env.DB_URL)
+  mongoose.connect(process.env.DB_URL).catch((error) => {
+    console.error(error);
+  });
+
   await Ingredient.find({ name: new RegExp(`\\b${ingredientName}\\w*`, "i") }).limit(10)
         .then((res)=>{
           //get the ingredient names
@@ -54,7 +55,7 @@ export const getRecipesByCategory = async(category)=>{
 }
 
 //get recipes based on name
-export const getRecipesByName = async(name)=>{
+export const getRecipesByName = async(name) => {
     await mongoose.connect(process.env.DB_URL).catch((error) => {
       console.error(error);
       res.status(500).send(error);
@@ -102,6 +103,40 @@ export const getAllIngredientNames = async(list ) => {
     }
 return result;
 }
+
+// Controller method to get a recipe by its ID
+export const getRecipeById = async (id) => {
+    try {
+        mongoose.connect(process.env.DB_URL);
+        const recipe = await Recipe.findById(id);
+        //get all the Ingredients by name
+        const names=[];
+        for(const id of recipe.ingredients){
+            const ingredients = await Ingredient.findOne({ _id: id });
+           // console.log(ingredients);
+            names.push(ingredients.name);
+         } //console.log(ingredients);
+        //const names = ingredients.map(ingredient => ingredient.name);
+        console.log("names",names);
+        const recipeWithNames = {
+          "_id": recipe._id,
+          "name": recipe.name,
+          "category": recipe.category,
+          "ingredients": names,
+          "instructions": recipe.instructions,
+          "image": recipe.image,
+          "measurements": recipe.measurements
+         };
+       // console.log( recipe);
+   
+      //  console.log(recipeWithNames);
+       
+       return recipeWithNames;
+    } catch (error) {
+        console.error("Error fetching recipe by ID:", error);
+        throw error;
+    }
+};
 
 //function to return the recipe based on the users selected ingredients
 export const getRecipesByIngredientList = async(list,select)=>{

@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
+import MyIngredient from "./PantryComponent/MyIngredient";
 import axios from 'axios';
-import { set } from "mongoose";
+
 function Pantry() {
+  //TEST FRIDGE ID TEMPORARY
+  const fridgeID = "661853c65b4692301c252675";
+  //########################
+
   const [query, setQuery] = useState('');
   const [ingredients, setIngredients] = useState([]);
   const [ingredient, setIngredient] = useState('');
@@ -10,6 +15,8 @@ function Pantry() {
   const [ingSelectList,setIngSelectList] = useState([]);
   const [list,setlist]= useState([]);
   const [selected,setSelected] = useState(false);
+  const [myIngredrients, setMyIngredrients] = useState([]);
+  const [pantry, setPantry] = useState([]);
  
  
   const handleItemClick = async(ingredient) => {
@@ -37,13 +44,29 @@ function Pantry() {
     };
 
     if (query !== '') {
-      fetchIngredients();
-    
+      fetchIngredients();  
     } else {
-      console.log("inside else in useEffect");
+    console.log("inside else in useEffect");
     setIngredients([]);
     }
   }, [query]);
+
+  //PANTRY HOOK FOR "MY INGREDIENTS"
+  useEffect(() => {
+    const fetchPantry = async () => {
+      const endpoint = "/fridge/ingredient?fridgeID=" + fridgeID;
+
+      const res = await fetch(endpoint).catch((error) => {
+        console.error(error);
+      });
+      const data = await res.json();
+
+      setPantry(data);
+      console.log(myIngredrients);
+    }
+
+    fetchPantry();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
