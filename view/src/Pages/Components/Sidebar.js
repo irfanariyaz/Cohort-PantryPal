@@ -18,9 +18,12 @@ function Sidebar() {
           Pantry
         </NavLink>
         <NavLink to="/recipes" className={getNavLinkClass}>
-          Recipes
+         Explore Recipes
         </NavLink>
-        <NavLink to="/meal" className={getNavLinkClass}>
+        <NavLink to="/meals" className={getNavLinkClass}>
+          Meals
+        </NavLink>
+        <NavLink to="/mealPrep" className={getNavLinkClass}>
           MealPrep
         </NavLink>
       </nav>

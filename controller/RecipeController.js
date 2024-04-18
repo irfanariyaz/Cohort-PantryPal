@@ -134,13 +134,13 @@ export const getRecipesByIngredientList = async(list,select)=>{
     console.log(select);
     const recipes = await Recipe.find({ingredients:{$in: ingredientIds}}).limit(20);
     console.log(recipes.length);
-    mongoose.disconnect();
+   // mongoose.disconnect();
     console.log("disconnected from database")
     return recipes;
    }
    
    //console.log(recipes.length);
-   mongoose.disconnect;
+  // mongoose.disconnect;
     
   }
   
