@@ -1,23 +1,49 @@
-function Pantry() {
+import { NavLink } from "react-router-dom";
+import myImage from "../../logoPantryPal.png";
+
+function Navbar() {
   return (
     <div>
-      {/* Links to navigate */}
-      <nav className="bg-gray-100 border-b-2 border-gray-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
-                <span className="font-bold text-xl tracking-tight">
-                  Pantry Pal
-                </span>
+      <nav class="bg-green-900">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="flex h-16 items-center justify-between">
+            <div class="flex-shrink-0">
+              <NavLink to="/">
+                <img
+                  class="h-8 w-8 rounded m-3"
+                  src={myImage}
+                  alt="Your Company"
+                />
+              </NavLink>
+            </div>
+            <div class="flex items-center">
+              <div class="ml-10 flex items-baseline space-x-4">
+                <NavLink
+                  to="/dashboard"
+                  className={({ isActive }) =>
+                    isActive ? "text-white" : "hover:text-white"
+                  }
+                  aria-current={({ isActive }) =>
+                    isActive ? "page" : undefined
+                  }
+                >
+                  Dashboard
+                </NavLink>
+                <NavLink
+                  to="/pantry"
+                  className={({ isActive }) =>
+                    isActive ? "text-white" : "hover:text-white"
+                  }
+                  aria-current={({ isActive }) =>
+                    isActive ? "page" : undefined
+                  }
+                >
+                  Pantry
+                </NavLink>
+                {/* ... other links ... */}
               </div>
             </div>
-            <div className="flex items-center">
-              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                {/* Additional text or menu items can go here */}
-                <span>User's Name</span>
-              </div>
-            </div>
+            {/* ... mobile menu button and other content ... */}
           </div>
         </div>
       </nav>
@@ -25,4 +51,4 @@ function Pantry() {
   );
 }
 
-export default Pantry;
+export default Navbar;
