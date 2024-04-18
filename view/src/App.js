@@ -40,7 +40,7 @@ function App() {
           }
         />
         <Route
-          path="/recipe/:id"
+          path="/recipes/:id"
           element={
             <Layout>
               <ShowRecipeItem />
