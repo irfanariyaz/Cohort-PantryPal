@@ -3,11 +3,21 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { MealPrepModal } from "../Modals/MealPrepModal";
 
 function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [recipes, setRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   useEffect(() => {
     const url = "https://www.themealdb.com/api/json/v1/1/categories.php";
@@ -109,7 +119,7 @@ function Dashboard() {
               <button className="text-indigo-600 hover:text-indigo-800">
                 View Ingredients
               </button> */}
-              <div className="flex space-x-2">
+              <div className="flex space-x-2"> 
                 {/* Tags */}
                 <span className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold">
                   {recipe.category}
@@ -118,7 +128,9 @@ function Dashboard() {
                   TAG 2
                 </span> */}
               </div>
-              <button className="bg-black px-3 py-2 text-white rounded-sm font-semibold">
+              <button className="bg-black px-3 py-2 text-white rounded-sm font-semibold" onClick={openModal}>
+              <MealPrepModal isOpen={isOpen} onClose={closeModal} recipeId={recipe._id} recipe_name={recipe.name} />
+       
                 Add to Meal Plan
               </button>
             </div>

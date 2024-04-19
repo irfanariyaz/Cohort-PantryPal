@@ -58,6 +58,28 @@ function Navbar(props) {
                 >
                   Pantry
                 </NavLink>
+                <NavLink
+                  to="/meals"
+                  className={({ isActive }) =>
+                    isActive ? "text-white" : "hover:text-white"
+                  }
+                  aria-current={({ isActive }) =>
+                    isActive ? "page" : undefined
+                  }
+                >
+                  Meals
+                </NavLink>
+                <NavLink
+                  to="/mealPrep"
+                  className={({ isActive }) =>
+                    isActive ? "text-white" : "hover:text-white"
+                  }
+                  aria-current={({ isActive }) =>
+                    isActive ? "page" : undefined
+                  }
+                >
+                  Meal Prep
+                </NavLink>
                 {/* ... other links ... */}
               </div>
             </div>

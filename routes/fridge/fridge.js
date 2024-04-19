@@ -18,7 +18,7 @@ router.post("/ingredient", (req, res) => {
 });
 
 router.post("/ingredient/delete", (req, res) => {
-    FridgeController.removeIngredient(req, res);
+    FridgeController.removeIngredient(req, res); 
 });
 
 router.post("/ingredient/amount", (req, res) => {
@@ -34,6 +34,7 @@ router.post("/ingredient/dec", (req, res) => {
 });
 
 router.get("/meal", (req, res) => {
+    console.log("request reached");
     FridgeController.readMeals(req, res);
 });
 

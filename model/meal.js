@@ -11,6 +11,7 @@ const Schema = mongoose.Schema;
 const MealSchema = new Schema({
     fridge_id: {type: Schema.Types.ObjectId, ref:"Fridge", required: true},
     recipe_id: {type: Schema.Types.ObjectId, ref:"Recipe", required: true},
+    recipe_name: {type: String, required: true},
     day: {
         type: String,
         enum: ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"],
@@ -18,8 +19,8 @@ const MealSchema = new Schema({
     },
     mealtimes:{
         type: String,
-        enum: ["breakfast", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"],
-        default: "monday"
+        enum: ["Breakfast", "Lunch", "Dinner","Extra"],
+        default: "Extra"
     }
 });
 

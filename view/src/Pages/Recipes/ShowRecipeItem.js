@@ -34,18 +34,67 @@ function ShowRecipeItem() {
   if (!recipe) {
     return <div>Loading...</div>;
   }
+  console.log(recipe.totalNutrients);
   return (
-    <div className="recipe-item">
+    <div className="recipe-item p-3">
       <h1 className="recipe-title">{recipe.name}</h1>
       <img src={recipe.image} alt={recipe.name} className="recipe-image" />
       <div className="recipe-description">
-      <h3 className="recipe-ingredient">Ingredients:</h3>
-      <ul>
-       <p>chicken</p>
-       <p>sauce</p>
-      </ul>
-      <h3 className="recipe-macros">Measurements:</h3>
-      <p>{recipe.measurements}</p>
+     <div className="flex justify-around">       
+       <table className="table-auto">
+       <thead>
+         <tr>
+           <th className="px-4 py-2">Ingredients</th>
+           <th className="px-4 py-2">Measurements</th>
+         </tr>
+       </thead>
+       <tbody>
+         {recipe.ingredients?.map((ingredient, index) => (
+           <tr key={index}className={index % 2 === 0 ? "bg-gray-100" : ""}>
+             <td className="border px-4 py-2 capitalize">{ingredient}</td>
+             <td className="border px-4 py-2">{recipe.measurements[index]}</td>
+           </tr>
+         ))}
+       </tbody>
+        </table>
+        <div>
+          <h3>Total Nutritional Facts of the recipe</h3>
+        {recipe && recipe.totalNutrients &&
+          <table  className="table-auto">
+          <thead>
+           <tr>
+             <td className="border px-4 py-2"><strong className="mr-4"> Amount Per    </strong>100g</td>
+           </tr>
+           <tr>
+             <td className=" border px-4 py-2"><strong className="mr-4">Calories   </strong> {recipe.totalNutrients.calories} kcal</td>
+           </tr>
+           <tr>
+             <td className="px-4 py-2 border"><strong className="mr-4">Protein   </strong> {recipe.totalNutrients.protein} g</td>
+           </tr>
+           <tr>
+             <td className="px-4 py-2 border"><strong className="mr-4">Cholesterol   </strong> {recipe.totalNutrients.cholesterol}mg</td>
+           </tr>
+           <tr>
+             <td className="px-4 py-2 border"><strong className="mr-4">Carbohydrates   </strong> {recipe.totalNutrients.carbohydrates}g</td>
+          </tr>
+           <tr>
+             <td className="px-4 py-2 border"><strong className="mr-4">Total_fat   </strong> {recipe.totalNutrients.total_fat}g</td>
+           </tr>
+           <tr>
+             <td className="px-4 py-2 border"><strong className="mr-4">Total_saturated_fats   </strong> {recipe.totalNutrients.total_saturated_fats}g</td>
+           </tr>
+           <tr>
+             <td className="px-4 py-2 border"><strong className="mr-4">Total_trans_fats   </strong> {recipe.totalNutrients.total_trans_fats}g</td>
+           </tr>
+           <tr>
+             <td className="px-4 py-2 border"><strong className="mr-4">Total_monosaturated_fats   </strong> {recipe.totalNutrients.total_monosaturated_fats}g</td>
+           </tr>
+                 </thead>
+          </table>
+          }
+        </div>
+     </div>
+     
       <h3 className="recipe-instruction">Instructions:</h3>
       <ol>
         {recipe.instructions}

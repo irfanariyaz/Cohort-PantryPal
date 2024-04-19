@@ -3,6 +3,8 @@
   flex-direction: column; /* If you want items stacked vertically */
   align-items: flex-start; /* Center items horizontally */
   justify-content: flex-end; /* Center items vertically */
+  width: 80%;
+  margin: 0 auto;
 }
 .recipe-title{
     font-size: 3rem;
