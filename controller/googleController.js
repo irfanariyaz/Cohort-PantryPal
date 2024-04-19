@@ -32,16 +32,18 @@ const create_google_user = async function(req, res){
         if (checkForDupe.length === 0) {          
             const user = new User({
                 name: req.google.name,
-                user_id: userID,
+                userID: userID,
                 profile_pic: req.google.profilePicture
             });
             
             await user.save().then(async (result) => {
                 //For every new user, create new fridge.
                 //Assigns new userID to fridge.
+                console.log("HEREX");
+                console.log(result);
                 const fridge = new Fridge({
                     routeID: await RouteID(11, Fridge),
-                    owner_id: result
+                    owner_id: result._id
                 });
 
                 //Save fridge to DB.
@@ -49,7 +51,7 @@ const create_google_user = async function(req, res){
                     console.error(error);
                 });
 
-                req.session.userID = userID;
+                req.session.userID = user._id;
                 res.redirect("http://localhost:3000");
             }).catch((err) => {throw err});
         } else {

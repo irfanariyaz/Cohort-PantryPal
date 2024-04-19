@@ -25,13 +25,14 @@ function Pantry(props) {
 }
 //function to handle when user types the list of ingredients with comma and press the search button
   const handleQueryClick = async(query) => {
-   const  url = `http://localhost:3001/recipes/ingredients/${queryList}`;
+   const  url = `/recipes/ingredients/${queryList}`;
    console.log("reached handleclick", url);
    const response =await axios.get(url);
    const data = await response.data;
    setIngSelectList(data);
    console.log("results",data);
   }
+
 //function to add list of ingredients selected
   const addIngredientToList = (value)=>{
     console.log("clicked the ingredient");
@@ -49,7 +50,7 @@ function Pantry(props) {
   //SEARCH HOOK
   useEffect(() => {
     const fetchIngredients = async () => {
-      const url = `http://localhost:3001/recipes/getIngredient?ingredient=${query}`
+      const url = `/recipes/getIngredient?ingredient=${query}`
       console.log("rendering useEffect");
       try {
         const response = await fetch(url);
@@ -101,9 +102,9 @@ function Pantry(props) {
        // console.log(data);
         setRecipes(data);
         console.log(recipes);
-      setIngredient('');
-      setQuery('');
-    })
+        setIngredient('');
+        setQuery('');
+      })
       .catch(error => console.error(error));
   }
 

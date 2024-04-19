@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Recipe from "./../model/recipe.js";
 import Ingredient from "./../model/ingredient.js";
+import FridgeIngredient from "../model/fridge_ingredient.js";
 import "dotenv/config";
 import{ObjectId} from "mongodb";
 
@@ -117,46 +118,35 @@ export const getRecipeById = async (id) => {
 };
 
 //function to return the recipe based on the users selected ingredients
-export const getRecipesByIngredientList = async(list,select)=>{
- const result = await  mongoose.connect(process.env.DB_URL);
- console.log("connected to database",list);
- const ingredientIds = [];
-//loop through the list of ingredients
- for(const ingredient of list){
-      //get the ingredient id from the database
-      const ingredientId = await Ingredient.findOne({ name: new RegExp(`\\b${ingredient}\\w*`, "i") });
-       //add the ingredient id to the list
-      if(ingredientId){
-          ingredientIds.push(ingredientId._id);
-      }
-  }
-  console.log(ingredientIds);
-  if (ingredientIds.length === 0) {
-    return [];
-  }else{
-    console.log("true or false",select);
-   //returns 20 recipes 
-   if(select==="true"){
-    console.log("reached if");
-    console.log(select);
-    const recipes = await Recipe.find({ ingredients: { $all: ingredientIds } }).limit(20);
-    console.log(recipes.length);
-    return recipes;
-   }else{
-    console.log("reached else");
-    console.log(select);
-    const recipes = await Recipe.find({ingredients:{$in: ingredientIds}}).limit(20);
-    console.log(recipes.length);
-    mongoose.disconnect();
-    console.log("disconnected from database")
-    return recipes;
-   }
-   
-   //console.log(recipes.length);
-   mongoose.disconnect;
-    
-  }
+export const getRecipesByIngredientList = async(req, res)=>{
+  await mongoose.connect(process.env.DB_URL).catch((error) => {
+    console.error(error);
+    res.status(500).send(error);
+  });
+
+  const fridgeID = req.session.fridgeID._id;
   
+  //Gets all ingredients in users fridge.
+  const ingredientList = await FridgeIngredient.find({fridgeID: fridgeID}).then((list) => {
+    //Iterates over ingredients and takes the ingredientID.
+    return list.map((ingr) => {
+      return ingr.ingredientID;
+    });
+  }).catch((error) => {
+    console.error(error);
+    res.status(500).send(error);
+  });
+
+  const recipeList = await Recipe.find({ingredients: {$in: ingredientList}}).catch((error) => {
+    console.error(error);
+    res.status(500).send(error);
+  });
+
+  if (recipeList.length === 0) {
+    res.status(400).send("No possible recipes from the ingredients in fridge.");
+  } else {
+    res.json(recipeList);
+  }
 }
  
   // mongoose.connection.close();
