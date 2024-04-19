@@ -1,12 +1,14 @@
-function convertFromOunces(measurement, ounce) {
+function convertToOunces(measurement, ounce) {
     switch(measurement) {
-        case("teaspoon"):
-            return Math.ceil(ounce * 6);
+        case("tablespoon"):
+            return Number(Math.round((ounce * 0.5)+'e2')+'e-2');
         case("cup"):
-            return Math.ceil(ounce * 0.125);
+            return Number(Math.round((ounce * 8)+'e2')+'e-2');
         case("pound"):
-            return Math.ceil(ounce * 0.0625);
+            return Number(Math.round((ounce * 16)+'e2')+'e-2');
+        default:
+            return ounce;
     }
 }
 
-export default convertFromOunces;
+export default convertToOunces;

@@ -44,7 +44,7 @@ app.use(
 );
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use("/user", usersRouter);
 app.use("/ingredient", ingredientsRouter);
 app.use("/auth/google", googleRouter);
 app.use("/recipes", recipeRouter);

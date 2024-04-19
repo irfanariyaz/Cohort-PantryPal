@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import MyIngredient from "./PantryComponent/MyIngredient";
 import axios from 'axios';
 
-function Pantry() {
+
+function Pantry(props) {
   //TEST FRIDGE ID TEMPORARY
+  const fridgeID1 = props.profile.fridgeID._id;
   const fridgeID = "6620f09f1e7dc4f70c80e1bc";
   //########################
 
@@ -11,7 +13,8 @@ function Pantry() {
   const [ingredients, setIngredients] = useState([]);
   const [ingredient, setIngredient] = useState('');
   const [recipes, setRecipes] = useState([]);
-  const [showForm,setShowForm] = useState(false);//show form to create a Pantry list
+  const [showForm,setShowForm] = useState(false);//show form to create a Pantry list 
+  const [myIngredrients, setPantry] = useState([]); 
 
  
  
@@ -122,8 +125,17 @@ const createPantry = () => {
          </form>
        </div>
         )}
+      <h2 className="text-2xl font-bold mb-6">My Ingredients</h2>
       
+      <div className="flex flex-wrap justify-around">
+        {/* My Ingredients cards */}
+        {myIngredrients.map((ingr) => {
+          return <MyIngredient key={ingr._id} data={ingr}/>
+        })}
       </div>
+      </div>
+    
+      
   
   );
 }

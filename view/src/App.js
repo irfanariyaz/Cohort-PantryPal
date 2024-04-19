@@ -3,7 +3,6 @@ import React from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import Home from "./Pages/Home";
-
 import Dashboard from "./Pages/Dashboard";
 import Pantry from "./Pages/Pantry";
 import Recipes from "./Pages/Recipes";
@@ -12,18 +11,46 @@ import ShowRecipeItem from "./Pages/Recipes/ShowRecipeItem";
 import Meal from "./Pages/Meal.js";
 
 import MealPrep from "./Pages/MealPrep.js";
+import {useEffect, useState} from "react";
 // import ShowRecipeItem from "./Pages/ShowRecipeItem";
 
 function App() {
-  return (
-    <Router>
+  const [profile, setProfile] = useState(false);
+
+  useEffect(() => {
+    async function fetchUserProfile() {
+      const url = "/user/profile";
+      await fetch(url).then(async (res) => {
+        const json = await res.json();
+        setProfile(json);
+      }).catch((error) => {
+        console.error(error);
+      });
+    }
+
+    fetchUserProfile();
+  }, []);
+
+  //Normal routes will be inaccessible until user logs in.
+  //If user is already logged in, sends them to dashboard.
+  function Protected() {
+    if (profile) {
+      return (
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={
+            <Layout>
+              <Dashboard />
+            </Layout>
+          }
+        />
+        {/*Login/Register route will be here presumably.*/}
         <Route
           path="/dashboard"
           element={
             <Layout>
-              <Dashboard />
+              <Dashboard profile={profile}/>
             </Layout>
           }
         />
@@ -31,7 +58,7 @@ function App() {
           path="/pantry"
           element={
             <Layout>
-              <Pantry />
+              <Pantry profile={profile} />
             </Layout>
           }
         />
@@ -39,7 +66,7 @@ function App() {
           path="/recipes"
           element={
             <Layout>
-              <Recipes />
+              <Recipes profile={profile} />
             </Layout>
           }
         />
@@ -47,15 +74,15 @@ function App() {
           path="/recipes/:id"
           element={
             <Layout>
-              <ShowRecipeItem />
+              <ShowRecipeItem profile={profile} />
             </Layout>
           }
         />
-         <Route
+        <Route
           path="/meals"
           element={
             <Layout>
-              <Meal />
+              <Meal  profile={profile}/>
             </Layout>
           }
         />
@@ -63,12 +90,26 @@ function App() {
           path="/mealPrep"
           element={
             <Layout>
-              <MealPrep />
+              <MealPrep profile={profile}/>
             </Layout>
           }
         />
            
       </Routes>
+      );
+    } else {
+      return (
+      <Routes>
+        {/*Login/Register Route will be here.*/}
+        <Route path="/" element={<Home />} />
+      </Routes>
+      );
+    }
+  }
+
+  return (
+    <Router>
+      <Protected />
     </Router>
   );
 }
@@ -78,7 +119,7 @@ function Layout({ children }) {
 
   return (
     <>
-      {location.pathname !== "/" && <Navbar />}
+      {<Navbar />}
       <div className="flex">
         <main className="flex-1">{children}</main>
       </div>
