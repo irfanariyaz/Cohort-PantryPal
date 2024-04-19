@@ -5,16 +5,19 @@ import FridgeIngredient from '../model/fridge_ingredient.js';
 import Recipe from '../model/recipe.js';
 import Meal from '../model/meal.js';
 import "dotenv/config";
+import {ObjectId} from 'mongoose'
+
 
 const FridgeController = () => {
 
     async function addFridgeIngredient(req, res) {
         const fridgeID = req.body.routeID;
         const ingredientID = req.body.ingredientID;
-        const measurement = req.body.measurement;
-        const amount = req.body.amount;
+        const ownerId = req.body.ownerId;
+         const measurement = req.body.measurement;
+         const amount = req.body.amount;
 
-        if (fridgeID === null || ingredientID === null || measurement === null || amount === null) {
+        if (fridgeID === null || ingredientID === null ) {
             res.status(400).send("Incomplete form data");
         }
 
@@ -25,11 +28,11 @@ const FridgeController = () => {
             res.status(500).send(error);
         });
 
-        const fridge = await Fridge.findOne({routeID: fridgeID}).exec().catch((error) => {
+        const fridge = await Fridge.findOne({_id: fridgeID}).exec().catch((error) => {
             console.error(error);
         });
 
-        const ingredient = await Ingredient.findOne({fdc_id: ingredientID}).exec().catch((error) => {
+        const ingredient = await Ingredient.findOne({_id: ingredientID}).exec().catch((error) => {
             console.error(error);
         });
 
@@ -40,8 +43,9 @@ const FridgeController = () => {
         const fridgeIngredient = new FridgeIngredient({
             fridgeID: fridge._id,
             ingredientID: ingredient._id,
+            ownerId: ownerId,
             measurement: measurement,
-            amount: amount
+             amount: amount
         });
 
         await fridgeIngredient.save().then(() => {
@@ -130,37 +134,48 @@ const FridgeController = () => {
 
     //Adds recipe to meal plan.
     async function addMeal(req, res) {
-        const fridgeID = req.query.routeID;
-        const recipeID = req.query.recipeID;
-        const day = req.query.day;
-
+        const {fridgeId,recipeId,day,mealtimes,recipe_name} = req.body;
+         await mongoose.connect(process.env.DB_URL).catch((error) => {
+            console.error(error);
+            res.status(500).send(error);
+        });
         //Check if valid fridge
-        const fridge = await Fridge.find({routeID: fridgeID}).exec().then((val) => {
+        const fridge = await Fridge.findById(fridgeId).then((val) => {
+          
             if (val === null) {
                 res.status(400).send("Invalid fridge routeID");
+            }else{
+                
+                return val;
             }
+
         }).catch((error) => {
-            console.error(error);
+            console.error("error returning from fridge",error);
             res.status(500).send(error);
         });
 
         //Check if valid recipe.
-        const recipe = await Recipe.find({_id: recipeID}).exec().then((val) => {
+        const recipe = await Recipe.findById(recipeId).exec().then((val) => {
             if (val === null) {
                 res.status(400).send("Invalid recipe ID");
+            }else{
+                
+                return val;
             }
         }).catch((error) => {
             console.error(error);
             res.status(500).send(error);
         });
 
-        const meal = new Meal({
-            fridge_id: fridge._id,
+        const newmeal = new Meal({
+            fridge_id:fridge._id,
             recipe_id: recipe._id,
-            day: day
+            recipe_name: recipe_name,
+            day: day,
+            mealtimes:mealtimes
         });
 
-        await meal.save().then(() => {
+        await newmeal.save().then(() => {
             res.status(200).send("Success");
         }).catch((error) => {
             console.error(error);
@@ -181,13 +196,21 @@ const FridgeController = () => {
 
     //Reads all meals within meal plan.
     async function readMeals(req, res) {
-        const fridgeID = req.body.fridgeID;
-
-        await Meal.find({}).exec().then((mealPlan) => {
-            res.status(200).send(res.json(mealPlan));
+        console.log("reached in controller");
+        const {fridgeId} = req.query;
+        console.log(fridgeId);
+       // const objectId = new ObjectId(fridgeId);
+       /// const objectId =new mongoose.Types.ObjectId(fridgeId);
+       await mongoose.connect(process.env.DB_URL).catch((error) => {
+        console.error(error);
+        res.status(500).send(error);
+    });
+      await Meal.find({fridge_id:fridgeId}).exec().then((mealPlan) => {
+        res.status(200).json(mealPlan);
         }).catch((error) => {
             res.status(500).send(error);
         });
+        
     }
 
     //Removes relevant ingredients from fridge after user has "completed" a meal.

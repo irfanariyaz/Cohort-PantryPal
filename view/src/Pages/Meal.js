@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import { set } from "mongoose";
+
+import { MealPrepModal } from "../Modals/MealPrepModal";
 function Pantry() {
 
   const [recipes, setRecipes] = useState([]);
@@ -12,6 +13,16 @@ function Pantry() {
   const [showIngredientNeeded,setShowIngreedientNeeded] = useState(false);
   const [IngredientSelected,setIngredientSelected] = useState('');
   const[IngredientsNeeded,setIngredientneeded]=  useState([]);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   useEffect(()=>{
    const   fetchrecipe = async () => {
@@ -151,7 +162,8 @@ console.log("selectes",selected);
                 <span className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold">
                 {recipe.category.length>7?recipe.category.substring(0,6) +"...":recipe.category}
                 </span>
-                <button className="bg-black text-xs px-2 text-white rounded-sm font-semibold" >Add to Meal Plan</button>
+                <button className="bg-black text-xs px-2 text-white rounded-sm font-semibold" onClick={openModal}>Add to Meal Plan</button>
+                <MealPrepModal isOpen={isOpen} onClose={closeModal} recipeId={recipe._id} recipe_name={recipe.name} />
        
                   </div>
                  

@@ -4,25 +4,20 @@ import axios from 'axios';
 
 function Pantry() {
   //TEST FRIDGE ID TEMPORARY
-  const fridgeID = "661853c65b4692301c252675";
+  const fridgeID = "6620f09f1e7dc4f70c80e1bc";
   //########################
 
   const [query, setQuery] = useState('');
   const [ingredients, setIngredients] = useState([]);
   const [ingredient, setIngredient] = useState('');
   const [recipes, setRecipes] = useState([]);
-  const [queryList,setquerytList]=useState([]);
-  const [ingSelectList,setIngSelectList] = useState([]);
-  const [list,setlist]= useState([]);
-  const [selected,setSelected] = useState(false);
-  const [myIngredrients, setMyIngredrients] = useState([]);
-  const [pantry, setPantry] = useState([]);
+  const [showForm,setShowForm] = useState(false);//show form to create a Pantry list
+
  
  
   const handleItemClick = async(ingredient) => {
   console.log("reached handleclick",ingredient);
-  setIngredients([]);
-  setIngredient(ingredient);  
+ 
 }
 
  
@@ -51,22 +46,22 @@ function Pantry() {
     }
   }, [query]);
 
-  //PANTRY HOOK FOR "MY INGREDIENTS"
-  useEffect(() => {
-    const fetchPantry = async () => {
-      const endpoint = "/fridge/ingredient?fridgeID=" + fridgeID;
+  // PANTRY HOOK FOR "MY INGREDIENTS"
+  // useEffect(() => {
+  //   const fetchPantry = async () => {
+  //     const endpoint = "/fridge/ingredient?fridgeID=" + fridgeID;
 
-      const res = await fetch(endpoint).catch((error) => {
-        console.error(error);
-      });
-      const data = await res.json();
+  //     const res = await fetch(endpoint).catch((error) => {
+  //       console.error(error);
+  //     });
+  //     const data = await res.json();
 
-      setPantry(data);
-      console.log(myIngredrients);
-    }
+  //     setPantry(data);
+  //     console.log(myIngredrients);
+  //   }
 
-    fetchPantry();
-  }, []);
+  //   fetchPantry();
+  // }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -86,13 +81,22 @@ function Pantry() {
     })
       .catch(error => console.error(error));
   }
-
-
-console.log("selectes",selected);
+const createPantry = () => {
+  console.log("create pantry");
+}
   return (
 //adding a search bar to get the recipes with the ingredient user searched
     <div className="p-8">
+    
       <div>
+        <h2>create a Pantry list</h2>
+        <button className="bg-green-900 p-2 rounded-md text-white mb-4" onClick={()=>setShowForm(true)}> Create</button>
+      </div>
+      {showForm && (
+       <div className="p-4 border-2">
+         
+         <form className="flex flex-col space-y-4 " onSubmit={createPantry}>
+         <div>
         <form action="" className=" flex space-x-4" onSubmit={handleSubmit}>
         <input type="text" className="px-4 py-2 border border-gray-300 rounded-md "
                value={ingredient?Object.keys(ingredient):query}
@@ -100,7 +104,7 @@ console.log("selectes",selected);
                placeholder="Type to search ingredients..." />
     
       <button  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-400">
-               Search</button>
+               Add</button>
         </form>
         <div>
         {ingredients.map((ingredient, index) => (
@@ -112,6 +116,12 @@ console.log("selectes",selected);
         </div>
       
       </div>
+
+       
+           <button className="bg-green-900 p-2 rounded-md text-white"> Create</button>
+         </form>
+       </div>
+        )}
       
       </div>
   
