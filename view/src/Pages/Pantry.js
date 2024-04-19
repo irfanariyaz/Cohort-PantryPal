@@ -15,9 +15,9 @@ function Pantry(props) {
   const [ingSelectList,setIngSelectList] = useState([]);
   const [list,setlist]= useState([]);
   const [myIngredrients, setPantry] = useState([]); 
-  const [selected,setSelected] = useState(false);
+  const [selected,setSelected] = useState(false); 
  
- 
+
   const handleItemClick = async(ingredient) => {
   console.log("reached handleclick",ingredient);
   setIngredients([]);

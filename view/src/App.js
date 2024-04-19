@@ -9,7 +9,9 @@ import Recipes from "./Pages/Recipes";
 import Navbar from "./Pages/Components/Navbar";
 import ShowRecipeItem from "./Pages/Recipes/ShowRecipeItem";
 import Meal from "./Pages/Meal.js";
+import MealPrep from "./Pages/MealPrep.js";
 import {useEffect, useState} from "react";
+
 // import ShowRecipeItem from "./Pages/ShowRecipeItem";
 
 function App() {
@@ -76,6 +78,23 @@ function App() {
             </Layout>
           }
         />
+         <Route
+          path="/meals"
+          element={
+            <Layout>
+              <Meal />
+            </Layout>
+          }
+        />
+         <Route
+          path="/mealPrep"
+          element={
+            <Layout>
+              <MealPrep />
+            </Layout>
+          }
+        />
+           
       </Routes>
       );
     } else {
