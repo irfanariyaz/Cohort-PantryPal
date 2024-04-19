@@ -1,10 +1,13 @@
 import Nutrients from "./Nutrients";
-import {useEffect, useState} from 'react';
+import Convert from "./conversions/conversion.js";
+import {useState} from 'react';
 
 function MyIngredient(props) {
     const [amount, setAmount] = useState(props.data.amount);
     const [measurement, setMeasurement] = useState(props.data.measurement);
     const header = fixName(props.data.name);
+    const oldMeasure = measurement;
+
 
     function fixName(name) {
         const split = name.split(', ');
@@ -27,8 +30,37 @@ function MyIngredient(props) {
       changeAmount(false);
     }
 
+    function changeMeasure(measure) {
+      const newAmount = Convert(measure, oldMeasure, amount);
+
+      async function convertAmount() {
+        const url = "/fridge/ingredient/amount";
+        const kv = [];
+
+        kv.push(encodeURIComponent("ingredientID") + "=" + encodeURIComponent(props.data._id));
+        kv.push(encodeURIComponent("amount") + "=" + encodeURIComponent(newAmount));
+        kv.push(encodeURIComponent("measure") + "=" + encodeURIComponent(measure));
+        const body = kv.join("&");
+        
+        await fetch(url, {
+          method: "post",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: body
+        }).catch((error) => {
+          console.error(error);
+          throw error;
+        });
+      }
+
+      convertAmount();
+      setAmount(newAmount);
+      setMeasurement(measure);
+    }
+
     async function changeAmount(counter) {
-      let url = "http://localhost:3001/fridge/ingredient";
+      let url = "/fridge/ingredient";
       if (counter) {
         url += "/inc";
       } else {
@@ -73,7 +105,7 @@ function MyIngredient(props) {
           </div>
           <p><span className="font-semibold">Measurement:</span> {measurement}</p>
           <p><span className="font-semibold">Amount:</span> {amount} {measurement}s</p>
-          <Nutrients data={props.data} measure={measurement} setMeasure={setMeasurement}/>
+          <Nutrients data={props.data} measure={measurement} setMeasure={changeMeasure}/>
         </div> 
     );
 }

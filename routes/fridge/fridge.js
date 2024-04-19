@@ -1,7 +1,13 @@
 /**@module router/fridge*/
 import express from 'express';
 import FridgeController from '../../controller/FridgeController.js';
+import isAuthenticated from '../oauth/isAuthenticated.js';
 const router = express.Router();
+
+router.use("/*", (req, res, next) => {
+    console.log(req.session);
+    isAuthenticated(req, res, next);
+});
 
 router.get("/ingredient", (req, res) => {
     FridgeController.readIngredient(req, res);
@@ -14,6 +20,10 @@ router.post("/ingredient", (req, res) => {
 router.post("/ingredient/delete", (req, res) => {
     FridgeController.removeIngredient(req, res); 
 });
+
+router.post("/ingredient/amount", (req, res) => {
+    FridgeController.updateIngredientAmount(req, res);
+})
 
 router.post("/ingredient/inc", (req, res) => {
     FridgeController.incrementIngredient(req, res);
