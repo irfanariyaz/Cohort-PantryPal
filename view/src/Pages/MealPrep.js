@@ -7,10 +7,25 @@ export default function  MealPrep(props) {
 
   const fridgeId = props.profile.fridgeID._id;
   const [meals, setMeals] = useState([]);
+  const [macroData, setMacro] = useState([]);
   const [tableData, setTableData] = useState([]);
-  const daysOfWeek = [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday",];
-  const mealTimes = ["Breakfast", "Lunch", "Dinner"];
 
+  const daysOfWeek = [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday",];
+  const mealTimes = ["Breakfast", "Lunch", "Dinner","Macros"];
+
+  //function get total macros for a day
+  function getmacro (list){
+    const macros = list.map(meal => meal.macros);
+   const totalMacros = macros.reduce((acc, macro) => {
+      acc.calories += macro.calories;
+      acc.protein += macro.protein;
+      acc.carbohydrates += macro.carbohydrates;
+      acc.total_fat += macro.total_fat;
+      return acc;
+    })
+    return totalMacros;
+  };
+  //function to create mealPrep data
   const createmealPrep = (meals) => {
   const tableData = [];
   const mon_rec= meals.filter(meal=>meal.day ==="monday");
@@ -20,6 +35,8 @@ export default function  MealPrep(props) {
   const fri_rec= meals.filter(meal=>meal.day ==="friday");
   const sat_rec= meals.filter(meal=>meal.day ==="saturday");
   const sun_rec= meals.filter(meal=>meal.day ==="sunday");
+  console.log("sunday recipes",sun_rec);
+
   tableData.push(mon_rec);
   tableData.push(tue_rec);
   tableData.push(wed_rec);
@@ -28,7 +45,25 @@ export default function  MealPrep(props) {
   tableData.push(sat_rec);
   tableData.push(sun_rec);
   setTableData(tableData);
+  createMacroData(tableData);
 };
+const createMacroData = (tableData)=>{
+  const macroData = [];
+  tableData.map(day=>{
+    //get macros for a day
+    console.log("day",day);
+    if(day.length>0){
+      const macros =getmacro(day);
+      macroData.push(macros);
+    }  else{
+      macroData.push(null);
+    }
+     
+  })
+  setMacro(macroData);
+  console.log("macroData", macroData);
+
+}
   useEffect(() => {
     const fetchData = async () => {
       const url = '/fridge/meal'
@@ -39,93 +74,38 @@ export default function  MealPrep(props) {
   fetchData();
 },[])
 
-  return (
+ console.log("macroData",macroData); 
+ return (
     <div>
         <div class="bg-gray-100 p-4">
   <h1 class="text-2xl font-bold mb-4">Weekly Meal Schedule</h1>
-  {/* <table class="w-full border-collapse border border-gray-200">
-    <thead>
-      <tr>
-        <th class="border border-gray-200 p-2">Day</th>
-        <th class="border border-gray-200 p-2">Breakfast</th>
-        <th class="border border-gray-200 p-2">Lunch</th>
-        <th class="border border-gray-200 p-2">Dinner</th>
-      </tr>
-    </thead>
-    
-    
-        <tbody>
- <tr>
- <td class="border border-gray-200 p-2">Monday</td>
 
- <td class="border border-gray-200 p-2">{(meals.monday.filter(meal=>meal.mealtimes =="Breakfast")).
- recipe_name}</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Lunch")}</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Dinner")}</td>
-</tr>
-<tr>
- <td class="border border-gray-200 p-2">Tuesday</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Breakfast")}</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Lunch")}</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Dinner")}</td>
-
-</tr>
-<tr>
- <td class="border border-gray-200 p-2">Wednesday</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Breakfast")}</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Lunch")}</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Dinner")}</td>
-
-</tr>
-<tr>
- <td class="border border-gray-200 p-2">Thursday</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Breakfast")}</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Lunch")}</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Dinner")}</td>
-
-</tr>
-<tr>
- <td class="border border-gray-200 p-2">Friday</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Breakfast")}</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Lunch")}</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Dinner")}</td>
-
-</tr>
-<tr>
- <td class="border border-gray-200 p-2">Saturday</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Breakfast")}</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Lunch")}</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Dinner")}</td>
-
-</tr>
-<tr>
- <td class="border border-gray-200 p-2">Sunday</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Breakfast")}</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Lunch")}</td>
- <td class="border border-gray-200 p-2">{meals.monday.filter(meal=>meal.mealtimes =="Dinner")}</td>
-
-</tr>
-</tbody>
-  
-     
-
-  </table> */}
-   <table className="w-full border-collapse border border-gray-200">
+   <table className="border-collapse w-3/4 m-auto border border-gray-200">
       <thead>
         <tr>
-          <th className="border border-gray-200 p-2">Day</th>
+          <th className="border border-gray-300 p-2">Day</th>
           {mealTimes.map(mealTime => (
-            <th key={mealTime} className="border border-gray-200 p-2">{mealTime}</th>
+            <th key={mealTime} className="border border-gray-300 p-2">{mealTime}</th>
           ))}
-          <th className="border border-gray-200 p-2">Macros</th>
+        
         </tr>
        
       </thead>
       <tbody>
         {daysOfWeek.map((day, index) => (
           <tr key={day}>
-            <td className="border border-gray-200 p-2">{day}</td>
-            {mealTimes.map(mealTime => {
+            <td className="border border-gray-300 p-2">{day}</td>
+            {mealTimes.map(mealTime => {if(mealTime === "Macros")
+              return (
+                <td key={mealTime}
+                 className="border border-gray-300 p-2 text-sm">
+                  {/* {tableData[index] ? tableData[index].filter(meal => meal.mealtimes === mealTime)[0].macros : null} */}
+                 <i>Calories</i>: <span className='ml-1'>{macroData[index] ? macroData[index].calories : null}</span><br/>
+                 <i>Carbs</i>:<span className='ml-1'> {macroData[index] ? macroData[index].carbohydrates : null} g</span> <br/>
+                 <i>Protein</i>: <span className='ml-1'>{macroData[index] ? macroData[index].protein : null} g</span><br/>
+                 <i>Fat</i>:<span className='ml-1'> {macroData[index] ? macroData[index].total_fat : null} g</span>
+                </td>
+              )
               const meal = tableData[index] ? tableData[index].filter(meal => meal.mealtimes === mealTime) : null;
               let names=[];
               if(meal?.length>1){
@@ -135,17 +115,17 @@ export default function  MealPrep(props) {
               }
                 const res= names ? names.join(", ") : '';
               return (
-                <td key={mealTime} className="border border-gray-200 p-2">
+                <td key={mealTime} className="border border-gray-300 p-2">
                 
                  {res}
                 </td>
               );
             })}
+          
           </tr>
+          
         ))}
-        <tr>
-          {/* {macros} */}
-        </tr>
+        
       </tbody>
     </table>
 </div>

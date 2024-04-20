@@ -27,12 +27,12 @@ const create_google_user = async function(req, res){
          * the session.
          * @var checkForDupe {User} 
          */
-        const checkForDupe = await User.find({user_id: {$eq: userID}}).catch((err) => {throw err});
+        const checkForDupe = await User.find({userID: {$eq: userID}}).catch((err) => {throw err});
 
         if (checkForDupe.length === 0) {          
             const user = new User({
                 name: req.google.name,
-                user_id: userID,
+                userID: userID,
                 profile_pic: req.google.profilePicture
             });
             
@@ -49,7 +49,7 @@ const create_google_user = async function(req, res){
                     console.error(error);
                 });
 
-                req.session.userID = userID;
+                req.session.userID = user._id;
                 res.redirect("http://localhost:3000");
             }).catch((err) => {throw err});
         } else {

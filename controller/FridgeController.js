@@ -5,13 +5,14 @@ import FridgeIngredient from '../model/fridge_ingredient.js';
 import Recipe from '../model/recipe.js';
 import Meal from '../model/meal.js';
 import "dotenv/config";
+import {gettotalRecipeMacro }from "./recipeUtils/getMacro.js"
 import {ObjectId} from 'mongoose'
 
 
 const FridgeController = () => {
 
     async function addFridgeIngredient(req, res) {
-        const fridgeID = req.body.routeID;
+        const fridgeID = req.body.routeID; 
         const ingredientID = req.body.ingredientID;
         const ownerId = req.body.ownerId;
          const measurement = req.body.measurement;
@@ -191,15 +192,20 @@ const FridgeController = () => {
             console.error(error);
             res.status(500).send(error);
         });
+        //get the macros
+        console.log("recipe of a meal",recipe);
+        const {totalNutrients,names} = await gettotalRecipeMacro(recipe);
 
         const newmeal = new Meal({
             fridge_id:fridge._id,
             recipe_id: recipe._id,
             recipe_name: recipe_name,
             day: day,
-            mealtimes:mealtimes
+            mealtimes:mealtimes,
+            macros:totalNutrients,
+            ingredients:names
         });
-
+console.log("names",names);
         await newmeal.save().then(() => {
             res.status(200).send("Success");
         }).catch((error) => {
@@ -230,11 +236,14 @@ const FridgeController = () => {
         console.error(error);
         res.status(500).send(error);
     });
-      await Meal.find({fridge_id:fridgeId}).exec().then((mealPlan) => {
+      const mealPlan = await Meal.find({fridge_id:fridgeId}).exec();
+
+        //attach macros to each meal
+       // console.log(mealPlan);
+    
+        console.log(mealPlan);
         res.status(200).json(mealPlan);
-        }).catch((error) => {
-            res.status(500).send(error);
-        });
+       
         
     }
 
