@@ -41,7 +41,7 @@ function App() {
           path="/"
           element={
             <Layout>
-              <Dashboard />
+              <Dashboard  profile={profile}/>
             </Layout>
           }
         />
@@ -119,7 +119,7 @@ function Layout({ children }) {
 
   return (
     <>
-      {<Navbar />}
+      {<Navbar  />}
       <div className="flex">
         <main className="flex-1">{children}</main>
       </div>

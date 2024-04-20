@@ -5,8 +5,9 @@ import axios from 'axios';
 
 function Pantry(props) {
   //TEST FRIDGE ID TEMPORARY
-  const fridgeID1 = props.profile.fridgeID._id;
-  const fridgeID = "6620f09f1e7dc4f70c80e1bc";
+  const fridgeID = props.profile.fridgeID._id;
+  //const fridgeID = "6620f09f1e7dc4f70c80e1bc";
+ 
   //########################
 
   const [query, setQuery] = useState('');
@@ -27,7 +28,7 @@ function Pantry(props) {
 
   useEffect(() => {
     const fetchIngredients = async () => {
-      const url = `http://localhost:3001/recipes/getIngredient?ingredient=${query}`
+      const url = `/recipes/getIngredient?ingredient=${query}`
       console.log("rendering useEffect");
       try {
         const response = await fetch(url);
@@ -72,7 +73,7 @@ function Pantry(props) {
     //const id = Object.keys(ingredient);
     //console.log(id);
     const name = ingredient? Object.keys(ingredient) :query;
-    const url = `http://localhost:3001/recipes/getRecipes/${name}`;
+    const url = `/recipes/getRecipes/${name}`;
     fetch(url)
       .then(response =>response.json())
       .then((data) => {
@@ -87,6 +88,7 @@ function Pantry(props) {
 const createPantry = () => {
   console.log("create pantry");
 }
+console.log(fridgeID);
   return (
 //adding a search bar to get the recipes with the ingredient user searched
     <div className="p-8">

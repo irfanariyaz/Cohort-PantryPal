@@ -37,6 +37,8 @@ function ShowRecipeItem() {
   console.log(recipe.totalNutrients);
   return (
     <div className="recipe-item p-3">
+  {/* create a go back button  */}
+      <button className="go-back-button" onClick={() => window.history.back()}>Go Back</button>
       <h1 className="recipe-title">{recipe.name}</h1>
       <img src={recipe.image} alt={recipe.name} className="recipe-image" />
       <div className="recipe-description">

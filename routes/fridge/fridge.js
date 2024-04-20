@@ -34,11 +34,12 @@ router.post("/ingredient/dec", (req, res) => {
 });
 
 router.get("/meal", (req, res) => {
-    console.log("request reached");
+
     FridgeController.readMeals(req, res);
 });
 
 router.post("/meal", (req, res) => {
+   
     FridgeController.addMeal(req, res);
 });
 

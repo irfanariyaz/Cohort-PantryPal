@@ -2,8 +2,10 @@
 import axios from 'axios'
 import React, { useEffect,useState } from 'react'
 
-export default function  MealPrep() {
-  const fridgeId='6620f09f1e7dc4f70c80e1bc';
+export default function  MealPrep(props) {
+  //const fridgeId='6620f09f1e7dc4f70c80e1bc';
+
+  const fridgeId = props.profile.fridgeID._id;
   const [meals, setMeals] = useState([]);
   const [tableData, setTableData] = useState([]);
   const daysOfWeek = [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday",];
@@ -25,17 +27,14 @@ export default function  MealPrep() {
   tableData.push(fri_rec);
   tableData.push(sat_rec);
   tableData.push(sun_rec);
-  console.log(tableData);
   setTableData(tableData);
-}
-console.log(tableData);
+};
   useEffect(() => {
     const fetchData = async () => {
       const url = '/fridge/meal'
-    const response = await axios.get(url,{params:{fridgeId:fridgeId}});
-          console.log("response",response.data);
-          const mealPrep = createmealPrep(response.data);
-          setMeals(response.data);
+      const response = await axios.get(url,{params:{fridgeId:fridgeId}});
+      const mealPrep = createmealPrep(response.data);
+      setMeals(response.data);
   }
   fetchData();
 },[])
@@ -118,7 +117,9 @@ console.log(tableData);
           {mealTimes.map(mealTime => (
             <th key={mealTime} className="border border-gray-200 p-2">{mealTime}</th>
           ))}
+          <th className="border border-gray-200 p-2">Macros</th>
         </tr>
+       
       </thead>
       <tbody>
         {daysOfWeek.map((day, index) => (
@@ -128,12 +129,11 @@ console.log(tableData);
               const meal = tableData[index] ? tableData[index].filter(meal => meal.mealtimes === mealTime) : null;
               let names=[];
               if(meal?.length>1){
-                 names = meal ? meal.map(recipe => recipe.recipe_name.length >15 ? recipe.recipe_name.substring(0, 15) + "..." : res) : null;
+                 names = meal ? meal.map(recipe => recipe.recipe_name.length >15 ? recipe.recipe_name.substring(0, 15) + "..." : recipe.recipe_name) : null;
               }else{
                  names = meal ? meal.map(recipe => recipe.recipe_name) : null;
               }
                 const res= names ? names.join(", ") : '';
-              console.log(meal,names,res);
               return (
                 <td key={mealTime} className="border border-gray-200 p-2">
                 
@@ -143,6 +143,9 @@ console.log(tableData);
             })}
           </tr>
         ))}
+        <tr>
+          {/* {macros} */}
+        </tr>
       </tbody>
     </table>
 </div>

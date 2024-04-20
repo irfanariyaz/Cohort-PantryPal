@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
+import { IngredientModal } from "../Modals/IngredientModal";
 
 import { MealPrepModal } from "../Modals/MealPrepModal";
-function Pantry() {
-
+function Pantry(props) {
+  const fridgeID = props.profile.fridgeID._id;
   const [recipes, setRecipes] = useState([]);
   const [queryList,setquerytList]=useState([]);
   const [ingSelectList,setIngSelectList] = useState([]);
@@ -15,75 +16,79 @@ function Pantry() {
   const[IngredientsNeeded,setIngredientneeded]=  useState([]);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenIng, setIsOpenIng] = useState(false);
+  const [modalData,setModalData]= useState({});
+  
 
-  const openModal = () => {
+  const openModal = (recipeId,recipe_name) => {
     setIsOpen(true);
+    setModalData({
+      recipeId:recipeId,
+      recipe_name:recipe_name,
+      fridgeID:fridgeID
+    })
   };
 
   const closeModal = () => {
     setIsOpen(false);
   };
+  const openModalIng=(id,name,image)=>{
+    setIngredientSelected(id);
+    setIsOpenIng(true);
+    setModalData({
+      recipeId:id,
+      recipe_name:name,
+      image,image
+    })
+
+  }
+  const closeModalIng = () => {
+    setIngredientneeded('');
+    setIsOpenIng(false);
+  }
 
   useEffect(()=>{
    const   fetchrecipe = async () => {
-        const url = `http://localhost:3001/recipes/findById/${IngredientSelected}`;
+        const url = `/recipes/findById/${IngredientSelected}`;
         const response = await axios.get(url);
         const data = await response.data.ingredients;
-        console.log("response to ingredient got",data);
-        const iNeed = data.filter((item) => !list.includes(item));
-        const iHave = list.filter((item) => data.includes(item));
-       
-        setIngredientneeded([iHave,iNeed]);
-        console.log("ingredients needed", IngredientsNeeded);
-        
+          const iNeed = data.filter((item) => !list.includes(item));
+        const iHave = list.filter((item) => data.includes(item));       
+        setIngredientneeded([iHave,iNeed]);       
     }
     if(IngredientSelected){
         fetchrecipe();
         setShowIngreedientNeeded(true);
-    }
-    
-  }
-    ,[IngredientSelected]);
+    }    
+  },[IngredientSelected]);
+
  
- 
-console.log("IngredientSelected=",IngredientSelected);
+
 //function to handle when user types the list of ingredients with comma and press the search button
   const handleQueryClick = async(query) => {
-   const  url = `http://localhost:3001/recipes/ingredients/${queryList}`;
-   console.log("reached handleclick", url);
+   const  url = `/recipes/ingredients/${queryList}`;
    const response =await axios.get(url);
    const data = await response.data;
    setIngSelectList(data);
-   console.log("results",data);
   }
 //function to add list of ingredients selected
   const addIngredientToList = (value)=>{
-    console.log("clicked the ingredient");
   const newList = [...list,value];
   setlist(newList);
-  console.log("list",list);
   }
   //function to remove ingredients from list 
   const deleteIngredient = (value)=>{
-    const newList = list.filter(item => item !== value);
-    setlist(newList);
+  const newList = list.filter(item => item !== value);
+  setlist(newList);
   }
- 
-
-
    //function to fetch the recipes based on the list of ingredients selected
   const SearchForRecipes =async()=>{
-    console.log(list);
-    const url = `http://localhost:3001/recipes/recipeList`
+    const url = `/recipes/recipeList`
     const response = await axios.get(url,{params:{values:list,selected:selected}});
     const data =await  response.data;
-    setRecipes(data);
-   // setIngSelectList([]);
-    
-    console.log(data);
-    
+    setRecipes(data);  
   }
-console.log("selectes",selected);
+
   return (
 //adding a search bar to get the recipes with the ingredient user searched
     <div className="p-8">
@@ -102,7 +107,7 @@ console.log("selectes",selected);
    
     {/* show the ingredients to select from */}
     {ingSelectList && 
-            <div  className="grid grid-cols-3 gap-2 ">
+            <div  className="grid grid-cols-5 gap-2 ">
                 {ingSelectList.map((ingredient, index) => (
                     <div key={index} className="bg-gray-300 p-4 rounded-lg space-y-2" >
                       {ingredient.map((name,index) =>(
@@ -150,8 +155,8 @@ console.log("selectes",selected);
           {Array.from(recipes, (recipe, index) => (
             <div key={index} className="bg-gray-500 p-3 rounded-lg space-y-2 ">
               <div className="text-start">
-                <img src={recipe.image} alt="" className="cursor-pointer" onClick={()=>setIngredientSelected(recipe._id)}/>
-                <h3 className="text-md font-semibold  mt-1">
+                <img src={recipe.image} alt="" className="cursor-pointer"  onClick={()=>openModalIng(recipe._id,recipe.name,recipe.image)}/>
+               <h3 className="text-md font-semibold  mt-1">
                 {recipe.name<20? recipe.name:recipe.name.substring(0,20)+"..."}
                 </h3>
                
@@ -162,45 +167,47 @@ console.log("selectes",selected);
                 <span className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold">
                 {recipe.category.length>7?recipe.category.substring(0,6) +"...":recipe.category}
                 </span>
-                <button className="bg-black text-xs px-2 text-white rounded-sm font-semibold" onClick={openModal}>Add to Meal Plan</button>
-                <MealPrepModal isOpen={isOpen} onClose={closeModal} recipeId={recipe._id} recipe_name={recipe.name} />
-       
+                <button className="bg-black text-xs px-2 text-white rounded-sm font-semibold" onClick={()=>openModal(recipe._id,recipe.name)}>Add to Meal Plan</button>
+               
                   </div>
                  
                   </div>
           ))}
         </div>
+        <MealPrepModal isOpen={isOpen} modalData={modalData} onClose={closeModal} />
+       
+        <IngredientModal isOpen = {isOpenIng} onClose = {closeModalIng} IngredientsNeeded={IngredientsNeeded}  modalData={modalData}/>
         
 
-      {showIngredientNeeded &&
-      <div className="">
-      <h2 className="text-2xl font-bold mb-6">Ingredients I Need to make this recipe</h2>
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        {/* Ingredients I Need cards */}
-        <div className="bg-gray-300 p-4 rounded-lg space-y-2">
+      {showIngredientNeeded && ""
+      // <div className="">
+      // <h2 className="text-2xl font-bold mb-6">Ingredients I Need to make this recipe</h2>
+      // <div className="grid grid-cols-2 gap-4 mb-6">
+      //   {/* Ingredients I Need cards */}
+      //   <div className="bg-gray-300 p-4 rounded-lg space-y-2">
       
-          <div className="flex justify-around">
-              <div>
-                <h3 className="text-lg font-semibold">I have</h3>
-                  {IngredientsNeeded[0]?.map((name, index) =>(
-                    <div key={index} className="flex justify-between items-center mb-1">
-                        <p>{name}</p>
-                    </div>
-                    ))}
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold">I need</h3>
-                  {IngredientsNeeded[1]?.map((name, index) =>(
-                    <div key={index} className="flex justify-between items-center mb-1">
-                        <p>{name}</p>
+      //     <div className="flex justify-around">
+      //         <div>
+      //           <h3 className="text-lg font-semibold">I have</h3>
+      //             {IngredientsNeeded[0]?.map((name, index) =>(
+      //               <div key={index} className="flex justify-between items-center mb-1">
+      //                   <p>{name}</p>
+      //               </div>
+      //               ))}
+      //         </div>
+      //         <div>
+      //           <h3 className="text-lg font-semibold">I need</h3>
+      //             {IngredientsNeeded[1]?.map((name, index) =>(
+      //               <div key={index} className="flex justify-between items-center mb-1">
+      //                   <p>{name}</p>
                   
-                    </div>))}
-              </div>
-          </div>
+      //               </div>))}
+      //         </div>
+      //     </div>
           
-        </div>
-      </div>
-      </div>    
+      //   </div>
+      // </div>
+      // </div>    
        }
 
       <h2 className="text-2xl font-bold mb-6">Other Ingredients</h2>

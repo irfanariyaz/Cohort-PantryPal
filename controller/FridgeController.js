@@ -159,6 +159,7 @@ const FridgeController = () => {
     //Adds recipe to meal plan.
     async function addMeal(req, res) {
         const {fridgeId,recipeId,day,mealtimes,recipe_name} = req.body;
+        console.log("request reached to addMeal");
          await mongoose.connect(process.env.DB_URL).catch((error) => {
             console.error(error);
             res.status(500).send(error);
@@ -220,7 +221,7 @@ const FridgeController = () => {
 
     //Reads all meals within meal plan.
     async function readMeals(req, res) {
-        console.log("reached in controller");
+      
         const {fridgeId} = req.query;
         console.log(fridgeId);
        // const objectId = new ObjectId(fridgeId);

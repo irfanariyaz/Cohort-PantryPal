@@ -84,10 +84,10 @@ export const getAllIngredientNames = async(list ) => {
         console.log("results ",res.length);
         const names = res.map(el => el.name);
         console.log("names",names);
-        const namesLow = names.map(el => el.toLowerCase());
-          if(!namesLow.includes(name.toLowerCase())){
-            names.push(name);
-           }
+        // const namesLow = names.map(el => el.toLowerCase());
+        //   if(!namesLow.includes(name.toLowerCase())){
+        //     names.push(name);
+        //    }
            return names;
         
        })
