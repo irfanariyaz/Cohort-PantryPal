@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MyIngredient from "./PantryComponent/MyIngredient";
 import axios from 'axios';
+import { set } from "mongoose";
 
 
 function Pantry(props) {
@@ -18,7 +19,7 @@ function Pantry(props) {
   const [myIngredrients, setPantry] = useState([]); 
 
  
- 
+
   const handleItemClick = async(ingredient) => {
   console.log("reached handleclick",ingredient);
  
@@ -50,22 +51,22 @@ function Pantry(props) {
     }
   }, [query]);
 
-  // PANTRY HOOK FOR "MY INGREDIENTS"
-  // useEffect(() => {
-  //   const fetchPantry = async () => {
-  //     const endpoint = "/fridge/ingredient?fridgeID=" + fridgeID;
+  //PANTRY HOOK FOR "MY INGREDIENTS"
+  useEffect(() => {
+    const fetchPantry = async () => {
+      const endpoint = "/fridge/ingredient?fridgeID=" + fridgeID;
 
-  //     const res = await fetch(endpoint).catch((error) => {
-  //       console.error(error);
-  //     });
-  //     const data = await res.json();
+      const res = await fetch(endpoint).catch((error) => {
+        console.error(error);
+      });
+      const data = await res.json();
 
-  //     setPantry(data);
-  //     console.log(myIngredrients);
-  //   }
+      setPantry(data);
+      console.log(myIngredrients);
+    }
 
-  //   fetchPantry();
-  // }, []);
+    fetchPantry();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -92,16 +93,7 @@ console.log(fridgeID);
   return (
 //adding a search bar to get the recipes with the ingredient user searched
     <div className="p-8">
-    
       <div>
-        <h2>create a Pantry list</h2>
-        <button className="bg-green-900 p-2 rounded-md text-white mb-4" onClick={()=>setShowForm(true)}> Create</button>
-      </div>
-      {showForm && (
-       <div className="p-4 border-2">
-         
-         <form className="flex flex-col space-y-4 " onSubmit={createPantry}>
-         <div>
         <form action="" className=" flex space-x-4" onSubmit={handleSubmit}>
         <input type="text" className="px-4 py-2 border border-gray-300 rounded-md "
                value={ingredient?Object.keys(ingredient):query}
@@ -109,7 +101,7 @@ console.log(fridgeID);
                placeholder="Type to search ingredients..." />
     
       <button  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-400">
-               Add</button>
+               Search</button>
         </form>
         <div>
         {ingredients.map((ingredient, index) => (
@@ -121,12 +113,6 @@ console.log(fridgeID);
         </div>
       
       </div>
-
-       
-           <button className="bg-green-900 p-2 rounded-md text-white"> Create</button>
-         </form>
-       </div>
-        )}
       <h2 className="text-2xl font-bold mb-6">My Ingredients</h2>
       
       <div className="flex flex-wrap justify-around">
@@ -135,7 +121,9 @@ console.log(fridgeID);
           return <MyIngredient key={ingr._id} data={ingr}/>
         })}
       </div>
-      </div>
+
+    </div>
+
     
       
   
