@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./ShowRecipeItem.css";
 import { useParams } from "react-router-dom";
+import { BsArrowLeft } from "react-icons/bs";
 
 function ShowRecipeItem() {
 
@@ -38,7 +39,7 @@ function ShowRecipeItem() {
   return (
     <div className="recipe-item p-3">
   {/* create a go back button  */}
-      <button className="go-back-button" onClick={() => window.history.back()}>Go Back</button>
+      <button className="go-back-button flex items-center gap-2 hover:text-green-600" onClick={() => window.history.back()}><BsArrowLeft />Go Back</button>
       <h1 className="recipe-title">{recipe.name}</h1>
       <img src={recipe.image} alt={recipe.name} className="recipe-image" />
       <div className="recipe-description">

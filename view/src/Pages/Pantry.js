@@ -79,11 +79,11 @@ function Pantry(props) {
     //search the db with recipes with this ingredient
     console.log("formData",formData);
     const url = `/fridge/ingredient`;
-    if(Object.values(formData)[1]===""){
+    if(query==='' && Object.values(formData)[1]==="" ){
       alert("Ingredient not in the database");
 
-    }else if(Object.values(formData).includes("") ){
-      alert("Please fill in all fields");
+    }else if(Object.values(formData)[1]===""){
+      alert("Please fill in  ingredient");
     } else{
       const response = await  axios.post(url, formData);
       const data = await response.data;
@@ -138,8 +138,10 @@ console.log("myIngredrients",myIngredrients);
          <option value="">Select</option>
           <option value="ounce">ounce</option>
           <option value="cup">cup</option>
-          <option value="pound">pound</option>
+          <option value="pound">pound</option>          
           <option value="tablespoon">tablespoon</option>
+          <option value="">other</option>
+
 
         </select>
       <button  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-400">

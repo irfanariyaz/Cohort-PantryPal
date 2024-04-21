@@ -9,6 +9,7 @@ import {gettotalRecipeMacro }from "./recipeUtils/getMacro.js"
 
 
 
+
 const FridgeController = () => {
 
     async function addFridgeIngredient(req, res) {
@@ -62,6 +63,58 @@ const FridgeController = () => {
         } else {
             res.status(500).send("Creation failed");
         }
+    }
+    async function  readIngredientByName (req, res) {
+        const {name,fridgeID} = req.query;
+        console.log(name,fridgeID);
+        
+        const ingredient = await Ingredient.findOne({name: name}).exec().catch((error) => {
+            console.error(error);
+            res.status(500).send(error);
+        });
+        console.log(ingredient);
+        if (fridgeID === null || ingredient._id === null  ) {
+            res.status(400).send("Incomplete form data");
+        }
+
+        let success = false;
+
+        await mongoose.connect(process.env.DB_URL).catch((error) => {
+            console.error(error);
+            res.status(500).send(error);
+        });
+
+        const fridge = await Fridge.findOne({_id: fridgeID}).exec().catch((error) => {
+            console.error(error);
+        });
+
+      
+        if (ingredient === null || fridge === null) {
+            res.status(400).send("ingredientID or fridgeID missing from query").send();
+        }
+
+        const fridgeIngredient = new FridgeIngredient({
+            fridgeID: fridge._id,
+            ingredientID: ingredient._id,
+            // ownerId: ownerId,
+            measurement: "",
+             amount: ""
+        });
+
+        await fridgeIngredient.save().then(() => {
+            success = true;
+        }).catch((error) => {
+            console.error(error);
+            res.status(500).send(error);
+        });
+        mongoose.disconnect();
+        if (success) {
+            res.status(200).send("Success");
+        } else {
+            res.status(500).send("Creation failed");
+        }
+ 
+     
     }
 
     async function removeFridgeIngredient(req, res) {
@@ -262,6 +315,7 @@ console.log("names",names);
     return {
         addIngredient: addFridgeIngredient,
         readIngredient: readAllFridgeIngredients,
+        readIngredientByName: readIngredientByName,
         removeIngredient: removeFridgeIngredient,
         incrementIngredient: incrementIngredient,
         decrementIngredient: decrementIngredient,

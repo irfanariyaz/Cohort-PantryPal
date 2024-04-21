@@ -3,6 +3,8 @@ import axios from 'axios'
 import React, { useEffect,useState } from 'react';
 import GrocerryList from './GrocerryList.js';
 import { FaTrashCan } from "react-icons/fa6";
+import { Link } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 
 export default function  MealPrep(props) {
   //const fridgeId='6620f09f1e7dc4f70c80e1bc';
@@ -47,7 +49,7 @@ export default function  MealPrep(props) {
   const fri_rec= meals.filter(meal=>meal.day ==="friday");
   const sat_rec= meals.filter(meal=>meal.day ==="saturday");
   const sun_rec= meals.filter(meal=>meal.day ==="sunday");
-  console.log("sunday recipes",sun_rec);
+
 
   tableData.push(mon_rec);
   tableData.push(tue_rec);
@@ -63,7 +65,6 @@ const createMacroData = (tableData)=>{
   const macroData = [];
   tableData.map(day=>{
     //get macros for a day
-    console.log("day",day);
     if(day.length>0){
       const macros =getmacro(day);
       macroData.push(macros);
@@ -133,10 +134,18 @@ const deleteMeal = async (meal) => {
               )            
               const meal = tableData[index] ? tableData[index].find(meal => meal.mealtimes === mealTime) : null;
                const name = meal ? meal.recipe_name : null;
+               console.log("meal",meal);
                 return (
-                <td key={mealTime} className="border  border-gray-300 p-2">                
-                <span className="flex items-center ">{name} {name &&  <FaTrashCan className='ml-2 text-red-500' onClick={()=>deleteMeal(meal)} />}</span>
-               </td>
+                  
+                     <td key={mealTime} className="border  border-gray-300 p-2">  
+                     
+                      <Link to={name? `/recipes/${meal.recipe_id}`:""}>              
+                    <span className="flex items-center hover:text-blue-300 ">                  
+                      {name} {name &&  <FaTrashCan className='ml-2 text-red-500' onClick={()=>deleteMeal(meal)} />}
+                      </span>
+                      </Link>
+                    </td>
+            
                )
                
           

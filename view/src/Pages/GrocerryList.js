@@ -24,7 +24,27 @@ export const GrocerryList = ({isOpen,onClose,meals,fridgeID}) => {
     const uniqueList = [...new Set(list)];
     const pantryItems = pantry.filter(item => (item.name));
     list = uniqueList.filter(item => !pantryItems.some(pantryItem => pantryItem.name === item));
+    list.sort();
     console.log(list);
+    const addToPantry = async (item) => {
+        console.log("item clicked",item);
+
+        if(item){
+            const endpoint = `/fridge/ingredient/query?name=${item}&fridgeID=${fridgeID}`;
+
+        const res = await fetch(endpoint,{fridgeID:fridgeID}).catch((error) => {
+          console.error(error);
+         });
+         const data = res.data;
+        console.log(data);
+
+        }
+        
+
+      //setPantry(data);
+    }
+
+
     
 
   return (
@@ -47,7 +67,7 @@ export const GrocerryList = ({isOpen,onClose,meals,fridgeID}) => {
                 {/* First column */}
                 <div>
                 {pantry.slice(0, Math.ceil(pantry.length / 3)).map((item, index) => (
-                    <p key={index} className="text-gray-700">{item.name}</p>
+                    <p key={index} className="text-gray-700" onClick={()=>addToPantry(item)}>{item.name}</p>
                 ))}
                 </div>
                 {/* Second column */}
@@ -75,25 +95,25 @@ export const GrocerryList = ({isOpen,onClose,meals,fridgeID}) => {
                 {/* First column */}
                 <div>
                 {list.slice(0, Math.ceil(list.length / 4)).map((item, index) => (
-                    <p key={index} className="text-gray-700">{item}</p>
+                    <p key={index} className="text-gray-700 cursor-pointer"   title="Click to add to Pantry"onClick={()=>addToPantry(item) }>{item}</p>
                 ))}
                 </div>
                 {/* Second column */}
                 <div>
                 {list.slice(Math.ceil(list.length / 4), Math.ceil((2 * list.length) / 4)).map((item, index) => (
-                    <p key={index} className="text-gray-700">{item}</p>
+                    <p key={index} className="text-gray-700 cursor-pointer"  title="Click to add to Pantry" onClick={()=>addToPantry(item)}>{item}</p>
                 ))}
                 </div>
                 {/* Third column */}
                 <div>
                 {list.slice(Math.ceil((2 * list.length) / 4), Math.ceil((3 * list.length) / 4)).map((item, index) => (
-                    <p key={index} className="text-gray-700">{item}</p>
+                    <p key={index} className="text-gray-700 cursor-pointer"   title="Click to add to Pantry"onClick={()=>addToPantry(item)}>{item}</p>
                 ))}
                 </div>
                 {/* Fourth column */}
                 <div>
                 {list.slice(Math.ceil((3 * list.length) / 4)).map((item, index) => (
-                    <p key={index} className="text-gray-700">{item}</p>
+                    <p key={index} className="text-gray-700 cursor-pointer"   title="Click to add to Pantry"onClick={()=>addToPantry(item)}>{item}</p>
                 ))}
                 </div>
              
