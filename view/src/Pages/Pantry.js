@@ -12,7 +12,6 @@ function Pantry(props) {
 
   const [query, setQuery] = useState('');
   const [ingredients, setIngredients] = useState([]);
-  const [recipes, setRecipes] = useState([]);
   const [message,setMessage] = useState(false);//show form to create a Pantry list 
   const [myIngredrients, setPantry] = useState([]); 
   const [formData,setFormData]= useState({
