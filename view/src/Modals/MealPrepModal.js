@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export const MealPrepModal = ({modalData,onClose,isOpen}) => {
-    console.log("modal data",modalData,"isopen/close",isOpen,onClose);
+  
    
     const [meal, setMeal] = useState('');
     const [day, setDay] = useState('');

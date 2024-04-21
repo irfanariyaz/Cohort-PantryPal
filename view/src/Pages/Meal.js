@@ -65,11 +65,17 @@ function Pantry(props) {
  
 
 //function to handle when user types the list of ingredients with comma and press the search button
-  const handleQueryClick = async(query) => {
-   const  url = `/recipes/ingredients/${queryList}`;
-   const response =await axios.get(url);
-   const data = await response.data;
-   setIngSelectList(data);
+  const handleQueryClick = async() => {
+    if(queryList===""){
+      alert("Please enter ingredients");
+    }else{
+      const  url = `/recipes/ingredients/${queryList}`;
+      const response =await axios.get(url);
+      const data = await response.data;
+    setIngSelectList(data);
+      
+    }
+
   }
 //function to add list of ingredients selected
   const addIngredientToList = (value)=>{
@@ -148,11 +154,13 @@ function Pantry(props) {
           Search for recipes with these ingredients</button>   
         </div>
       </div>
+      {recipes && <p className="text-2xl font-bold mb-6"> {recipes.length ==20? recipes.length +"+": recipes.length} Recipes</p> }
 
       <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
           {/* Placeholder for recipe cards */}
 
           {Array.from(recipes, (recipe, index) => (
+
             <div key={index} className="bg-gray-500 p-3 rounded-lg space-y-2 ">
               <div className="text-start">
                 <img src={recipe.image} alt="" className="cursor-pointer"  onClick={()=>openModalIng(recipe._id,recipe.name,recipe.image)}/>

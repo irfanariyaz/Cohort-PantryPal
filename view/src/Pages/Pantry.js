@@ -6,26 +6,31 @@ import { set } from "mongoose";
 
 function Pantry(props) {
   //TEST FRIDGE ID TEMPORARY
-  const fridgeID = props.profile.fridgeID._id;
-  //const fridgeID = "6620f09f1e7dc4f70c80e1bc";
+  const fridgeID = props.profile.fridgeID._id
  
   //########################
 
   const [query, setQuery] = useState('');
   const [ingredients, setIngredients] = useState([]);
-  const [ingredient, setIngredient] = useState('');
   const [recipes, setRecipes] = useState([]);
-  const [showForm,setShowForm] = useState(false);//show form to create a Pantry list 
+  const [message,setMessage] = useState(false);//show form to create a Pantry list 
   const [myIngredrients, setPantry] = useState([]); 
-
+  const [formData,setFormData]= useState({
+    routeID: fridgeID,
+    ingredientID: "",
+    measurement: "",
+    amount: "",
+    // ownerId:props.profile.profile._id
+  })
  
 
   const handleItemClick = async(ingredient) => {
-  console.log("reached handleclick",ingredient);
- 
-}
-
- 
+      const [value]=Object.entries(ingredient);
+      setIngredients([]);
+      setQuery(value[0]);
+      
+      setFormData({...formData, ingredientID:value[1]}) 
+  } 
 
   useEffect(() => {
     const fetchIngredients = async () => {
@@ -46,7 +51,7 @@ function Pantry(props) {
     if (query !== '') {
       fetchIngredients();  
     } else {
-    console.log("inside else in useEffect");
+    
     setIngredients([]);
     }
   }, [query]);
@@ -62,64 +67,116 @@ function Pantry(props) {
       const data = await res.json();
 
       setPantry(data);
-      console.log(myIngredrients);
+      setMessage(false);
     }
 
     fetchPantry();
-  }, []);
+  }, [message]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    
     //search the db with recipes with this ingredient
-    //const id = Object.keys(ingredient);
-    //console.log(id);
-    const name = ingredient? Object.keys(ingredient) :query;
-    const url = `/recipes/getRecipes/${name}`;
-    fetch(url)
-      .then(response =>response.json())
-      .then((data) => {
-       // console.log(data);
-        setRecipes(data);
-        console.log(recipes);
-      setIngredient('');
-      setQuery('');
-    })
-      .catch(error => console.error(error));
+    console.log("formData",formData);
+    const url = `/fridge/ingredient`;
+    if(Object.values(formData)[1]===""){
+      alert("Ingredient not in the database");
+
+    }else if(Object.values(formData).includes("") ){
+      alert("Please fill in all fields");
+    } else{
+      const response = await  axios.post(url, formData);
+      const data = await response.data;
+      if(data ==="Success"){
+        setMessage(true);
+        setFormData({...formData,
+          measurement:"",
+          amount:"",
+          ingredientID:""
+        });
+      }
+      setQuery("");
+      console.log(data);
+    }
+     
+    
+  
   }
-const createPantry = () => {
-  console.log("create pantry");
+const deletePantry = (id) => {
+  console.log("delete pantry",id);
+  const url = `/fridge/ingredient/delete`;
+  if(!id){
+    alert("Ingredient not in the database");
+  }else{
+    const response = axios.post(url, {ingredientID:id});
+    const data = response.data;
+  setMessage(true);
+  }
 }
-console.log(fridgeID);
+console.log("myIngredrients",myIngredrients);
   return (
 //adding a search bar to get the recipes with the ingredient user searched
     <div className="p-8">
-      <div>
+      <div className="w-3/4">
         <form action="" className=" flex space-x-4" onSubmit={handleSubmit}>
-        <input type="text" className="px-4 py-2 border border-gray-300 rounded-md "
-               value={ingredient?Object.keys(ingredient):query}
+        <input type="text" className="px-4 py-2 border border-gray-300 rounded-md capitalize "
+               value={query}
                onChange={(e)=>setQuery(e.target.value)}
                placeholder="Type to search ingredients..." />
-    
+        <input type="text" className="px-4 py-2 border border-gray-300 rounded-md "
+               value={formData.amount}
+               placeholder="Amount" onChange={(e)=>setFormData({...formData, amount:e.target.value})}    />
+        {/* <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="meal">
+          Select 
+        </label> */}
+        <select
+          className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="measure"
+          value={formData.measurement}
+          onChange={(e)=>setFormData({...formData,measurement:e.target.value})}
+        >
+         <option value="">Select</option>
+          <option value="ounce">ounce</option>
+          <option value="cup">cup</option>
+          <option value="pound">pound</option>
+          <option value="tablespoon">tablespoon</option>
+
+        </select>
       <button  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-400">
-               Search</button>
+               Add</button>
         </form>
+        {message ? <p className="m-2 text-green-700 text-lg">Ingredient added to Pantry</p> : null}
         <div>
         {ingredients.map((ingredient, index) => (
-          <div key={index} onClick={() => handleItemClick(ingredient)} className="capitalize" >
+          <div key={index} onClick={() => handleItemClick(ingredient)} className="capitalize cursor-pointer" >
             {Object.keys(ingredient)}
           </div>
-        ))}
+        )) }
   
         </div>
       
       </div>
       <h2 className="text-2xl font-bold mb-6">My Ingredients</h2>
+      <div className="mr-2 mb-2 max-w-96 bg-gray-300 p-4 rounded-lg space-y-2">
+          
+            {myIngredrients.map((ingr) =>(
+              <div className="flex  flex-wrap justify-between">
+              <h3>{ingr.name}</h3>
+               <button className="bg-gray-400 w-6 h-6 flex justify-center items-center" onClick={()=>deletePantry(ingr._id)}>
+                -
+              </button>
+              </div>
+            ))}
+             
+     
+          
+      </div>
       
       <div className="flex flex-wrap justify-around">
         {/* My Ingredients cards */}
-        {myIngredrients.map((ingr) => {
+        {/* {myIngredrients.map((ingr) => {
           return <MyIngredient key={ingr._id} data={ingr}/>
-        })}
+        })} */}
       </div>
 
     </div>

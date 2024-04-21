@@ -6,7 +6,7 @@ import Recipe from '../model/recipe.js';
 import Meal from '../model/meal.js';
 import "dotenv/config";
 import {gettotalRecipeMacro }from "./recipeUtils/getMacro.js"
-import {ObjectId} from 'mongoose'
+
 
 
 const FridgeController = () => {
@@ -14,11 +14,11 @@ const FridgeController = () => {
     async function addFridgeIngredient(req, res) {
         const fridgeID = req.body.routeID; 
         const ingredientID = req.body.ingredientID;
-        const ownerId = req.body.ownerId;
+        // const ownerId = req.body.ownerId;
          const measurement = req.body.measurement;
          const amount = req.body.amount;
 
-        if (fridgeID === null || ingredientID === null ) {
+        if (fridgeID === null || ingredientID === null  ) {
             res.status(400).send("Incomplete form data");
         }
 
@@ -36,7 +36,7 @@ const FridgeController = () => {
         const ingredient = await Ingredient.findOne({_id: ingredientID}).exec().catch((error) => {
             console.error(error);
         });
-
+        console.log("ingredient",ingredient);
         if (ingredient === null || fridge === null) {
             res.status(400).send("ingredientID or fridgeID missing from query").send();
         }
@@ -44,7 +44,7 @@ const FridgeController = () => {
         const fridgeIngredient = new FridgeIngredient({
             fridgeID: fridge._id,
             ingredientID: ingredient._id,
-            ownerId: ownerId,
+            // ownerId: ownerId,
             measurement: measurement,
              amount: amount
         });
@@ -217,6 +217,7 @@ console.log("names",names);
     //Removes recipe from meal plan.
     async function removeMeal(req, res) {
         const mealID = req.body.mealID;
+        console.log("in delete",mealID);
 
         await Meal.deleteOne({_id: mealID}).exec().then(() => {
             res.status(200).send("Successfully deleted");

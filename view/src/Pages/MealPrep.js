@@ -1,6 +1,8 @@
 //Users are able to Meal Prep and returns a list of grocerry items that they need to purchase
 import axios from 'axios'
-import React, { useEffect,useState } from 'react'
+import React, { useEffect,useState } from 'react';
+import GrocerryList from './GrocerryList.js';
+import { FaTrashCan } from "react-icons/fa6";
 
 export default function  MealPrep(props) {
   //const fridgeId='6620f09f1e7dc4f70c80e1bc';
@@ -12,6 +14,16 @@ export default function  MealPrep(props) {
 
   const daysOfWeek = [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday",];
   const mealTimes = ["Breakfast", "Lunch", "Dinner","Macros"];
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenIng, setIsOpenIng] = useState(false);
+  const [modalData,setModalData]= useState({});
+    const closeModal = () => {
+    setIsOpen(false);
+  };
+  const openModal = () => {
+    setIsOpen(true);  
+  }
 
   //function get total macros for a day
   function getmacro (list){
@@ -73,14 +85,27 @@ const createMacroData = (tableData)=>{
   }
   fetchData();
 },[])
+const deleteMeal = async (meal) => {
+  console.log("meall,mea",typeof(meal),meal[0]._id);
+  const url= '/fridge/meal/delete';
+  const response = await axios.post(url,{mealID:meal[0]._id});
+  const data = response.data;
+  console.log(data);
+  document.location.reload(true);
+
+}
+
 
  console.log("macroData",macroData); 
  return (
     <div>
-        <div class="bg-gray-100 p-4">
-  <h1 class="text-2xl font-bold mb-4">Weekly Meal Schedule</h1>
-
-   <table className="border-collapse w-3/4 m-auto border border-gray-200">
+        <div class="bg-gray-100 p-5">
+          <div className='flex justify-around mb-4'>
+          <h1 class="text-2xl font-bold mb-4">Weekly Meal Schedule</h1>
+          <button className='px-4 py-2 bg-gray-300 rounded hover:bg-gray-400' onClick={openModal}>Create Grocerry list</button>
+          </div>
+  <GrocerryList isOpen={isOpen} meals={meals} onClose={closeModal} fridgeID={fridgeId} />
+   <table className="border-collapse w-full  border border-gray-200">
       <thead>
         <tr>
           <th className="border border-gray-300 p-2">Day</th>
@@ -105,21 +130,16 @@ const createMacroData = (tableData)=>{
                  <i>Protein</i>: <span className='ml-1'>{macroData[index] ? macroData[index].protein : null} g</span><br/>
                  <i>Fat</i>:<span className='ml-1'> {macroData[index] ? macroData[index].total_fat : null} g</span>
                 </td>
-              )
-              const meal = tableData[index] ? tableData[index].filter(meal => meal.mealtimes === mealTime) : null;
-              let names=[];
-              if(meal?.length>1){
-                 names = meal ? meal.map(recipe => recipe.recipe_name.length >15 ? recipe.recipe_name.substring(0, 15) + "..." : recipe.recipe_name) : null;
-              }else{
-                 names = meal ? meal.map(recipe => recipe.recipe_name) : null;
-              }
-                const res= names ? names.join(", ") : '';
-              return (
-                <td key={mealTime} className="border border-gray-300 p-2">
-                
-                 {res}
-                </td>
-              );
+              )            
+              const meal = tableData[index] ? tableData[index].find(meal => meal.mealtimes === mealTime) : null;
+               const name = meal ? meal.recipe_name : null;
+                return (
+                <td key={mealTime} className="border  border-gray-300 p-2">                
+                <span className="flex items-center ">{name} {name &&  <FaTrashCan className='ml-2 text-red-500' onClick={()=>deleteMeal(meal)} />}</span>
+               </td>
+               )
+               
+          
             })}
           
           </tr>
