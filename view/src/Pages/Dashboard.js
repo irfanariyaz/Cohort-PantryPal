@@ -59,6 +59,7 @@ function Dashboard(props) {
       });
   }, []);
   const handleCategory = (category) => {
+    setRecipes([]);
     const url = `/recipes/category/${category}`;
     console.log("response reached from category end");
     axios.get(url).then((response) => {
@@ -133,7 +134,7 @@ function Dashboard(props) {
   return (
     <div className="p-8 mx-auto max-w-7xl">
       <section>
-        <div className="container">
+        <div className="container animate-fade">
           {/* create a search bar menu with a search button */}
           <div className="flex  items-center mb-8">
             <h2 className="text-2xl font-bold mx-2">Search for recipes </h2>
@@ -153,14 +154,14 @@ function Dashboard(props) {
           </div>
           {/* create a filter menu with a filter button */}
         </div>
-        <h2 className="text-2xl font-bold mb-6">Categories</h2>
+        <h2 className="text-2xl font-bold mb-6 animate-fade">Categories</h2>
         <div className="flex space-x-4 mb-8 ">
           {/* Placeholder for category cards */}
           {Array.from(categories, (category, index) => (
             <div className="">
               <img
                 src={category.strCategoryThumb}
-                className="cursor-pointer"
+                className={`cursor-pointer animate-fade`}
                 alt="category image"
                 width={"100px"}
                 onClick={() => handleCategory(category.strCategory)}
@@ -174,7 +175,7 @@ function Dashboard(props) {
       </section>
 
       <section>
-        <h2 className="text-2xl font-bold mb-6 flex justify-between items-center">
+        <h2 className="text-2xl font-bold mb-6 flex justify-between items-center animate-fade">
           <span>My Recipes</span>
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
@@ -183,7 +184,7 @@ function Dashboard(props) {
           {Array.from(recipes, (recipe, index) => (
             <div
               key={index}
-              className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-green-800 dark:border-gray-700"
+              className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-green-800 dark:border-gray-700 animate-fade-down animate-delay-100"
             >
               <NavLink to={`/recipes/${recipe._id}`}>
                 <img src={recipe.image} alt="" className="rounded-t-lg" />
