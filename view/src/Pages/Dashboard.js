@@ -4,14 +4,22 @@ import { Link } from "react-router-dom";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { MealPrepModal } from "../Modals/MealPrepModal";
+import { IngredientModal } from "../Modals/IngredientModal";
 
 function Dashboard(props) {
   const fridgeID = props.profile.fridgeID._id;
   const [searchTerm, setSearchTerm] = useState("");
   const [recipes, setRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
+
+  const [recipeSelected,setRecipeSelected] = useState('');
+  const[IngredientsNeeded,setIngredientneeded]=  useState([]);
+
   const [isOpen, setIsOpen] = useState(false);
   const [modalData,setModalData]= useState({});
+  const [isOpenIng, setIsOpenIng] = useState(false);
+  const [pantryList,setPantryList] = useState([]);
+  
   const openModal = (recipeId,recipe_name) => {
     setIsOpen(true);
     setModalData({
@@ -26,6 +34,18 @@ function Dashboard(props) {
   const closeModal = () => {
     setIsOpen(false);
   };
+  const openModalIng=(id,name,image)=>{
+    setRecipeSelected(id);
+    setIsOpenIng(true);
+    setModalData({
+      recipeId:id,
+      recipe_name:name,
+      image,image
+    })}
+    const closeModalIng = () => {
+      setIngredientneeded('');
+      setIsOpenIng(false);
+    }
 
   useEffect(() => {
     const url = "https://www.themealdb.com/api/json/v1/1/categories.php";
@@ -45,20 +65,56 @@ function Dashboard(props) {
       // console.log(recipes);
     });
   };
+  useEffect(()=>{
+    const   fetchrecipe = async () => {
+         const url = `/recipes/findById/${recipeSelected}`;
+         const response = await axios.get(url);
+         const data = await response.data.ingredients;
+         console.log("from recipe",data);
+         //get pantry items
+           const iNeed = data.filter((item) => !pantryList.includes(item));
+         const iHave = pantryList.filter((item) => data.includes(item));       
+         setIngredientneeded([iHave,iNeed]);       
+     }
+     if(recipeSelected){
+         fetchrecipe();
+     }    
+   },[recipeSelected]);
+    //PANTRY HOOK FOR "MY INGREDIENTS"
+    useEffect(() => {
+      const fetchPantry = async () => {
+        const endpoint = "/fridge/ingredient?fridgeID=" + fridgeID;
+  
+        const res = await fetch(endpoint).catch((error) => {
+          console.error(error);
+        });
+        const data = await res.json();
+        const list = data.map((item) => item.name);  
+        console.log(list);
+        setPantryList(list);
+      }
+  
+      fetchPantry();
+    }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // Perform search logic here
     console.log("Search term:", searchTerm);
     // Update the recipes state with the search  results using axios
-
-    const url = `/recipes/search/${searchTerm}`;
-    //got to the recipe controller in backend to get the recipes based on user's search
-    axios.get(url).then((response) => {
-      console.log("response from server", response.data.length, response.data);
-      setRecipes(response.data);
-      // console.log(recipes);
-    });
+if(!searchTerm){
+  alert("Please enter a search term");
+  return;
+}else{
+  const url = `/recipes/search/${searchTerm}`;
+  //got to the recipe controller in backend to get the recipes based on user's search
+  axios.get(url).then((response) => {
+    console.log("response from server", response.data.length, response.data);
+    setRecipes(response.data);
+    // console.log(recipes);
+  });
+}
+   
   };
   return (
     <div className="p-8 mx-auto max-w-7xl">
@@ -123,10 +179,10 @@ function Dashboard(props) {
                 <h3 className="text-lg font-semibold">{recipe.name}</h3>
                 {/* <span>♥</span> */}
               </div>
-              {/* <p># Calories</p>
-              <button className="text-indigo-600 hover:text-indigo-800">
+              {/* <p># Calories</p>*/}
+              <button className="text-indigo-300 hover:text-indigo-800" onClick={()=>openModalIng(recipe._id,recipe.name,recipe.image)}>
                 View Ingredients
-              </button> */}
+              </button> 
               <div className="flex space-x-2"> 
                 {/* Tags */}
                 <span className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold">
@@ -143,11 +199,10 @@ function Dashboard(props) {
             </div>
           ))}
           <MealPrepModal isOpen={isOpen} modalData={modalData} onClose={closeModal}/>
-       
+          <IngredientModal isOpen = {isOpenIng} onClose = {closeModalIng} IngredientsNeeded={IngredientsNeeded}  modalData={modalData}/>
         </div>
       </section>
     </div>
   );
 }
-
 export default Dashboard;

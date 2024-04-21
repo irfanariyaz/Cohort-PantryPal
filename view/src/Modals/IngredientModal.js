@@ -7,7 +7,7 @@ export const IngredientModal = ({ isOpen, onClose,IngredientsNeeded,modalData })
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto">
     <div className="flex items-center justify-center min-h-screen">
-      <div className="fixed inset-0 bg-gray-400 opacity-5"></div>
+    <div className="fixed inset-0 bg-gray-500 opacity-75"></div>
       <div className="relative bg-white rounded-lg shadow-lg p-8">
         <button className="absolute top-0 right-0 m-4 text-gray-700 hover:text-gray-900" onClick={onClose}><span className='text-xl text-red-500'>X</span></button>
         <div className="modal-content">

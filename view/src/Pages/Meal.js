@@ -11,8 +11,7 @@ function Pantry(props) {
   const [list,setlist]= useState([]);
   const [selected,setSelected] = useState(false);
 
-  const [showIngredientNeeded,setShowIngreedientNeeded] = useState(false);
-  const [IngredientSelected,setIngredientSelected] = useState('');
+  const [recipeSelected,setRecipeSelected] = useState('');
   const[IngredientsNeeded,setIngredientneeded]=  useState([]);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +32,7 @@ function Pantry(props) {
     setIsOpen(false);
   };
   const openModalIng=(id,name,image)=>{
-    setIngredientSelected(id);
+    setRecipeSelected(id);
     setIsOpenIng(true);
     setModalData({
       recipeId:id,
@@ -49,24 +48,24 @@ function Pantry(props) {
 
   useEffect(()=>{
    const   fetchrecipe = async () => {
-        const url = `/recipes/findById/${IngredientSelected}`;
+        const url = `/recipes/findById/${recipeSelected}`;
         const response = await axios.get(url);
         const data = await response.data.ingredients;
-          const iNeed = data.filter((item) => !list.includes(item));
+        const iNeed = data.filter((item) => !list.includes(item));
         const iHave = list.filter((item) => data.includes(item));       
         setIngredientneeded([iHave,iNeed]);       
     }
-    if(IngredientSelected){
-        fetchrecipe();
-        setShowIngreedientNeeded(true);
+    if(recipeSelected){
+        fetchrecipe();        
     }    
-  },[IngredientSelected]);
+  },[recipeSelected]);
 
  
 
 //function to handle when user types the list of ingredients with comma and press the search button
   const handleQueryClick = async() => {
-    if(queryList===""){
+    console.log(queryList);
+    if(queryList.length===0){
       alert("Please enter ingredients");
     }else{
       const  url = `/recipes/ingredients/${queryList}`;
@@ -187,37 +186,7 @@ function Pantry(props) {
         <IngredientModal isOpen = {isOpenIng} onClose = {closeModalIng} IngredientsNeeded={IngredientsNeeded}  modalData={modalData}/>
         
 
-      {showIngredientNeeded && ""
-      // <div className="">
-      // <h2 className="text-2xl font-bold mb-6">Ingredients I Need to make this recipe</h2>
-      // <div className="grid grid-cols-2 gap-4 mb-6">
-      //   {/* Ingredients I Need cards */}
-      //   <div className="bg-gray-300 p-4 rounded-lg space-y-2">
       
-      //     <div className="flex justify-around">
-      //         <div>
-      //           <h3 className="text-lg font-semibold">I have</h3>
-      //             {IngredientsNeeded[0]?.map((name, index) =>(
-      //               <div key={index} className="flex justify-between items-center mb-1">
-      //                   <p>{name}</p>
-      //               </div>
-      //               ))}
-      //         </div>
-      //         <div>
-      //           <h3 className="text-lg font-semibold">I need</h3>
-      //             {IngredientsNeeded[1]?.map((name, index) =>(
-      //               <div key={index} className="flex justify-between items-center mb-1">
-      //                   <p>{name}</p>
-                  
-      //               </div>))}
-      //         </div>
-      //     </div>
-          
-      //   </div>
-      // </div>
-      // </div>    
-       }
-
       <h2 className="text-2xl font-bold mb-6">Other Ingredients</h2>
       <div className="grid grid-cols-2 gap-4 mb-6">
         {/* Other Ingredients cards */}
