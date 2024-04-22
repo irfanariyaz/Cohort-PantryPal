@@ -87,9 +87,8 @@ const createMacroData = (tableData)=>{
   fetchData();
 },[])
 const deleteMeal = async (meal) => {
-  console.log("meall,mea",typeof(meal),meal[0]._id);
   const url= '/fridge/meal/delete';
-  const response = await axios.post(url,{mealID:meal[0]._id});
+  const response = await axios.post(url,{mealID:meal._id});
   const data = response.data;
   console.log(data);
   document.location.reload(true);
@@ -134,16 +133,17 @@ const deleteMeal = async (meal) => {
               )            
               const meal = tableData[index] ? tableData[index].find(meal => meal.mealtimes === mealTime) : null;
                const name = meal ? meal.recipe_name : null;
-               console.log("meal",meal);
                 return (
                   
                      <td key={mealTime} className="border  border-gray-300 p-2">  
-                     
+                     <span className='flex items-center'>
                       <Link to={name? `/recipes/${meal.recipe_id}`:""}>              
-                    <span className="flex items-center hover:text-blue-300 ">                  
-                      {name} {name &&  <FaTrashCan className='ml-2 text-red-500' onClick={()=>deleteMeal(meal)} />}
-                      </span>
+                    <span className=" hover:text-blue-300 " title='view details'>                  
+                      {name} </span>
                       </Link>
+                      {name &&  <FaTrashCan className='ml-2 text-red-500 cursor-pointer' onClick={()=>deleteMeal(meal)} />}
+                      
+                      </span>
                     </td>
             
                )
