@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import MyIngredient from "./PantryComponent/MyIngredient";
 import axios from 'axios';
 import { set } from "mongoose";
+import { FaTrash, FaTrashCan } from "react-icons/fa6";
 
 
 function Pantry(props) {
@@ -9,11 +10,12 @@ function Pantry(props) {
   const fridgeID = props.profile.fridgeID._id
  
   //########################
-
+ 
   const [query, setQuery] = useState('');
   const [ingredients, setIngredients] = useState([]);
   const [message,setMessage] = useState("");//show form to create a Pantry list 
-  const [myIngredrients, setPantry] = useState([]); 
+  const [myIngredrients, setPantry] = useState([]);
+ 
   const [formData,setFormData]= useState({
     routeID: fridgeID,
     ingredientID: "",
@@ -116,7 +118,7 @@ console.log("myIngredrients",myIngredrients);
   return (
 //adding a search bar to get the recipes with the ingredient user searched
     <div className="p-8">
-      <div className="w-3/4">
+      <div className="w-1/2">
         <form action="" className=" flex space-x-4" onSubmit={handleSubmit}>
         <input type="text" className="px-4 py-2 border border-gray-300 rounded-md capitalize "
                value={query}
@@ -134,12 +136,12 @@ console.log("myIngredrients",myIngredrients);
           value={formData.measurement}
           onChange={(e)=>setFormData({...formData,measurement:e.target.value})}
         >
-         <option value="">Select</option>
+        
           <option value="ounce">ounce</option>
           <option value="cup">cup</option>
           <option value="pound">pound</option>          
           <option value="tablespoon">tablespoon</option>
-          <option value="">other</option>
+          <option value="">Other</option>
 
 
         </select>
@@ -157,14 +159,14 @@ console.log("myIngredrients",myIngredrients);
         </div>
       
       </div>
-      <h2 className="text-2xl font-bold mb-6">My Ingredients</h2>
+      <h2 className="text-2xl font-bold mb-6 mt-4">My Ingredients</h2>
       <div className="mr-2 mb-2 max-w-96 bg-gray-300 p-4 rounded-lg space-y-2">
           
             {myIngredrients.map((ingr,index) =>(
               <div key={index} className="flex  flex-wrap justify-between">
-              <h3>{ingr.name}</h3>
-               <button className="bg-gray-400 w-6 h-6 flex justify-center items-center" onClick={()=>deletePantry(ingr._id)}>
-                -
+              <h3 className="capitalize">{ingr.name}</h3>
+               <button className=" w-6 h-6 flex justify-center items-center" onClick={()=>deletePantry(ingr._id)}>
+                <FaTrashCan/>
               </button>
               </div>
             ))}

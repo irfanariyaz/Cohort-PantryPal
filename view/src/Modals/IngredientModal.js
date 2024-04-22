@@ -19,7 +19,7 @@ export const IngredientModal = ({ isOpen, onClose,IngredientsNeeded,modalData })
             <img src={modalData.image}  alt="" />
         </div>
         {/* Ingredients I Need cards */}
-        <div className="bg-gray-300 p-4 rounded-lg space-y-2">
+        <div className="bg-gray-200 p-4 rounded-lg space-y-2">
       
           <div className="flex justify-around gap-5">
               <div>

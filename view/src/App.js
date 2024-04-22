@@ -12,6 +12,7 @@ import Meal from "./Pages/Meal.js";
 
 import MealPrep from "./Pages/MealPrep.js";
 import {useEffect, useState} from "react";
+import { PantryProvider } from "./Pages/context/PantryContext.js";
 // import ShowRecipeItem from "./Pages/ShowRecipeItem";
 
 function App() {
@@ -40,18 +41,22 @@ function App() {
         <Route
           path="/"
           element={
+            <PantryProvider>
             <Layout>
               <Dashboard  profile={profile}/>
             </Layout>
+            </PantryProvider>
           }
         />
         {/*Login/Register route will be here presumably.*/}
         <Route
           path="/dashboard"
           element={
+            <PantryProvider>
             <Layout>
               <Dashboard profile={profile}/>
             </Layout>
+            </PantryProvider>
           }
         />
         <Route

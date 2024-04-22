@@ -57,7 +57,7 @@ const FridgeController = () => {
             res.status(500).send(error);
         });
  
-        mongoose.disconnect();
+       // mongoose.disconnect();
         if (success) {
             res.status(200).send("Success");
         } else {
@@ -67,6 +67,10 @@ const FridgeController = () => {
     async function  readIngredientByName (req, res) {
         const {name,fridgeID} = req.query;
         console.log(name,fridgeID);
+        await mongoose.connect(process.env.DB_URL).catch((error) => {
+            console.error(error);
+            res.status(500).send(error);
+        });
         
         const ingredient = await Ingredient.findOne({name: name}).exec().catch((error) => {
             console.error(error);
@@ -77,12 +81,7 @@ const FridgeController = () => {
             res.status(400).send("Incomplete form data");
         }
 
-        let success = false;
-
-        await mongoose.connect(process.env.DB_URL).catch((error) => {
-            console.error(error);
-            res.status(500).send(error);
-        });
+        let success = false;     
 
         const fridge = await Fridge.findOne({_id: fridgeID}).exec().catch((error) => {
             console.error(error);
@@ -107,7 +106,7 @@ const FridgeController = () => {
             console.error(error);
             res.status(500).send(error);
         });
-        mongoose.disconnect();
+      //  mongoose.disconnect();
         if (success) {
             res.status(200).send("Success");
         } else {

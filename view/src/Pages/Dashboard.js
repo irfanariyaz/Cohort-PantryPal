@@ -1,20 +1,22 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { MealPrepModal } from "../Modals/MealPrepModal";
 import { IngredientModal } from "../Modals/IngredientModal";
+import { PantryContext } from "./context/PantryContext";
 
 function Dashboard(props) {
   const fridgeID = props.profile.fridgeID._id;
-  const [searchTerm, setSearchTerm] = useState("");
-  const [recipes, setRecipes] = useState([]);
-  const [categories, setCategories] = useState([]);
 
+  
+  const{handleSubmit,recipes,setRecipes,handleCategory,
+        setSearchTerm,searchTerm} = useContext(PantryContext);
+ 
   const [recipeSelected, setRecipeSelected] = useState("");
   const [IngredientsNeeded, setIngredientneeded] = useState([]);
-
+  const [categories, setCategories] = useState('Seafood');
   const [isOpen, setIsOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [isOpenIng, setIsOpenIng] = useState(false);
@@ -58,16 +60,15 @@ function Dashboard(props) {
         setCategories(data.categories);
       });
   }, []);
-  const handleCategory = (category) => {
-    setRecipes([]);
-    const url = `/recipes/category/${category}`;
-    console.log("response reached from category end");
-    axios.get(url).then((response) => {
-      console.log("response from server", response.data.length, response.data);
-      setRecipes(response.data);
-      // console.log(recipes);
-    });
-  };
+  // const handleCategory = (category) => {
+  //   setRecipes([]);
+  //   const url = `/recipes/category/${category}`;
+  //   axios.get(url).then((response) => {
+  //     console.log("response from server", response.data.length, response.data);
+  //     setRecipes(response.data);
+  //     // console.log(recipes);
+  //   });
+  // };
   useEffect(() => {
     const fetchrecipe = async () => {
       const url = `/recipes/findById/${recipeSelected}`;
@@ -100,28 +101,28 @@ function Dashboard(props) {
     fetchPantry();
   }, []);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Perform search logic here
-    console.log("Search term:", searchTerm);
-    // Update the recipes state with the search  results using axios
-    if (!searchTerm) {
-      alert("Please enter a search term");
-      return;
-    } else {
-      const url = `/recipes/search/${searchTerm}`;
-      //got to the recipe controller in backend to get the recipes based on user's search
-      axios.get(url).then((response) => {
-        console.log(
-          "response from server",
-          response.data.length,
-          response.data
-        );
-        setRecipes(response.data);
-        // console.log(recipes);
-      });
-    }
-  };
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   // Perform search logic here
+  //   console.log("Search term:", searchTerm);
+  //   // Update the recipes state with the search  results using axios
+  //   if (!searchTerm) {
+  //     alert("Please enter a search term");
+  //     return;
+  //   } else {
+  //     const url = `/recipes/search/${searchTerm}`;
+  //     //got to the recipe controller in backend to get the recipes based on user's search
+  //     axios.get(url).then((response) => {
+  //       console.log(
+  //         "response from server",
+  //         response.data.length,
+  //         response.data
+  //       );
+  //       setRecipes(response.data);
+  //       // console.log(recipes);
+  //     });
+  //   }
+  // };
 
   const truncateString = (str, num) => {
     if (str.length > num) {
@@ -135,10 +136,11 @@ function Dashboard(props) {
     <div className="p-8 mx-auto max-w-7xl">
       <section>
         <h2 className="text-2xl font-bold mb-6 animate-fade">Categories</h2>
-        <div className="flex space-x-4 mb-8 ">
+        <div className="flex space-x-4 mb-8 flex-wrap">
+
           {/* Placeholder for category cards */}
           {Array.from(categories, (category, index) => (
-            <div className="">
+            <div className="  rounded-full text-center p-2">
               <img
                 src={category.strCategoryThumb}
                 className={`cursor-pointer animate-fade`}

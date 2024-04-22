@@ -19,6 +19,8 @@ export const MealPrepModal = ({modalData,onClose,isOpen}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         //create a meal object
+        //check if the selected dy already has a meal,
+       
         const mealObj = {
             fridgeId: modalData.fridgeID,
             recipeId: modalData.recipeId,
