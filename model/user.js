@@ -14,6 +14,7 @@ const Schema = mongoose.Schema;
  * @property meal_plan {array} An array of ObjectIDs that reference meals that the user
  * has selected. 
  */
+
 const UserSchema = new Schema({
     userID: {type: String, required: true, unique: true},
     name: {type: String, required: true},

@@ -88,7 +88,7 @@ function MyIngredient(props) {
     }
 
     return (
-        <div className="mr-2 mb-2 basis-1/3 bg-gray-300 p-4 rounded-lg space-y-2">
+        <div className="mr-2 mb-2 basis-1/4 bg-gray-300 p-4 rounded-lg space-y-2">
           <div className="flex justify-between items-center">
             <div>
               <h3 className="text-lg font-semibold">{header.heading}</h3>
@@ -98,8 +98,11 @@ function MyIngredient(props) {
               <button className="bg-gray-400 w-6 h-6 flex justify-center items-center mr-2" onClick={increment}>
                 +
               </button>
-              <button className="bg-gray-400 w-6 h-6 flex justify-center items-center" onClick={decrement}>
+              <button className="bg-gray-400 w-6 h-6 flex justify-center items-center mr-2" onClick={decrement}>
                 -
+              </button>
+              <button className="bg-gray-400 w-6 h-6 flex justify-center items-center" onClick={decrement}>
+                x
               </button>
             </div>
           </div>

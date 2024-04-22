@@ -28,7 +28,6 @@ const create_google_user = async function(req, res){
          * @var checkForDupe {User} 
          */
         const checkForDupe = await User.find({userID: {$eq: userID}}).catch((err) => {throw err});
-
         if (checkForDupe.length === 0) {          
             const user = new User({
                 name: req.google.name,
@@ -39,21 +38,23 @@ const create_google_user = async function(req, res){
             await user.save().then(async (result) => {
                 //For every new user, create new fridge.
                 //Assigns new userID to fridge.
-                console.log("HEREX");
-                console.log(result);
                 const fridge = new Fridge({
-                    routeID: await RouteID(11, Fridge),
-                    owner_id: result._id
+                    routeID: RouteID(11),
+                    ownerID: result._id
                 });
 
                 //Save fridge to DB.
-                await fridge.save().catch((error) => {
-                    console.error(error);
+                await fridge.save().then(() => {
+                    req.session.userID = user._id;
+                    res.redirect("http://localhost:3000");
+                }).catch((error) => {
+                    console.log(fridge);
+                    console.error(error, "HERE");
                 });
-
-                req.session.userID = user._id;
-                res.redirect("http://localhost:3000");
-            }).catch((err) => {throw err});
+            }).catch((err) => {
+                console.log(user);
+                console.error(err);
+            });
         } else {
             const user = checkForDupe[0];
             req.session.userID = user._id;

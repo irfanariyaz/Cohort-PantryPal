@@ -4,18 +4,17 @@ import Ingredient from '../model/ingredient.js';
 import FridgeIngredient from '../model/fridge_ingredient.js';
 import Recipe from '../model/recipe.js';
 import Meal from '../model/meal.js';
+import Comparator from './ingredientUtils/fridgeComparator.js';
 import "dotenv/config";
-import {ObjectId} from 'mongoose'
 
 
 const FridgeController = () => {
 
     async function addFridgeIngredient(req, res) {
-        const fridgeID = req.body.routeID;
+        const fridgeID = req.body.fridgeID;
         const ingredientID = req.body.ingredientID;
-        const ownerId = req.body.ownerId;
-         const measurement = req.body.measurement;
-         const amount = req.body.amount;
+        const measurement = req.body.measurement;
+        const amount = req.body.amount;
 
         if (fridgeID === null || ingredientID === null ) {
             res.status(400).send("Incomplete form data");
@@ -28,24 +27,25 @@ const FridgeController = () => {
             res.status(500).send(error);
         });
 
-        const fridge = await Fridge.findOne({_id: fridgeID}).exec().catch((error) => {
+        const fridge = await Fridge.findById(fridgeID).exec().catch((error) => {
             console.error(error);
         });
 
-        const ingredient = await Ingredient.findOne({_id: ingredientID}).exec().catch((error) => {
+        const ingredient = await Ingredient.findById(ingredientID).exec().then((val) => {
+            return val;
+        }).catch((error) => {
             console.error(error);
         });
 
-        if (ingredient === null || fridge === null) {
-            res.status(400).send("ingredientID or fridgeID missing from query").send();
+        if (!ingredient || !fridge) {
+            res.status(400).send("ingredientID or fridgeID missing from query");
         }
 
         const fridgeIngredient = new FridgeIngredient({
             fridgeID: fridge._id,
             ingredientID: ingredient._id,
-            ownerId: ownerId,
             measurement: measurement,
-             amount: amount
+            amount: amount
         });
 
         await fridgeIngredient.save().then(() => {
@@ -54,8 +54,7 @@ const FridgeController = () => {
             console.error(error);
             res.status(500).send(error);
         });
- 
-        mongoose.disconnect();
+
         if (success) {
             res.status(200).send("Success");
         } else {
@@ -165,7 +164,8 @@ const FridgeController = () => {
         });
         //Check if valid fridge
         const fridge = await Fridge.findById(fridgeId).then((val) => {
-          
+            
+            console.log(fridgeId, val, "HERE");
             if (val === null) {
                 res.status(400).send("Invalid fridge routeID");
             }else{
@@ -223,8 +223,8 @@ const FridgeController = () => {
         console.log("reached in controller");
         const {fridgeId} = req.query;
         console.log(fridgeId);
-       // const objectId = new ObjectId(fridgeId);
-       /// const objectId =new mongoose.Types.ObjectId(fridgeId);
+
+
        await mongoose.connect(process.env.DB_URL).catch((error) => {
         console.error(error);
         res.status(500).send(error);
@@ -243,11 +243,35 @@ const FridgeController = () => {
 
     }
 
+    async function searchRecipes(req, res) {
+        const fridgeID = req.query.fridgeID;
+        await mongoose.connect(process.env.DB_URL).catch((error) => {
+            console.error(error);
+            res.status(500).send(error);
+        });
 
-    function searchRecipes(req, res) {
-        //Needs to be implemented
+        const allIngredients = await FridgeIngredient.find({fridgeID: fridgeID})
+            .then((res) => {
+                return res.map((val) => {
+                    return val.ingredientID;
+                });
+            })
+            .catch((error) => {
+                console.error(error);
+                res.status(500).send(error);
+            });
+
+        const searchRecipes = await Recipe.find({ingredients: {$in: allIngredients}}).catch((error) => {
+            console.error(error);
+            res.status(500).send(error);
+        });
+
+        const response = Comparator(allIngredients, searchRecipes);
+        console.log(response);
+        res.json(response);
     }
 
+    //lol this is so bad.
     return {
         addIngredient: addFridgeIngredient,
         readIngredient: readAllFridgeIngredients,
@@ -257,7 +281,8 @@ const FridgeController = () => {
         updateIngredientAmount: updateIngredientAmount,
         addMeal: addMeal,
         deleteMeal: removeMeal,
-        readMeals: readMeals
+        readMeals: readMeals,
+        recipeSearch: searchRecipes
     }
 }
 

@@ -4,10 +4,10 @@ import FridgeController from '../../controller/FridgeController.js';
 import isAuthenticated from '../oauth/isAuthenticated.js';
 const router = express.Router();
 
-router.use("/*", (req, res, next) => {
-    console.log(req.session);
-    isAuthenticated(req, res, next);
-});
+// router.use("/*", (req, res, next) => {
+//     console.log(req.session);
+//     isAuthenticated(req, res, next);
+// });
 
 router.get("/ingredient", (req, res) => {
     FridgeController.readIngredient(req, res);
@@ -31,6 +31,10 @@ router.post("/ingredient/inc", (req, res) => {
 
 router.post("/ingredient/dec", (req, res) => {
     FridgeController.decrementIngredient(req, res);
+});
+
+router.get("/recipe/search", (req, res) => {
+    FridgeController.recipeSearch(req, res);
 });
 
 router.get("/meal", (req, res) => {

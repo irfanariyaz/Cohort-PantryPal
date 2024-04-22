@@ -2,8 +2,8 @@
 import axios from 'axios'
 import React, { useEffect,useState } from 'react'
 
-export default function  MealPrep() {
-  const fridgeId='6620f09f1e7dc4f70c80e1bc';
+export default function  MealPrep(props) {
+  const fridgeId=props.profile.fridgeID._id;
   const [meals, setMeals] = useState([]);
   const [tableData, setTableData] = useState([]);
   const daysOfWeek = [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday",];

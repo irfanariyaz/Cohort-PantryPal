@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export const MealPrepModal = ({ isOpen, onClose ,recipeId,recipe_name}) => {
-    const fridgeId='6620f09f1e7dc4f70c80e1bc';
+export const MealPrepModal = ({ isOpen, onClose ,recipeId,recipe_name, fridgeID}) => {
+    const fridgeId=fridgeID;
     const [meal, setMeal] = useState('');
     const [day, setDay] = useState('');
     const navigate = useNavigate();

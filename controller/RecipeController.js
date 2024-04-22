@@ -24,6 +24,9 @@ export const getIngredient = async (ingredientName) => {
           for(const ingredient of res){
             const obj = {};
             obj[ingredient.name] = ingredient._id;
+            obj["name"] = ingredient.name;
+            obj["id"] = ingredient._id;
+            obj["nutrients"] = ingredient.nutrients;
             ingredientList.push(obj);
           }
           console.log(ingredientList);   

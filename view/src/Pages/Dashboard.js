@@ -5,7 +5,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { MealPrepModal } from "../Modals/MealPrepModal";
 
-function Dashboard() {
+function Dashboard(props) {
   const [searchTerm, setSearchTerm] = useState("");
   const [recipes, setRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -129,7 +129,8 @@ function Dashboard() {
                 </span> */}
               </div>
               <button className="bg-black px-3 py-2 text-white rounded-sm font-semibold" onClick={openModal}>
-              <MealPrepModal isOpen={isOpen} onClose={closeModal} recipeId={recipe._id} recipe_name={recipe.name} />
+              <MealPrepModal isOpen={isOpen} onClose={closeModal}
+               recipeId={recipe._id} recipe_name={recipe.name} fridgeID={props.profile.fridgeID._id} />
        
                 Add to Meal Plan
               </button>
