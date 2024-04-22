@@ -10,6 +10,7 @@ function Pantry(props) {
   const [ingSelectList,setIngSelectList] = useState([]);
   const [list,setlist]= useState([]);
   const [selected,setSelected] = useState(false);
+  const [pantryList, setPantryList] = useState([]);
 
   const [recipeSelected,setRecipeSelected] = useState('');
   const[IngredientsNeeded,setIngredientneeded]=  useState([]);
@@ -45,14 +46,30 @@ function Pantry(props) {
     setIngredientneeded('');
     setIsOpenIng(false);
   }
+   //PANTRY HOOK FOR "MY INGREDIENTS"
+   useEffect(() => {
+    const fetchPantry = async () => {
+      const endpoint = "/fridge/ingredient?fridgeID=" + fridgeID;
+
+      const res = await fetch(endpoint).catch((error) => {
+        console.error(error);
+      });
+      const data = await res.json();
+      const list = data.map((item) => item.name);
+      //console.log(list);
+      setPantryList(list);
+    };
+
+    fetchPantry();
+  }, []);
 
   useEffect(()=>{
    const   fetchrecipe = async () => {
         const url = `/recipes/findById/${recipeSelected}`;
         const response = await axios.get(url);
         const data = await response.data.ingredients;
-        const iNeed = data.filter((item) => !list.includes(item));
-        const iHave = list.filter((item) => data.includes(item));       
+        const iNeed = data.filter((item) => !pantryList.includes(item));
+        const iHave = pantryList.filter((item) => data.includes(item));       
         setIngredientneeded([iHave,iNeed]);       
     }
     if(recipeSelected){
@@ -60,10 +77,12 @@ function Pantry(props) {
     }    
   },[recipeSelected]);
 
- 
+  
 
 //function to handle when user types the list of ingredients with comma and press the search button
-  const handleQueryClick = async() => {
+  const handleQueryClick = async(e) => {
+    e.preventDefault();
+  
     console.log(queryList);
     if(queryList.length===0){
       alert("Please enter ingredients");

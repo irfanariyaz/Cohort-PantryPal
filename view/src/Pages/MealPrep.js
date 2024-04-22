@@ -18,9 +18,8 @@ export default function  MealPrep(props) {
   const mealTimes = ["Breakfast", "Lunch", "Dinner","Macros"];
 
   const [isOpen, setIsOpen] = useState(false);
-  const [isOpenIng, setIsOpenIng] = useState(false);
-  const [modalData,setModalData]= useState({});
-    const closeModal = () => {
+
+  const closeModal = () => {
     setIsOpen(false);
   };
   const openModal = () => {

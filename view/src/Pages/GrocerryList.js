@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 export const GrocerryList = ({isOpen,onClose,meals,fridgeID}) => {
     const [pantry,setPantry] = useState([]);
+    const[state,setState] = useState(false);
    
     useEffect(() =>{
         const fetchPantry = async () => {
@@ -14,7 +15,7 @@ export const GrocerryList = ({isOpen,onClose,meals,fridgeID}) => {
             setPantry(data);
         }
         fetchPantry();
-    },[]);
+    },[state]);
     if (!isOpen) return null;
     let list =[];
     meals.map((meal) => {
@@ -37,7 +38,7 @@ export const GrocerryList = ({isOpen,onClose,meals,fridgeID}) => {
          });
          const data = res.data;
         console.log(data);
-
+        setState(!state);
         }
         
 

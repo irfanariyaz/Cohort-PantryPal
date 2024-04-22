@@ -12,7 +12,7 @@ function Pantry(props) {
 
   const [query, setQuery] = useState('');
   const [ingredients, setIngredients] = useState([]);
-  const [message,setMessage] = useState(false);//show form to create a Pantry list 
+  const [message,setMessage] = useState("");//show form to create a Pantry list 
   const [myIngredrients, setPantry] = useState([]); 
   const [formData,setFormData]= useState({
     routeID: fridgeID,
@@ -66,7 +66,7 @@ function Pantry(props) {
       const data = await res.json();
 
       setPantry(data);
-      setMessage(false);
+      setMessage("");
     }
 
     fetchPantry();
@@ -87,7 +87,7 @@ function Pantry(props) {
       const response = await  axios.post(url, formData);
       const data = await response.data;
       if(data ==="Success"){
-        setMessage(true);
+        setMessage("Ingredient added to Pantry");
         setFormData({...formData,
           measurement:"",
           amount:"",
@@ -109,7 +109,7 @@ const deletePantry = (id) => {
   }else{
     const response = axios.post(url, {ingredientID:id});
     const data = response.data;
-  setMessage(true);
+  setMessage("Ingredient deleted from Pantry");
   }
 }
 console.log("myIngredrients",myIngredrients);
@@ -146,7 +146,7 @@ console.log("myIngredrients",myIngredrients);
       <button  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-400">
                Add</button>
         </form>
-        {message ? <p className="m-2 text-green-700 text-lg">Ingredient added to Pantry</p> : null}
+        {message ? <p className="m-2 text-green-700 text-lg">{message}</p> : null}
         <div>
         {ingredients.map((ingredient, index) => (
           <div key={index} onClick={() => handleItemClick(ingredient)} className="capitalize cursor-pointer" >
@@ -160,8 +160,8 @@ console.log("myIngredrients",myIngredrients);
       <h2 className="text-2xl font-bold mb-6">My Ingredients</h2>
       <div className="mr-2 mb-2 max-w-96 bg-gray-300 p-4 rounded-lg space-y-2">
           
-            {myIngredrients.map((ingr) =>(
-              <div className="flex  flex-wrap justify-between">
+            {myIngredrients.map((ingr,index) =>(
+              <div key={index} className="flex  flex-wrap justify-between">
               <h3>{ingr.name}</h3>
                <button className="bg-gray-400 w-6 h-6 flex justify-center items-center" onClick={()=>deletePantry(ingr._id)}>
                 -
