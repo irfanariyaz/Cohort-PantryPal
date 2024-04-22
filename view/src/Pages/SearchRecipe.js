@@ -5,9 +5,16 @@ import { MealPrepModal } from "../Modals/MealPrepModal";
 function SearchRecipe({profile}) {
     const [recipes, setRecipes] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
+    const [modalData, setModalData] = useState({});
 
-    const openModal = () => {
+    const openModal = (recipeId, recipe_name) => {
       setIsOpen(true);
+      console.log(recipe_name, "RIGHTHERE");
+      setModalData({
+        recipeId: recipeId,
+        recipe_name: recipe_name,
+        fridgeID: profile.fridgeID._id,
+      });
     };
   
     const closeModal = () => {
@@ -61,14 +68,17 @@ function SearchRecipe({profile}) {
                         </span>
                         <Missing recipe={recipe}/>
                     </div>
-                    <button className="bg-black px-3 py-2 text-white rounded-sm font-semibold" onClick={openModal}>
-                    <MealPrepModal isOpen={isOpen} onClose={closeModal}
-                    recipeId={recipe._id} recipe_name={recipe.name} fridgeID={profile.fridgeID._id} />
+                    <button className="bg-black px-3 py-2 text-white rounded-sm font-semibold" onClick={() => {openModal(recipe._id, recipe.name)}}>
                         Add to Meal Plan
                     </button>
                     </div>
                 ))}
             </div>
+            <MealPrepModal
+                     isOpen={isOpen}
+                     onClose={closeModal}
+                     modalData={modalData}
+                    />
         </div>
     );
 }

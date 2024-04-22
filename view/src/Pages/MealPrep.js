@@ -28,7 +28,8 @@ export default function  MealPrep(props) {
 
   //function get total macros for a day
   function getmacro (list){
-    const macros = list.map(meal => meal.macros);
+   const macros = list.map(meal => meal.macros);
+   console.log(macros, "HERE");
    const totalMacros = macros.reduce((acc, macro) => {
       acc.calories += macro.calories;
       acc.protein += macro.protein;
@@ -62,6 +63,7 @@ export default function  MealPrep(props) {
 };
 const createMacroData = (tableData)=>{
   const macroData = [];
+  console.log(tableData, "OVERHERE");
   tableData.map(day=>{
     //get macros for a day
     if(day.length>0){
@@ -85,6 +87,7 @@ const createMacroData = (tableData)=>{
   }
   fetchData();
 },[])
+
 const deleteMeal = async (meal) => {
   const url= '/fridge/meal/delete';
   const response = await axios.post(url,{mealID:meal._id});
@@ -101,7 +104,7 @@ const deleteMeal = async (meal) => {
         <div class="bg-gray-100 p-5">
           <div className='flex justify-around mb-4'>
           <h1 class="text-2xl font-bold mb-4">Weekly Meal Schedule</h1>
-          <button className='px-4 py-2 bg-gray-300 rounded hover:bg-gray-400' onClick={openModal}>Create Grocerry list</button>
+          <button className='px-4 py-2 bg-gray-300 rounded hover:bg-gray-400' onClick={openModal}>Create Grocery list</button>
           </div>
   <GrocerryList isOpen={isOpen} meals={meals} onClose={closeModal} fridgeID={fridgeId} />
    <table className="border-collapse w-full  border border-gray-200">

@@ -14,8 +14,6 @@ function Pantry(props) {
   const [ingredient, setIngredient] = useState('');
   const [recipes, setRecipes] = useState([]);
   const [myIngredrients, setPantry] = useState([]);
- 
-
 
   const handleItemClick = async(ingredient) => {
     setIngredients([]);
@@ -58,11 +56,10 @@ function Pantry(props) {
       const data = await res.json();
 
       setPantry(data);
-      setMessage("");
     }
 
     fetchPantry();
-  }, [message]);
+  }, []);
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -91,11 +88,10 @@ return (
       <button onClick={(e) => {e.preventDefault()}} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-400">
                <NavLink to="/ingredient/search" state={query}>Search</NavLink></button>
         </form>
-        {message ? <p className="m-2 text-green-700 text-lg">{message}</p> : null}
         <div>
-          {ingredients.map((ingredient, index) => (
+          {/* {meals.map((ingredient, index) => (
             <Result key={index} ingredient={ingredient} handleClick={handleItemClick}/>
-          ))}
+          ))} */}
         </div>
       
       </div>
@@ -107,9 +103,9 @@ return (
       
       <div className="flex flex-wrap justify-around">
         {/* My Ingredients cards */}
-        {/* {myIngredrients.map((ingr) => {
+        {myIngredrients.map((ingr) => {
           return <MyIngredient key={ingr._id} data={ingr}/>
-        })} */}
+        })}
       </div>
     </div>
 
