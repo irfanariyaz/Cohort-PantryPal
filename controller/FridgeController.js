@@ -6,6 +6,9 @@ import Recipe from '../model/recipe.js';
 import Meal from '../model/meal.js';
 import Comparator from './ingredientUtils/fridgeComparator.js';
 import "dotenv/config";
+import {gettotalRecipeMacro }from "./recipeUtils/getMacro.js"
+
+
 
 
 const FridgeController = () => {
@@ -16,7 +19,7 @@ const FridgeController = () => {
         const measurement = req.body.measurement;
         const amount = req.body.amount;
 
-        if (fridgeID === null || ingredientID === null ) {
+        if (fridgeID === null || ingredientID === null  ) {
             res.status(400).send("Incomplete form data");
         }
 
@@ -54,12 +57,62 @@ const FridgeController = () => {
             console.error(error);
             res.status(500).send(error);
         });
-
         if (success) {
             res.status(200).send("Success");
         } else {
             res.status(500).send("Creation failed");
         }
+    }
+    async function  readIngredientByName (req, res) {
+        const {name,fridgeID} = req.query;
+        console.log(name,fridgeID);
+        await mongoose.connect(process.env.DB_URL).catch((error) => {
+            console.error(error);
+            res.status(500).send(error);
+        });
+        
+        const ingredient = await Ingredient.findOne({name: name}).exec().catch((error) => {
+            console.error(error);
+            res.status(500).send(error);
+        });
+        console.log(ingredient);
+        if (fridgeID === null || ingredient._id === null  ) {
+            res.status(400).send("Incomplete form data");
+        }
+
+        let success = false;     
+
+        const fridge = await Fridge.findOne({_id: fridgeID}).exec().catch((error) => {
+            console.error(error);
+        });
+
+      
+        if (ingredient === null || fridge === null) {
+            res.status(400).send("ingredientID or fridgeID missing from query").send();
+        }
+
+        const fridgeIngredient = new FridgeIngredient({
+            fridgeID: fridge._id,
+            ingredientID: ingredient._id,
+            // ownerId: ownerId,
+            measurement: "",
+             amount: ""
+        });
+
+        await fridgeIngredient.save().then(() => {
+            success = true;
+        }).catch((error) => {
+            console.error(error);
+            res.status(500).send(error);
+        });
+      //  mongoose.disconnect();
+        if (success) {
+            res.status(200).send("Success");
+        } else {
+            res.status(500).send("Creation failed");
+        }
+ 
+     
     }
 
     async function removeFridgeIngredient(req, res) {
@@ -158,6 +211,7 @@ const FridgeController = () => {
     //Adds recipe to meal plan.
     async function addMeal(req, res) {
         const {fridgeId,recipeId,day,mealtimes,recipe_name} = req.body;
+        console.log("request reached to addMeal");
          await mongoose.connect(process.env.DB_URL).catch((error) => {
             console.error(error);
             res.status(500).send(error);
@@ -190,15 +244,20 @@ const FridgeController = () => {
             console.error(error);
             res.status(500).send(error);
         });
+        //get the macros
+        console.log("recipe of a meal",recipe);
+        const {totalNutrients,names} = await gettotalRecipeMacro(recipe);
 
         const newmeal = new Meal({
             fridge_id:fridge._id,
             recipe_id: recipe._id,
             recipe_name: recipe_name,
             day: day,
-            mealtimes:mealtimes
+            mealtimes:mealtimes,
+            macros:totalNutrients,
+            ingredients:names
         });
-
+console.log("names",names);
         await newmeal.save().then(() => {
             res.status(200).send("Success");
         }).catch((error) => {
@@ -210,6 +269,7 @@ const FridgeController = () => {
     //Removes recipe from meal plan.
     async function removeMeal(req, res) {
         const mealID = req.body.mealID;
+        console.log("in delete",mealID);
 
         await Meal.deleteOne({_id: mealID}).exec().then(() => {
             res.status(200).send("Successfully deleted");
@@ -220,7 +280,7 @@ const FridgeController = () => {
 
     //Reads all meals within meal plan.
     async function readMeals(req, res) {
-        console.log("reached in controller");
+      
         const {fridgeId} = req.query;
         console.log(fridgeId);
 
@@ -229,11 +289,14 @@ const FridgeController = () => {
         console.error(error);
         res.status(500).send(error);
     });
-      await Meal.find({fridge_id:fridgeId}).exec().then((mealPlan) => {
+      const mealPlan = await Meal.find({fridge_id:fridgeId}).exec();
+
+        //attach macros to each meal
+       // console.log(mealPlan);
+    
+        console.log(mealPlan);
         res.status(200).json(mealPlan);
-        }).catch((error) => {
-            res.status(500).send(error);
-        });
+       
         
     }
 
@@ -275,6 +338,7 @@ const FridgeController = () => {
     return {
         addIngredient: addFridgeIngredient,
         readIngredient: readAllFridgeIngredients,
+        readIngredientByName: readIngredientByName,
         removeIngredient: removeFridgeIngredient,
         incrementIngredient: incrementIngredient,
         decrementIngredient: decrementIngredient,

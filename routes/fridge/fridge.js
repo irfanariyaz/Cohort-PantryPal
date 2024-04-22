@@ -12,7 +12,13 @@ const router = express.Router();
 router.get("/ingredient", (req, res) => {
     FridgeController.readIngredient(req, res);
 });
+//route to post based on name of ingredient
+router.get("/ingredient/query", (req, res) => {
+    const {name,fridgeID} = req.query;
+console.log(name,fridgeID);
+    FridgeController.readIngredientByName(req, res);
 
+});
 router.post("/ingredient", (req, res) => {
     FridgeController.addIngredient(req, res);
 });
@@ -38,11 +44,12 @@ router.get("/recipe/search", (req, res) => {
 });
 
 router.get("/meal", (req, res) => {
-    console.log("request reached");
+
     FridgeController.readMeals(req, res);
 });
 
 router.post("/meal", (req, res) => {
+   
     FridgeController.addMeal(req, res);
 });
 

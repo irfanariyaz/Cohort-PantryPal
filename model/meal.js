@@ -1,5 +1,6 @@
 /**@module model/meal*/
 import mongoose from 'mongoose';
+
 const Schema = mongoose.Schema;
 
 /**Schema object for Meal moddel
@@ -21,7 +22,19 @@ const MealSchema = new Schema({
         type: String,
         enum: ["Breakfast", "Lunch", "Dinner","Extra"],
         default: "Extra"
-    }
+    },
+    macros: {
+        calories: {type: Number, required: true},
+        cholesterol: {type: Number, required: true},
+        carbohydrates: {type: Number, required: true},
+        protein: {type: Number, required: true},
+        total_fat: {type: Number, required: true},
+        total_saturated_fats: {type: Number, required: true},
+        total_trans_fats: {type: Number, required: true},
+        total_monosaturated_fats: {type: Number, required: true}
+    },
+    ingredients:[{type:String,required: true}]
+
 });
 
 export default mongoose.model("Meal", MealSchema);;

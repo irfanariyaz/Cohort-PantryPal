@@ -5,6 +5,7 @@ import Fridge from '../model/fridge.js';
 
 async function readUserFromSession(req, res) {
     const userID = req.session.userID;
+    console.log("userID,",userID);
     if(!userID){
         res.status(302).send("Not logged in");
     } else {

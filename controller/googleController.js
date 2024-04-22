@@ -51,10 +51,10 @@ const create_google_user = async function(req, res){
                     console.log(fridge);
                     console.error(error, "HERE");
                 });
-            }).catch((err) => {
-                console.log(user);
-                console.error(err);
-            });
+
+                req.session.userID = user._id;
+                res.redirect("http://localhost:3000");
+            }).catch((err) => {throw err});
         } else {
             const user = checkForDupe[0];
             req.session.userID = user._id;

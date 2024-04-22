@@ -9,11 +9,12 @@ import Recipes from "./Pages/Recipes";
 import Navbar from "./Pages/Components/Navbar";
 import ShowRecipeItem from "./Pages/Recipes/ShowRecipeItem";
 import Meal from "./Pages/Meal.js";
+
 import MealPrep from "./Pages/MealPrep.js";
 import SearchIngredient from "./Pages/SearchIngredient.js";
 import SearchRecipe from "./Pages/SearchRecipe.js";
 import {useEffect, useState} from "react";
-
+import { PantryProvider } from "./Pages/context/PantryContext.js";
 // import ShowRecipeItem from "./Pages/ShowRecipeItem";
 
 function App() {
@@ -42,18 +43,22 @@ function App() {
         <Route
           path="/"
           element={
+            <PantryProvider>
             <Layout>
               <Dashboard profile={profile}/>
             </Layout>
+            </PantryProvider>
           }
         />
         {/*Login/Register route will be here presumably.*/}
         <Route
           path="/dashboard"
           element={
+            <PantryProvider>
             <Layout>
               <Dashboard profile={profile}/>
             </Layout>
+            </PantryProvider>
           }
         />
         <Route
@@ -80,7 +85,7 @@ function App() {
             </Layout>
           }
         />
-         <Route
+        <Route
           path="/meals"
           element={
             <Layout>
@@ -137,7 +142,7 @@ function Layout({ children }) {
 
   return (
     <>
-      {<Navbar />}
+      {<Navbar  />}
       <div className="flex">
         <main className="flex-1">{children}</main>
       </div>

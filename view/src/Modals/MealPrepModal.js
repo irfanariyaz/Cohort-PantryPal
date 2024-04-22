@@ -2,12 +2,18 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+<<<<<<< HEAD
 export const MealPrepModal = ({ isOpen, onClose ,recipeId,recipe_name, fridgeID}) => {
     const fridgeId=fridgeID;
+=======
+export const MealPrepModal = ({modalData,onClose,isOpen}) => {
+  
+   
+>>>>>>> origin/irfana
     const [meal, setMeal] = useState('');
     const [day, setDay] = useState('');
     const navigate = useNavigate();
-  
+    if (!isOpen) return null;
     const handleMealChange = (e) => {
       setMeal(e.target.value);
     };
@@ -18,10 +24,12 @@ export const MealPrepModal = ({ isOpen, onClose ,recipeId,recipe_name, fridgeID}
     const handleSubmit = (e) => {
         e.preventDefault();
         //create a meal object
+        //check if the selected dy already has a meal,
+       
         const mealObj = {
-            fridgeId: fridgeId,
-            recipeId: recipeId,
-            recipe_name:recipe_name,
+            fridgeId: modalData.fridgeID,
+            recipeId: modalData.recipeId,
+            recipe_name:modalData.recipe_name,
             mealtimes: meal,
             day: day
         }
@@ -37,11 +45,9 @@ export const MealPrepModal = ({ isOpen, onClose ,recipeId,recipe_name, fridgeID}
           addmealToFridge();
         }
         console.log(mealObj);
-        navigate('/mealPrep')
-    
-      onClose();
+        navigate('/mealPrep')    
     }
-    if (!isOpen) return null;
+   
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen">
@@ -65,7 +71,6 @@ export const MealPrepModal = ({ isOpen, onClose ,recipeId,recipe_name, fridgeID}
           <option value="Breakfast">Breakfast</option>
           <option value="Lunch">Lunch</option>
           <option value="Dinner">Dinner</option>
-          <option value="Extra">Extra</option>
         </select>
       </div>
       <div className="mb-4">

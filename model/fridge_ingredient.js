@@ -6,10 +6,10 @@ const FridgeIngredient = new Schema({
     ingredientID: {type: Schema.Types.ObjectId, ref:"Ingredient"},
     measurement: {
         type:String,
-        enum: ['ounce', 'cup', 'pound', 'tablespoon'],
+        enum: ['ounce', 'cup', 'pound', 'tablespoon',""],
         default: "ounce"
     },
-    amount: {type: Number, required: true}
+    amount: {type: Number}
 });
 
 export default mongoose.model("FridgeIngredient", FridgeIngredient);

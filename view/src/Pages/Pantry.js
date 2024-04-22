@@ -42,7 +42,7 @@ function Pantry(props) {
     if (query !== '') {
       fetchIngredients();  
     } else {
-    console.log("inside else in useEffect");
+    
     setIngredients([]);
     }
   }, [query]);
@@ -58,13 +58,13 @@ function Pantry(props) {
       const data = await res.json();
 
       setPantry(data);
-      console.log(myIngredrients);
+      setMessage("");
     }
 
     fetchPantry();
-  }, []);
+  }, [message]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     const name = ingredient? Object.keys(ingredient) :query;
     const url = `/recipes/getRecipes/${name}`;
@@ -82,7 +82,7 @@ function Pantry(props) {
 return (
 //adding a search bar to get the recipes with the ingredient user searched
     <div className="p-8">
-      <div>
+      <div className="w-1/2">
         <form action="" className=" flex space-x-4" onSubmit={handleSubmit}>
         <input type="text" className="px-4 py-2 border border-gray-300 rounded-md"
                onChange={(e)=>setQuery(e.target.value)}
@@ -91,6 +91,7 @@ return (
       <button onClick={(e) => {e.preventDefault()}} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-400">
                <NavLink to="/ingredient/search" state={query}>Search</NavLink></button>
         </form>
+        {message ? <p className="m-2 text-green-700 text-lg">{message}</p> : null}
         <div>
           {ingredients.map((ingredient, index) => (
             <Result key={index} ingredient={ingredient} handleClick={handleItemClick}/>
@@ -106,11 +107,15 @@ return (
       
       <div className="flex flex-wrap justify-around">
         {/* My Ingredients cards */}
-        {myIngredrients.map((ingr) => {
+        {/* {myIngredrients.map((ingr) => {
           return <MyIngredient key={ingr._id} data={ingr}/>
-        })}
+        })} */}
       </div>
     </div>
+
+    
+      
+  
   );
 }
 
