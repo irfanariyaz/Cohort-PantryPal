@@ -1,38 +1,26 @@
 import React, { useEffect, useState } from "react";
+import {NavLink} from "react-router-dom";
 import MyIngredient from "./PantryComponent/MyIngredient";
-import axios from 'axios';
-import { set } from "mongoose";
-import { FaTrash, FaTrashCan } from "react-icons/fa6";
-
+import Result from "./PantryComponent/ResultIngredient";
 
 function Pantry(props) {
-  //TEST FRIDGE ID TEMPORARY
-  const fridgeID = props.profile.fridgeID._id
- 
-  //########################
- 
+  const fridgeID = props.profile.fridgeID._id;
+
+  //Search input form.
   const [query, setQuery] = useState('');
+
+  //Ingredient search
   const [ingredients, setIngredients] = useState([]);
-  const [message,setMessage] = useState("");//show form to create a Pantry list 
+  const [ingredient, setIngredient] = useState('');
+  const [recipes, setRecipes] = useState([]);
   const [myIngredrients, setPantry] = useState([]);
- 
-  const [formData,setFormData]= useState({
-    routeID: fridgeID,
-    ingredientID: "",
-    measurement: "",
-    amount: "",
-    // ownerId:props.profile.profile._id
-  })
- 
 
   const handleItemClick = async(ingredient) => {
-      const [value]=Object.entries(ingredient);
-      setIngredients([]);
-      setQuery(value[0]);
-      
-      setFormData({...formData, ingredientID:value[1]}) 
-  } 
-
+    setIngredients([]);
+    setIngredient(ingredient);  
+  }
+ 
+  //SEARCH HOOK
   useEffect(() => {
     const fetchIngredients = async () => {
       const url = `/recipes/getIngredient?ingredient=${query}`
@@ -68,94 +56,42 @@ function Pantry(props) {
       const data = await res.json();
 
       setPantry(data);
-      setMessage("");
     }
 
     fetchPantry();
-  }, [message]);
+  }, []);
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    
-    //search the db with recipes with this ingredient
-    console.log("formData",formData);
-    const url = `/fridge/ingredient`;
-    if(query==='' && Object.values(formData)[1]==="" ){
-      alert("Ingredient not in the database");
+    const name = ingredient? Object.keys(ingredient) :query;
+    const url = `/recipes/getRecipes/${name}`;
+    fetch(url)
+      .then(response =>response.json())
+      .then((data) => {
+        setRecipes(data);
+        console.log(recipes);
+        setIngredient('');
+        setQuery('');
+      })
+      .catch(error => console.error(error));
+  }
 
-    }else if(Object.values(formData)[1]===""){
-      alert("Please fill in  ingredient");
-    } else{
-      const response = await  axios.post(url, formData);
-      const data = await response.data;
-      if(data ==="Success"){
-        setMessage("Ingredient added to Pantry");
-        setFormData({...formData,
-          measurement:"",
-          amount:"",
-          ingredientID:""
-        });
-      }
-      setQuery("");
-      console.log(data);
-    }
-     
-    
-  
-  }
-const deletePantry = (id) => {
-  console.log("delete pantry",id);
-  const url = `/fridge/ingredient/delete`;
-  if(!id){
-    alert("Ingredient not in the database");
-  }else{
-    const response = axios.post(url, {ingredientID:id});
-    const data = response.data;
-  setMessage("Ingredient deleted from Pantry");
-  }
-}
-console.log("myIngredrients",myIngredrients);
-  return (
+return (
 //adding a search bar to get the recipes with the ingredient user searched
     <div className="p-8">
       <div className="w-1/2">
         <form action="" className=" flex space-x-4" onSubmit={handleSubmit}>
-        <input type="text" className="px-4 py-2 border border-gray-300 rounded-md capitalize "
-               value={query}
+        <input type="text" className="px-4 py-2 border border-gray-300 rounded-md"
                onChange={(e)=>setQuery(e.target.value)}
                placeholder="Type to search ingredients..." />
-        <input type="text" className="px-4 py-2 border border-gray-300 rounded-md "
-               value={formData.amount}
-               placeholder="Amount" onChange={(e)=>setFormData({...formData, amount:e.target.value})}    />
-        {/* <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="meal">
-          Select 
-        </label> */}
-        <select
-          className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="measure"
-          value={formData.measurement}
-          onChange={(e)=>setFormData({...formData,measurement:e.target.value})}
-        >
-        
-          <option value="ounce">ounce</option>
-          <option value="cup">cup</option>
-          <option value="pound">pound</option>          
-          <option value="tablespoon">tablespoon</option>
-          <option value="">Other</option>
-
-
-        </select>
-      <button  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-400">
-               Add</button>
+    
+      <button onClick={(e) => {e.preventDefault()}} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-400">
+               <NavLink to="/ingredient/search" state={query}>Search</NavLink></button>
         </form>
-        {message ? <p className="m-2 text-green-700 text-lg">{message}</p> : null}
         <div>
-        {ingredients.map((ingredient, index) => (
-          <div key={index} onClick={() => handleItemClick(ingredient)} className="capitalize cursor-pointer" >
-            {Object.keys(ingredient)}
-          </div>
-        )) }
-  
+          {/* {meals.map((ingredient, index) => (
+            <Result key={index} ingredient={ingredient} handleClick={handleItemClick}/>
+          ))} */}
         </div>
       
       </div>

@@ -11,6 +11,8 @@ import ShowRecipeItem from "./Pages/Recipes/ShowRecipeItem";
 import Meal from "./Pages/Meal.js";
 
 import MealPrep from "./Pages/MealPrep.js";
+import SearchIngredient from "./Pages/SearchIngredient.js";
+import SearchRecipe from "./Pages/SearchRecipe.js";
 import {useEffect, useState} from "react";
 import { PantryProvider } from "./Pages/context/PantryContext.js";
 // import ShowRecipeItem from "./Pages/ShowRecipeItem";
@@ -43,7 +45,7 @@ function App() {
           element={
             <PantryProvider>
             <Layout>
-              <Dashboard  profile={profile}/>
+              <Dashboard profile={profile}/>
             </Layout>
             </PantryProvider>
           }
@@ -63,7 +65,7 @@ function App() {
           path="/pantry"
           element={
             <Layout>
-              <Pantry profile={profile} />
+              <Pantry profile={profile}/>
             </Layout>
           }
         />
@@ -87,11 +89,11 @@ function App() {
           path="/meals"
           element={
             <Layout>
-              <Meal  profile={profile}/>
+              <Meal profile={profile}/>
             </Layout>
           }
         />
-         <Route
+        <Route
           path="/mealPrep"
           element={
             <Layout>
@@ -99,7 +101,22 @@ function App() {
             </Layout>
           }
         />
-           
+        <Route 
+          path="/ingredient/search"
+          element={
+            <Layout>
+              <SearchIngredient profile={profile}/>
+            </Layout>
+          }
+        />
+        <Route 
+          path="/recipe/search"
+          element={
+            <Layout>
+              <SearchRecipe profile={profile} />
+            </Layout>
+          }
+        />
       </Routes>
       );
     } else {
@@ -107,6 +124,7 @@ function App() {
       <Routes>
         {/*Login/Register Route will be here.*/}
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Home />}/>
       </Routes>
       );
     }

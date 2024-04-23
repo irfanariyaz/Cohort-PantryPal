@@ -15,7 +15,7 @@ async function readUserFromSession(req, res) {
         });
     
         await User.findOne({_id: userID}).exec().then(async (user) => {
-            await Fridge.findOne({owner_id: user._id}).select('routeID').exec().then((fridgeID) => {
+            await Fridge.findOne({ownerID: user._id}).select("routeID").exec().then((fridgeID) => {
                 const profile = {
                     profile: user,
                     fridgeID: fridgeID

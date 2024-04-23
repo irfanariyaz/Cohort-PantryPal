@@ -3,25 +3,20 @@ import session from "express-session";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-import mongoose from "mongoose";
-import indexRouter from "./routes/index.js";
 import usersRouter from "./routes/users.js";
 import googleRouter from "./routes/oauth/google.js";
 import ingredientsRouter from "./routes/ingredient/ingredients.js";
 import recipeRouter from "./routes/recipe/recipe.js";
-import loginRouter from "./routes/login.js";
-import registerRouter from "./routes/register.js";
 import fridgeRouter from "./routes/fridge/fridge.js";
 import { fileURLToPath } from "url";
 import cors from "cors";
-import conn from "./DbConnect/conn.js";
-
 
 const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
 const app = express();
 
+app.use(express.static(path.join(__dirname, './view/build')));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -43,13 +38,10 @@ app.use(
   })
 );
 
-app.use("/", indexRouter);
 app.use("/user", usersRouter);
 app.use("/ingredient", ingredientsRouter);
 app.use("/auth/google", googleRouter);
 app.use("/recipes", recipeRouter);
-app.use("/login", loginRouter);
-app.use("/register", registerRouter);
 app.use("/fridge", fridgeRouter);
 
 export default app;

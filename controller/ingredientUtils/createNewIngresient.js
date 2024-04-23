@@ -20,6 +20,7 @@ const createnewIngredient = async (ingredientName) => {
             const existingIngredient = await Ingredient.findOne({
                 fdc_id: foodItem.fdcId,
             });
+            
             if (existingIngredient) {
                 console.log(existingIngredient.name," already in db");
                 result = existingIngredient;

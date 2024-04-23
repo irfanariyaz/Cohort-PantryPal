@@ -6,6 +6,8 @@ function convertToCup(measurement, cup) {
             return Number(Math.round((cup / 8)+'e2')+'e-2');
         case("pound"):
             return Number(Math.round((cup * 2)+'e2')+'e-2');
+        default:
+            return cup;
     }
 }
 
