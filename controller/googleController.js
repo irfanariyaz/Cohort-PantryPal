@@ -40,7 +40,7 @@ const create_google_user = async function(req, res){
                 //Assigns new userID to fridge.
                 const fridge = new Fridge({
                     routeID: RouteID(11),
-                    ownerID: result._id
+                    owner_id: result._id
                 });
 
                 //Save fridge to DB.
