@@ -160,13 +160,13 @@ console.log("myIngredrients",myIngredrients);
       
       </div>
       <h2 className="text-2xl font-bold mb-6 mt-4">My Ingredients</h2>
-      <div className="mr-2 mb-2 max-w-96 bg-gray-300 p-4 rounded-lg space-y-2">
+      <div className="mr-2 mb-2 max-w-96  bg-white p-4 rounded-lg space-y-2 shadow-lg">
           
             {myIngredrients.map((ingr,index) =>(
-              <div key={index} className="flex  flex-wrap justify-between">
+              <div key={index} className="flex  flex-wrap justify-between border-b-2 border-b-blue-300">
               <h3 className="capitalize">{ingr.name}</h3>
                <button className=" w-6 h-6 flex justify-center items-center" onClick={()=>deletePantry(ingr._id)}>
-                <FaTrashCan/>
+                <FaTrashCan className="text-sm"/>
               </button>
               </div>
             ))}

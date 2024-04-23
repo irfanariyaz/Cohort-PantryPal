@@ -60,15 +60,7 @@ function Dashboard(props) {
         setCategories(data.categories);
       });
   }, []);
-  // const handleCategory = (category) => {
-  //   setRecipes([]);
-  //   const url = `/recipes/category/${category}`;
-  //   axios.get(url).then((response) => {
-  //     console.log("response from server", response.data.length, response.data);
-  //     setRecipes(response.data);
-  //     // console.log(recipes);
-  //   });
-  // };
+
   useEffect(() => {
     const fetchrecipe = async () => {
       const url = `/recipes/findById/${recipeSelected}`;
@@ -100,29 +92,6 @@ function Dashboard(props) {
 
     fetchPantry();
   }, []);
-
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   // Perform search logic here
-  //   console.log("Search term:", searchTerm);
-  //   // Update the recipes state with the search  results using axios
-  //   if (!searchTerm) {
-  //     alert("Please enter a search term");
-  //     return;
-  //   } else {
-  //     const url = `/recipes/search/${searchTerm}`;
-  //     //got to the recipe controller in backend to get the recipes based on user's search
-  //     axios.get(url).then((response) => {
-  //       console.log(
-  //         "response from server",
-  //         response.data.length,
-  //         response.data
-  //       );
-  //       setRecipes(response.data);
-  //       // console.log(recipes);
-  //     });
-  //   }
-  // };
 
   const truncateString = (str, num) => {
     if (str.length > num) {
