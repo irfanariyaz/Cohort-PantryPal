@@ -5,7 +5,7 @@ mongoose.set("strictQuery", false);
 const dbURL = process.env.DB_URL;
 
 describe("Database Connection", function() {
-    context.log(process.env);
+    console.log(process.env);
     it("Should connect to your database.", async function() {
         this.timeout(5000);
         return new Promise(function(resolve, reject) {
