@@ -5,7 +5,6 @@ import { useLocation } from "react-router-dom";
 import Home from "./Pages/Home";
 import Dashboard from "./Pages/Dashboard";
 import Pantry from "./Pages/Pantry";
-import Recipes from "./Pages/Recipes";
 import Navbar from "./Pages/Components/Navbar";
 import ShowRecipeItem from "./Pages/Recipes/ShowRecipeItem";
 import Meal from "./Pages/Meal.js";
@@ -66,14 +65,6 @@ function App() {
           element={
             <Layout>
               <Pantry profile={profile}/>
-            </Layout>
-          }
-        />
-        <Route
-          path="/recipes"
-          element={
-            <Layout>
-              <Recipes profile={profile} />
             </Layout>
           }
         />

@@ -26,7 +26,7 @@ function Navbar(props) {
             <div class="flex-shrink-0">
               <NavLink to="/">
                 <img
-                  class="h-8 w-8 rounded m-3"
+                  class="h-10 w-10 rounded m-3"
                   src={myImage}
                   alt="Your Company"
                 />

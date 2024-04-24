@@ -8,6 +8,7 @@ import googleRouter from "./routes/oauth/google.js";
 import ingredientsRouter from "./routes/ingredient/ingredients.js";
 import recipeRouter from "./routes/recipe/recipe.js";
 import fridgeRouter from "./routes/fridge/fridge.js";
+import pdfRouter from "./routes/pdf/pdf.js";
 import { fileURLToPath } from "url";
 import cors from "cors";
 
@@ -43,5 +44,6 @@ app.use("/ingredient", ingredientsRouter);
 app.use("/auth/google", googleRouter);
 app.use("/recipes", recipeRouter);
 app.use("/fridge", fridgeRouter);
+app.use("/pdf", pdfRouter);
 
 export default app;

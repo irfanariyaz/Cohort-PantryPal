@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node ./bin/www",
+    "build": "npm install; cd ./view; npm run build; cd ../; npm start",
     "dev": "nodemon ./bin/www",
     "document": "jsdoc -r -c conf.json ./",
     "test controller": "mocha './test/controllerTests/*.test.js",
@@ -21,8 +22,10 @@
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "express-session": "^1.18.0",
+    "jimp": "^0.22.12",
     "mongoose": "^8.2.3",
     "morgan": "~1.9.1",
+    "pdfkit": "^0.15.0",
     "react-router-dom": "^6.22.3"
   },
   "devDependencies": {

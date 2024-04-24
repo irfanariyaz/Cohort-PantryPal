@@ -29,7 +29,6 @@ export default function  MealPrep(props) {
   //function get total macros for a day
   function getmacro (list){
    const macros = list.map(meal => meal.macros);
-   console.log(macros, "HERE");
    const totalMacros = macros.reduce((acc, macro) => {
       acc.calories += macro.calories;
       acc.protein += macro.protein;
@@ -39,6 +38,7 @@ export default function  MealPrep(props) {
     })
     return totalMacros;
   };
+
   //function to create mealPrep data
   const createmealPrep = (meals) => {
   const tableData = [];
@@ -63,7 +63,6 @@ export default function  MealPrep(props) {
 };
 const createMacroData = (tableData)=>{
   const macroData = [];
-  console.log(tableData, "OVERHERE");
   tableData.map(day=>{
     //get macros for a day
     if(day.length>0){
@@ -81,9 +80,12 @@ const createMacroData = (tableData)=>{
   useEffect(() => {
     const fetchData = async () => {
       const url = '/fridge/meal'
-      const response = await axios.get(url,{params:{fridgeId:fridgeId}});
-      const mealPrep = createmealPrep(response.data);
-      setMeals(response.data);
+      const response = await axios.get(url,{params:{fridgeId:fridgeId}}).then((res) => {
+        createmealPrep(res.data);
+        setMeals(res.data);
+        console.log(meals, "HERE");
+        return res;
+      });
   }
   fetchData();
 },[])

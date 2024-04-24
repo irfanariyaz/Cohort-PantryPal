@@ -159,7 +159,7 @@ function Dashboard(props) {
       <section>
         <h2 className="text-2xl font-bold mb-6 flex justify-between items-center animate-fade">
           <span>My Recipes</span>
-          <form class="ms-auto w-1/3" onSubmit={handleSubmit}>
+          <form class="ms-auto w-1/3" autocomplete="off" onSubmit={handleSubmit}>
             <label
               for="default-search"
               class="mb-2 text-sm font-medium text-gray-900 sr-only white:text-dark"

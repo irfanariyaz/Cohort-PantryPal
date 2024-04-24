@@ -32,15 +32,15 @@ export const MealPrepModal = ({modalData,onClose,isOpen}) => {
             const url = `/fridge/meal`;
             const response = await axios.post(url, mealObj);
             console.log(response.data);
-           
-
         }
         
         if(mealObj){
-          addmealToFridge();
+          addmealToFridge().then(() => {
+            navigate('/mealPrep');
+          });
+        } else {
+          navigate('/mealPrep');
         }
-        console.log(mealObj);
-        navigate('/mealPrep')    
     }
    
   return (
