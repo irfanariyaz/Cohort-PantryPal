@@ -78,10 +78,11 @@ export const getRecipesByName = async(name) => {
     return recipeList;
 
 }
-export const getAllIngredientNames = async(list ) => {  
+export const getAllIngredientNames = async(list) => {  
   const ingredients = (list.split(","));
   const result=[];
   mongoose.connect(process.env.DB_URL);
+
   for(const name of ingredients){{
     if(name){
       const ingredientList = await Ingredient.find({name:new RegExp(`\\b${name}\\w*`, "i")})

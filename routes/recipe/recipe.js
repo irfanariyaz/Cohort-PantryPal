@@ -68,21 +68,30 @@ router.get('/ingredients/:list',async(req, res)=>{
     console.log("request reached");
     const ingredients = req.params.list;
     console.log(ingredients);
+    if (ingredients === undefined) {
+        res.status(400).send("Must provide valid list of values.");
+    } else {
     const recipes = await getAllIngredientNames(ingredients)
         .then((response)=>{
             res.json(response)
         }
         );
-    
+    }
 });
 
 //endpoint to return the recipes after selecting the ingredients 
 router.get('/recipeList',async(req, res)=>{
     console.log("request reached");
     const {values,selected} = req.query;
-    console.log(values,selected);
-    const recipes = await getRecipesByIngredientList(values,selected)
-   res.json(recipes);
+
+    if (values === undefined) {
+        res.status(400).send("Must provide valid list of values.");
+    } else {
+
+        console.log(values,selected);
+        const recipes = await getRecipesByIngredientList(values,selected, res)
+        res.json(recipes);
+    }
 });
 
 

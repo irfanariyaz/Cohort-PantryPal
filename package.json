@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "npm install; cd ./view; npm run build; cd ../; npm start",
     "build": "npm install; cd ./view; npm run build; cd ../; npm start",
     "dev": "nodemon ./bin/www",
     "document": "jsdoc -r -c conf.json ./",
@@ -14,6 +14,7 @@
     "populate-ingredient": "node ./search/populate.js",
     "populate-recipe": "node ./search/automation.js"
   },
+  
   "dependencies": {
     "@tailwindcss/forms": "^0.5.7",
     "collections": "^5.1.13",
