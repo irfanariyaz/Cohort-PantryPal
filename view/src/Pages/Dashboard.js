@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { MealPrepModal } from "../Modals/MealPrepModal";
@@ -11,8 +10,8 @@ function Dashboard(props) {
   const fridgeID = props.profile.fridgeID._id;
 
   
-  const{handleSubmit,recipes,setRecipes,handleCategory,
-        setSearchTerm,searchTerm} = useContext(PantryContext);
+  const{handleSubmit,recipes,handleCategory,
+        setSearchTerm} = useContext(PantryContext);
  
   const [recipeSelected, setRecipeSelected] = useState("");
   const [IngredientsNeeded, setIngredientneeded] = useState([]);
@@ -42,8 +41,7 @@ function Dashboard(props) {
     setModalData({
       recipeId: id,
       recipe_name: name,
-      image,
-      image,
+      image
     });
   };
   const closeModalIng = () => {

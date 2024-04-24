@@ -129,8 +129,6 @@ function App() {
 }
 
 function Layout({ children }) {
-  let location = useLocation();
-
   return (
     <>
       {<Navbar  />}

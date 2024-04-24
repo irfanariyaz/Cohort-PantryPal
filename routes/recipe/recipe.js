@@ -9,11 +9,18 @@ import {
   getRecipesByIngredientList
 } from "../../controller/RecipeController.js";
 
+import isAuthenticated from "../oauth/isAuthenticated.js";
+
 //import{data} from './dummydata.js'
 import Recipe from "../../model/recipe.js";
 import mongoose from "mongoose";
 
 const router = express.Router();
+
+router.use("/*", (req, res, next) => {
+    console.log(req.session);
+    isAuthenticated(req, res, next);
+});
 
 router.get("/findByName", async (req, res) => {
   const { name } = req.query;
