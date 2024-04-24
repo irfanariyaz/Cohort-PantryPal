@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/static/css/main.c6732e35.css",
+    "main.js": "/static/js/main.ceba950d.js",
+    "static/media/img.png": "/static/media/img.e53dadc7f644214b2044.png",
+    "static/media/logoPantryPal.png": "/static/media/logoPantryPal.0cc8fba3089efa629019.png",
+    "index.html": "/index.html",
+    "main.c6732e35.css.map": "/static/css/main.c6732e35.css.map",
+    "main.ceba950d.js.map": "/static/js/main.ceba950d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c6732e35.css",
+    "static/js/main.ceba950d.js"
+  ]
+}
