@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "npm install; cd ./view; npm install; npm run build; cd ../; node app.js",
-    "build": "npm install npm start",
+    "start": "cd ./view; npm install; npm run build; cd ../; node app.js",
+    "build": "npm install; npm start",
     "dev": "nodemon ./bin/www",
     "document": "jsdoc -r -c conf.json ./",
     "test controller": "mocha './test/controllerTests/*.test.js",
