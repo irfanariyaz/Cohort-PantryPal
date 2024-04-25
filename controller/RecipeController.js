@@ -78,10 +78,11 @@ export const getRecipesByName = async(name) => {
     return recipeList;
 
 }
-export const getAllIngredientNames = async(list ) => {  
+export const getAllIngredientNames = async(list) => {  
   const ingredients = (list.split(","));
   const result=[];
   mongoose.connect(process.env.DB_URL);
+
   for(const name of ingredients){{
     if(name){
       const ingredientList = await Ingredient.find({name:new RegExp(`\\b${name}\\w*`, "i")})
@@ -178,43 +179,4 @@ export const getRecipesByIngredientList = async(list,select)=>{
   // mongoose.disconnect;
     
   }
-  
-  //Gets all ingredients in users fridge.
-  const ingredientList = await FridgeIngredient.find({fridgeID: fridgeID}).then((list) => {
-    //Iterates over ingredients and takes the ingredientID.
-    return list.map((ingr) => {
-      return ingr.ingredientID;
-    });
-  }).catch((error) => {
-    console.error(error);
-    res.status(500).send(error);
-  });
-
-  const recipeList = await Recipe.find({ingredients: {$in: ingredientList}}).catch((error) => {
-    console.error(error);
-    res.status(500).send(error);
-  });
-
-  if (recipeList.length === 0) {
-    res.status(400).send("No possible recipes from the ingredients in fridge.");
-  } else {
-    res.json(recipeList);
-  }
 }
-
-
-
-
- 
-  // mongoose.connection.close();
-  // console.log("disconnected from database");
-  // return res;
-  
-
- 
-  //get the ingredient ids from the database
- 
-  //return the recipes
- 
-
-// export default {getRecipeByName,getRecipeByIngredient};

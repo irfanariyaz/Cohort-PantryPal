@@ -88,7 +88,7 @@ function MyIngredient(props) {
     }
 
     return (
-        <div className="mr-2 mb-2 basis-1/4 bg-gray-300 p-4 rounded-lg space-y-2">
+        <div className="mr-2 mb-2 basis-1/4 bg-gray-300 p-4 rounded-lg space-y-2 animate-fade-down animate-delay-100">
           <div className="flex justify-between items-center">
             <div>
               <h3 className="text-lg font-semibold">{header.heading}</h3>

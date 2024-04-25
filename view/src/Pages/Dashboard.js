@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { MealPrepModal } from "../Modals/MealPrepModal";
@@ -11,8 +10,8 @@ function Dashboard(props) {
   const fridgeID = props.profile.fridgeID._id;
 
   
-  const{handleSubmit,recipes,setRecipes,handleCategory,
-        setSearchTerm,searchTerm} = useContext(PantryContext);
+  const{handleSubmit,recipes,handleCategory,
+        setSearchTerm} = useContext(PantryContext);
  
   const [recipeSelected, setRecipeSelected] = useState("");
   const [IngredientsNeeded, setIngredientneeded] = useState([]);
@@ -42,8 +41,7 @@ function Dashboard(props) {
     setModalData({
       recipeId: id,
       recipe_name: name,
-      image,
-      image,
+      image
     });
   };
   const closeModalIng = () => {
@@ -128,7 +126,7 @@ function Dashboard(props) {
       <section>
         <h2 className="text-2xl font-bold mb-6 flex justify-between items-center animate-fade">
           <span>My Recipes</span>
-          <form class="ms-auto w-1/3" onSubmit={handleSubmit}>
+          <form class="ms-auto w-1/3" autocomplete="off" onSubmit={handleSubmit}>
             <label
               for="default-search"
               class="mb-2 text-sm font-medium text-gray-900 sr-only white:text-dark"

@@ -2,22 +2,6 @@ import { NavLink } from "react-router-dom";
 import myImage from "../../logoPantryPal.png";
 
 function Navbar(props) {
-  function Link() {
-    return <a href="http://localhost:3001/auth/google">Log In</a>;
-  }
-
-  function ProfilePic() {
-    return <img className="h-10 w-10 rounded-full" src={props.data[0]}></img>;
-  }
-
-  function Nav() {
-    if (props.data[0]) {
-      return <ProfilePic />;
-    } else {
-      return <Link />;
-    }
-  }
-
   return (
     <div>
       <nav class="bg-green-900">
@@ -26,7 +10,7 @@ function Navbar(props) {
             <div class="flex-shrink-0">
               <NavLink to="/">
                 <img
-                  class="h-8 w-8 rounded m-3"
+                  class="h-10 w-10 rounded m-3"
                   src={myImage}
                   alt="Your Company"
                 />

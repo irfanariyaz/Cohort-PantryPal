@@ -17,7 +17,7 @@ function Home() {
             </p>
             {/*Instead of an a tag, this would probably just be a link to the login page.*/}
             <a
-              href="http://localhost:3001/auth/google"
+              href="https://pantry-pal.azurewebsites.net/auth/google"
               className="inline-flex items-center justify-center pe-5 py-3 mr-3 text-base font-medium text-center text-text-green-600 rounded-lg focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800"
             >
               Start Simplifying
@@ -67,8 +67,8 @@ function Home() {
             <p class="mb-5 text-gray-700">
               Fresh thinking, simplified shopping.
             </p>
-            <Link
-              to="/dashboard"
+            <a
+              href="https://pantry-pal.azurewebsites.net/auth/google"
               className="inline-flex items-center justify-center pe-5 mr-3 text-base font-medium text-center text-green-900 rounded-lg bg-primary-700 hover:text-sky-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
             >
               Start Simplifying
@@ -84,7 +84,7 @@ function Home() {
                   clipRule="evenodd"
                 ></path>
               </svg>
-            </Link>
+            </a>
           </div>
         </div>
       </section>

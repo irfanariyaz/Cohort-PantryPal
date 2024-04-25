@@ -89,7 +89,7 @@ export const GrocerryList = ({isOpen,onClose,meals,fridgeID}) => {
             </ul>            
           </div>
           <div className="p-6  ">
-          <h3 className='font-bold'>Grocerry list</h3>
+          <h3 className='font-bold'>Grocery list</h3>
           <ul className=' grid grid-cols-4'>
             {/* Pantry Items */}
          
