@@ -44,7 +44,7 @@ function Result({ingredient, fridgeID}) {
     const total_fat = ingredient.nutrients.total_fat;
     const protein = ingredient.nutrients.protein;
     return (
-        <div className="flex justify-between justify-start m-5 bg-gray-300 py-2 px-8 rounded-lg">
+        <div className="flex justify-between  m-5 bg-gray-300 py-2 px-8 rounded-lg">
             <div className="mr-4">
                 <div>
                     <h1 className="text-lg font-semibold">{header.heading}</h1>

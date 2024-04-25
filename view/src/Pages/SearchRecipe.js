@@ -2,14 +2,17 @@ import {useState, useEffect} from 'react';
 import { NavLink } from "react-router-dom";
 import { MealPrepModal } from "../Modals/MealPrepModal";
 import { IngredientModal } from '../Modals/IngredientModal';
+import axios from 'axios';
 
 function SearchRecipe({profile}) {
+  const fridgeID = profile.fridgeID._id;
     const [recipes, setRecipes] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [modalData, setModalData] = useState({});
     const [isOpenIng, setIsOpenIng] = useState(false);
     const [IngredientsNeeded, setIngredientneeded] = useState([]);
     const [recipeSelected, setRecipeSelected] = useState("");
+    const [pantryList, setPantryList] = useState([]);
 
     const openModal = (recipeId, recipe_name) => {
       setIsOpen(true);
@@ -31,8 +34,7 @@ function SearchRecipe({profile}) {
         setModalData({
           recipeId: id,
           recipe_name: name,
-          image,
-          image,
+          image:  image,
         });
       };
 
@@ -48,6 +50,22 @@ function SearchRecipe({profile}) {
           return str;
         }
     };
+     //PANTRY HOOK FOR "MY INGREDIENTS"
+   useEffect(() => {
+    const fetchPantry = async () => {
+      const endpoint = "/fridge/ingredient?fridgeID=" + fridgeID;
+
+      const res = await fetch(endpoint).catch((error) => {
+        console.error(error);
+      });
+      const data = await res.json();
+      const list = data.map((item) => item.name);
+      //console.log(list);
+      setPantryList(list);
+    };
+
+    fetchPantry();
+  }, []);
 
     useEffect(() => {
         async function search() {
@@ -64,6 +82,21 @@ function SearchRecipe({profile}) {
 
         search();
     }, []);
+
+    //hook to view ingresients Needed to make the recipe
+    useEffect(()=>{
+      const   fetchrecipe = async () => {
+           const url = `/recipes/findById/${recipeSelected}`;
+           const response = await axios.get(url);
+           const data = await response.data.ingredients;
+           const iNeed = data.filter((item) => !pantryList.includes(item));
+           const iHave = pantryList.filter((item) => data.includes(item));       
+           setIngredientneeded([iHave,iNeed]);       
+       }
+       if(recipeSelected){
+           fetchrecipe();        
+       }    
+     },[recipeSelected]);
 
     function Missing(props) {
         let missing = props.recipe.ingredients.length - props.recipe.counter;

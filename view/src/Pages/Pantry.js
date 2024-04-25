@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import {NavLink} from "react-router-dom";
 import MyIngredient from "./PantryComponent/MyIngredient";
 import Result from "./PantryComponent/ResultIngredient";
+import axios from 'axios';
+import { FaTrash, FaTrashCan } from "react-icons/fa6";
 
 function Pantry(props) {
   const fridgeID = props.profile.fridgeID._id;
@@ -14,7 +16,7 @@ function Pantry(props) {
   const [ingredient, setIngredient] = useState('');
   const [recipes, setRecipes] = useState([]);
   const [myIngredrients, setPantry] = useState([]);
-
+  const [message,setMessage] = useState("");//show form to create a Pantry list
   const handleItemClick = async(ingredient) => {
     setIngredients([]);
     setIngredient(ingredient);  
@@ -75,6 +77,17 @@ function Pantry(props) {
       })
       .catch(error => console.error(error));
   }
+  const deletePantry = (id) => {
+    console.log("delete pantry",id);
+    const url = `/fridge/ingredient/delete`;
+    if(!id){
+      alert("Ingredient not in the database");
+    }else{
+      const response = axios.post(url, {ingredientID:id});
+      const data = response.data;
+    setMessage("Ingredient deleted from Pantry");
+    }
+  }
 
 return (
 //adding a search bar to get the recipes with the ingredient user searched
@@ -93,7 +106,8 @@ return (
             <Result key={index} ingredient={ingredient} handleClick={handleItemClick}/>
           ))} */}
         </div>
-      
+        <button onClick={(e) => {e.preventDefault()}} className="my-5 px-4 py-2 bg-gray-200 rounded hover:bg-gray-400">
+               <NavLink to="/recipe/search">Search for Recipes</NavLink></button>
       </div>
       <h2 className="text-2xl font-bold mb-6 mt-4">My Ingredients</h2>
       <div className="mr-2 mb-2 max-w-96  bg-white p-4 rounded-lg space-y-2 shadow-lg">
@@ -113,9 +127,9 @@ return (
       
       <div className="flex flex-wrap justify-around">
         {/* My Ingredients cards */}
-        {/* {myIngredrients.map((ingr) => {
+        {myIngredrients.map((ingr) => {
           return <MyIngredient key={ingr._id} data={ingr}/>
-        })} */}
+        })}
       </div>
 
     </div>
