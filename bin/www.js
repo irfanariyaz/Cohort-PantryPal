@@ -74,7 +74,7 @@ const onListening = () => {
 }
 
 const port = normalizePort('8080');
-app.set('port', port);
+app.set('port', 8080);
 
 /**
  * Create HTTP server.
@@ -86,7 +86,7 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(8080);
 console.log("server listening on port " + port + '!')
 server.on('error', onError);
 server.on('listening', onListening);
