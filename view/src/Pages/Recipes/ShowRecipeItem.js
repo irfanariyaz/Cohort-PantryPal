@@ -140,7 +140,7 @@ function ShowRecipeItem() {
         <ol>{recipe.instructions}</ol>
 
         <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm my-4 px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-          <a href={"http://localhost:3001/pdf/recipe?ID=" + id}>Download PDF</a>
+          <a href={"https://pantry-pal.azurewebsites.net/pdf/recipe?ID=" + id}>Download PDF</a>
         </button>
       </div>
     </div>
