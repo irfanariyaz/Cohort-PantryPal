@@ -13,10 +13,10 @@ async function createRecipe(req, res) {
 
     if (typeof recipe !== "null" || typeof recipe !== "undefined") {
         const name = recipe.name;
-        await buildImage.build(recipe.image, name).catch((error) => {
-            console.error(error);
-            res.status(500).send(error);
-        });
+        // await buildImage.build(recipe.image, name).catch((error) => {
+        //     console.error(error);
+        //     res.status(500).send(error);
+        // });
         
         res.writeHead(200, {
             'Content-Type': 'application/pdf',
@@ -29,10 +29,10 @@ async function createRecipe(req, res) {
             .fontSize(23)
             .text(name);
         
-        doc.image(
-            path.join(__dirname, `/pdf/temp/${name}.png`),
-            {scale: 0.25}
-        );
+        // doc.image(
+        //     path.join(__dirname, `/pdf/temp/${name}.png`),
+        //     {scale: 0.25}
+        // );
 
         doc.font('Helvetica-Bold')
             .fontSize(18)
