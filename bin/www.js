@@ -73,7 +73,7 @@ const onListening = () => {
   debug('Listening on ' + bind);
 }
 
-const port = normalizePort(process.env.EXPRESS_PORT || '8080');
+const port = normalizePort('8080');
 app.set('port', port);
 
 /**
