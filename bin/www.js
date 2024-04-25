@@ -73,8 +73,8 @@ const onListening = () => {
   debug('Listening on ' + bind);
 }
 
-const port = normalizePort('8080');
-app.set('port', 8080);
+const port = normalizePort(process.env.PORT || "8080");
+app.set('port', port);
 
 /**
  * Create HTTP server.
@@ -86,7 +86,8 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(8080);
+server.listen(port);
+console.log(addr, "ADDR HERE");
 console.log("server listening on port " + port + '!')
 server.on('error', onError);
 server.on('listening', onListening);
