@@ -5,12 +5,11 @@
   "type": "module",
   "scripts": {
     "start": "node ./bin/www",
-    "build": "npm install",
+    "build": "cd ./view; npm install; npm run build",
     "dev": "nodemon ./bin/www",
     "document": "jsdoc -r -c conf.json ./",
     "test controller": "mocha './test/controllerTests/*.test.js",
     "test model": "mocha './test/modelTests/*.test.js'",
-    "test": "mocha './test/**/*.test.js'",
     "populate-ingredient": "node ./search/populate.js",
     "populate-recipe": "node ./search/automation.js"
   },
