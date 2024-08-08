@@ -4,6 +4,7 @@ const router = express.Router();
 
 /* GET users listing. */
 router.get('/profile', function(req, res) {
+  console.log("request from /profile",req.params,"session",req.session,req)
   UserController.readProfile(req, res);
 });
 
