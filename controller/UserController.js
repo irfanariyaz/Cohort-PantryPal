@@ -9,7 +9,7 @@ async function readUserFromSession(req, res) {
     if(!userID){
         console.log("not logged in")
          res.status(302).send({message:"Not logged inside"});
-       //  res.redirect("https://cohort-pantrypal.onrender.com/auth/google/");
+         res.redirect("/auth/google/");
      
     } else {
         await mongoose.connect(process.env.DB_URL).catch((error) => {
