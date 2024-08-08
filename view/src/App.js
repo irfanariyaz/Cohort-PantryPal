@@ -26,7 +26,7 @@ function App() {
         const json = await res.json();
         setProfile(json);
       }).catch((error) => {
-        console.error(error);
+        console.log(error);
       });
     }
 

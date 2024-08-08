@@ -30,7 +30,7 @@ router.get("/", (req, res) => {
     "&scope=" +
     google_scope +
     "&access_type=offline";
-    console.log("authRedirect",authRedirect);
+   // console.log("authRedirect",authRedirect);
   res.redirect(authRedirect);
 });
 

@@ -5,9 +5,12 @@ import Fridge from '../model/fridge.js';
 
 async function readUserFromSession(req, res) {
     const userID = req.session.userID;
-    console.log("userID,",userID);
+    console.log("userID,",userID,req.session);
     if(!userID){
-        res.status(302).send({message:"Not logged inside"});
+        console.log("not logged in")
+        res.redirect("/auth/google/");
+        //res.status(302).send({message:"Not logged inside"});
+       
     } else {
         await mongoose.connect(process.env.DB_URL).catch((error) => {
             console.error(error);
