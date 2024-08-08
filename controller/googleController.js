@@ -46,16 +46,17 @@ const create_google_user = async function(req, res){
                 //Save fridge to DB.
                 await fridge.save().then(() => {
                     req.session.userID = user._id;
-                    res.redirect("https://localhost:3000");
+                    res.redirect(process.env.HOME_REDIRECT);
                 }).catch((error) => {
                     console.log(fridge);
-                    console.error(error, "HERE");
+                    console.error(error);
                 });
             }).catch((err) => {throw err});
+            
         } else {
             const user = checkForDupe[0];
             req.session.userID = user._id;
-            res.redirect("https://localhost:3000");
+            res.redirect(process.env.HOME_REDIRECT);
         }
             
     } catch (error) {
