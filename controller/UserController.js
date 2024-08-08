@@ -8,8 +8,8 @@ async function readUserFromSession(req, res) {
     console.log("userID,",userID,req.session);
     if(!userID){
         console.log("not logged in")
-        res.redirect("/auth/google/");
-        //res.status(302).send({message:"Not logged inside"});
+       // res.redirect("/auth/google/");
+        res.status(302).send({message:"Not logged inside"});
        
     } else {
         await mongoose.connect(process.env.DB_URL).catch((error) => {
