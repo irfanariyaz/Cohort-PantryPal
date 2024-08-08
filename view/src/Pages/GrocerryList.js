@@ -57,6 +57,7 @@ export const GrocerryList = ({isOpen,onClose,meals,fridgeID}) => {
       {/* Modal header */}
       <div className="px-6 py-4 bg-gray-100 border-b border-gray-200 rounded-t-lg">
         <h3 className="text-lg font-semibold text-gray-800">Pantry Items & Grocery List</h3>
+        <p>Click on items in grocery list to add to the Pantry</p>
       </div>
         <div className="p-6  flex ">
           {/* Modal body */}

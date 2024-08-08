@@ -106,9 +106,9 @@ function MyIngredient(props) {
               </button>
             </div>
           </div>
-          <p><span className="font-semibold">Measurement:</span> {measurement}</p>
+          {/* <p><span className="font-semibold">Measurement:</span> {measurement}</p>
           <p><span className="font-semibold">Amount:</span> {amount} {measurement}s</p>
-          <Nutrients data={props.data} measure={measurement} setMeasure={changeMeasure}/>
+          <Nutrients data={props.data} measure={measurement} setMeasure={changeMeasure}/> */}
         </div> 
     );
 }

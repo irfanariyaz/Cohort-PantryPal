@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import MyIngredient from "./PantryComponent/MyIngredient";
 import Result from "./PantryComponent/ResultIngredient";
-import axios from 'axios';
-import { FaTrash, FaTrashCan } from "react-icons/fa6";
+import axios from "axios";
 
 function Pantry(props) {
   const fridgeID = props.profile.fridgeID._id;
@@ -16,7 +15,7 @@ function Pantry(props) {
   const [ingredient, setIngredient] = useState('');
   const [recipes, setRecipes] = useState([]);
   const [myIngredrients, setPantry] = useState([]);
-  const [message,setMessage] = useState("");//show form to create a Pantry list
+  const navigate = useNavigate();
   const handleItemClick = async(ingredient) => {
     setIngredients([]);
     setIngredient(ingredient);  
@@ -47,6 +46,18 @@ function Pantry(props) {
     }
   }, [query]);
 
+
+  const deleteIngredient = async(ingre)=>{
+    setQuery('');
+    console.log("id",ingre);
+    const endpoint = "/fridge/ingredient/delete";
+    const response = await axios.post(endpoint,{ingredientID:ingre})
+    const data = response.data;
+    console.log("deleter ingredient",data,"query",query);
+    setQuery("delete");
+   
+    
+      }
   //PANTRY HOOK FOR "MY INGREDIENTS"
   useEffect(() => {
     const fetchPantry = async () => {
@@ -61,7 +72,7 @@ function Pantry(props) {
     }
 
     fetchPantry();
-  }, []);
+  }, [query]);
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -77,17 +88,8 @@ function Pantry(props) {
       })
       .catch(error => console.error(error));
   }
-  const deletePantry = (id) => {
-    console.log("delete pantry",id);
-    const url = `/fridge/ingredient/delete`;
-    if(!id){
-      alert("Ingredient not in the database");
-    }else{
-      const response = axios.post(url, {ingredientID:id});
-      const data = response.data;
-    setMessage("Ingredient deleted from Pantry");
-    }
-  }
+
+ 
 
 return (
 //adding a search bar to get the recipes with the ingredient user searched
@@ -120,39 +122,51 @@ return (
                <NavLink to="/ingredient/search" state={query}>Search</NavLink></button>
         </form>
         <div>
-          {/* {meals.map((ingredient, index) => (
+          {/* {ingredients.map((ingredient, index) => (
             <Result key={index} ingredient={ingredient} handleClick={handleItemClick}/>
           ))} */}
         </div>
       
       </div>
 
-      <button onClick={(e) => {e.preventDefault()}} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm my-4 px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-               <NavLink to="/recipe/search">Search for Recipes</NavLink></button>
-      </div>
-      <h2 className="text-2xl font-bold mb-6 mt-4">My Ingredients</h2>
-      <div className="mr-2 mb-2 max-w-96  bg-white p-4 rounded-lg space-y-2 shadow-lg">
-          
-            {myIngredrients.map((ingr,index) =>(
-              <div key={index} className="flex  flex-wrap justify-between border-b-2 border-b-blue-300">
-              <h3 className="capitalize">{ingr.name}</h3>
-               <button className=" w-6 h-6 flex justify-center items-center" onClick={()=>deletePantry(ingr._id)}>
-                <FaTrashCan className="text-sm"/>
-              </button>
-              </div>
-            ))}
-             
-     
-          
-      </div>
+      <h2 className="text-2xl font-bold mb-6">My Ingredients</h2>
       
-      <div className="flex flex-wrap justify-around">
+      <div className="flex ">
         {/* My Ingredients cards */}
-        {myIngredrients.map((ingr) => {
-          return <MyIngredient key={ingr._id} data={ingr}/>
-        })}
-      </div>
+        <div className="mr-2 mb-2 basis-1/4 bg-gray-300 p-4 rounded-lg space-y-2 animate-fade-down animate-delay-100">
+        <div className="flex justify-between  flex-col ">
+         {myIngredrients.length==0?
+         <p>Pantry is empty</p>
+        :
+         <>
+          {myIngredrients.map((ingr)=> (
+          <div className="flex items-center justify-between ">
+          <h3 className="text-lg font-semibold lowercase  ">{ingr.name}</h3>
+             <button className="bg-gray-400 w-5 h-5 flex justify-center items-center" onClick={()=>deleteIngredient(ingr._id)}>
+                x
+              </button>
+          </div>         
+        ))}
+         <button onClick={(e) => {e.preventDefault()}} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm my-4 px-4 py-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          <NavLink to="/recipe/search">Search for Recipes using above ingredients</NavLink></button>
 
+        </>
+        }
+      
+        
+         </div>
+        
+     
+         </div>
+         {/* {myIngredrients.map((ingr) => {
+          return <h4>{ingr.name}</h4>
+          // return <MyIngredient key={ingr._id} data={ingr}/>
+        })}  */}
+        
+  
+     
+
+      </div>
     </div>
 
     

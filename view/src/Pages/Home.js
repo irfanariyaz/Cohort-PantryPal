@@ -17,7 +17,8 @@ function Home() {
             </p>
             {/*Instead of an a tag, this would probably just be a link to the login page.*/}
             <a
-              href="https://pantry-pal.azurewebsites.net/auth/google"
+              // href="https://pantry-pal.azurewebsites.net/auth/google"
+              href="http://localhost:8080/auth/google"
               className="inline-flex items-center justify-center pe-5 py-3 mr-3 text-base font-medium text-center text-text-green-600 rounded-lg focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800"
             >
               Start Simplifying
