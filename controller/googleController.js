@@ -19,6 +19,7 @@ import 'dotenv/config';
 const create_google_user = async function(req, res){
     try {
         const userID = "GOOGLE_" + req.google.id;
+        console.log("user ID in google controller",userID)
         await mongoose.connect(process.env.DB_URL).catch((err) => {throw err});
     
         /** Performs a query to the database to see if the user already

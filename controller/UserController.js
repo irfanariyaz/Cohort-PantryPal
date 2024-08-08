@@ -7,7 +7,7 @@ async function readUserFromSession(req, res) {
     const userID = req.session.userID;
     console.log("userID,",userID);
     if(!userID){
-        res.status(302).send("Not logged in");
+        res.status(302).send({message:"Not logged inside"});
     } else {
         await mongoose.connect(process.env.DB_URL).catch((error) => {
             console.error(error);
