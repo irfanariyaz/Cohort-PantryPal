@@ -12,7 +12,7 @@ function Pantry(props) {
   //Ingredient search
   const [ingredients, setIngredients] = useState([]);
   const [ingredient, setIngredient] = useState('');
- // const [recipes, setRecipes] = useState([]);
+  const [recipes, setRecipes] = useState([]);
   const [myIngredrients, setPantry] = useState([]);
  // const navigate = useNavigate();
   // const handleItemClick = async(ingredient) => {
