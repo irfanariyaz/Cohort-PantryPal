@@ -1,5 +1,5 @@
 import "./App.css";
-import React from "react";
+import React, { useContext } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
 import Dashboard from "./Pages/Dashboard";
@@ -12,12 +12,13 @@ import MealPrep from "./Pages/MealPrep.js";
 import SearchIngredient from "./Pages/SearchIngredient.js";
 import SearchRecipe from "./Pages/SearchRecipe.js";
 import {useEffect, useState} from "react";
-import { PantryProvider } from "./Pages/context/PantryContext.js";
+import { PantryProvider,PantryContext } from "./Pages/context/PantryContext.js";
 
 // import ShowRecipeItem from "./Pages/ShowRecipeItem";
 
 function App() {
-  const [profile, setProfile] = useState(false);
+  const {profile,setProfile }=useContext(PantryContext);
+  //const [profile, setProfile] = useState(false);
 
   useEffect(() => {
     async function fetchUserProfile() {
@@ -52,22 +53,22 @@ function App() {
         <Route
           path="/"
           element={
-            <PantryProvider>
-            <Layout>
+          //  <PantryProvider>
+            <Layout >
               <Dashboard profile={profile}/>
             </Layout>
-            </PantryProvider>
+          //  </PantryProvider>
           }
         />
         {/*Login/Register route will be here presumably.*/}
         <Route
           path="/dashboard"
           element={
-            <PantryProvider>
-            <Layout>
+         //   <PantryProvider>
+            <Layout >
               <Dashboard profile={profile}/>
             </Layout>
-            </PantryProvider>
+        //    </PantryProvider>
           }
         />
         <Route
@@ -138,10 +139,12 @@ function App() {
   );
 }
 
-function Layout({ children }) {
+function Layout({ children}) {
+  const {profile} = useContext(PantryContext);
+  console.log("in layout:,",profile);
   return (
     <>
-      {<Navbar  />}
+     { <Navbar profile={profile} /> }
       <div className="flex">
         <main className="flex-1">{children}</main>
       </div>

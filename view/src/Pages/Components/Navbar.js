@@ -1,7 +1,8 @@
 import { NavLink } from "react-router-dom";
 import myImage from "../../logoPantryPal.png";
 
-function Navbar(props) {
+function Navbar({profile}) {
+  console.log("profilein navbar",profile);
   return (
     <div>
       <nav class="bg-green-900">
@@ -15,10 +16,14 @@ function Navbar(props) {
                   alt="Your Company"
                 />
               </NavLink>
+              
             </div>
+            <p className="text-yellow-500">Welcome, <span className=" font-bold ">{profile?.profile?.name}</span></p>
+            
+             
             <div class="flex items-center">
               <div class="ml-10 flex items-baseline space-x-4 text-white">
-                <NavLink
+                 <NavLink
                   to="/dashboard"
                   className={({ isActive }) =>
                     isActive ? "text-black" : "hover:text-black"
@@ -50,7 +55,7 @@ function Navbar(props) {
                 >
                   Meal Prep
                 </NavLink>
-                {/* ... other links ... */}
+                  {/* ... other links ... */}
               </div>
             </div>
             {/* ... mobile menu button and other content ... */}

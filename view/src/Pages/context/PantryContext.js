@@ -10,6 +10,7 @@ const PantryProvider = ({ children }) => {
   
   const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [profile,setProfile] = useState(false);
   
 
 
@@ -50,7 +51,7 @@ const PantryProvider = ({ children }) => {
 
   return (
     <PantryContext.Provider value={{handleSubmit,
-    searchTerm,setSearchTerm,recipes,setRecipes,handleCategory}}>
+    searchTerm,setSearchTerm,recipes,setRecipes,handleCategory,profile,setProfile}}>
       {children}
     </PantryContext.Provider>
   );

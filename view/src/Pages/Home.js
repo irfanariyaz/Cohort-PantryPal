@@ -2,8 +2,9 @@
 import myImage from "../img.png";
  
 function Home() {
-  const url = process.env.REACT_APP_GOOGLE_AUTH_PAGE_REDIRECT;
-  console.log(url);
+  const url1 = process.env.REACT_APP_GOOGLE_AUTH_PAGE_REDIRECT;
+  const url2=process.env.REACT_APP_GUESTUSER_REDIRECT;
+  console.log(url1,url2);
   return (
     <>
       <section class="bg-green-100 dark:bg-green-900">
@@ -18,45 +19,47 @@ function Home() {
               counts, from the store to your door.
             </p>
             {/*Instead of an a tag, this would probably just be a link to the login page.*/}
-            <a
-             
-              //href={url}
-              href="https://cohort-pantrypal.onrender.com/auth/google"
-              className="inline-flex items-center justify-center pe-5 py-3 mr-3 text-base font-medium text-center text-text-green-600 rounded-lg focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800"
-            >
-              Start Simplifying
-              <svg
-                className="w-5 h-5 ml-2 -mr-1"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
+            <div className="flex  flex-col">
+              <a
+              
+                //href={url1}
+                href="https://cohort-pantrypal.onrender.com/auth/google"
+                className="inline-flex items-center justify-center pe-5 py-3 mr-3 text-base font-medium text-center text-text-green-600 rounded-lg focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-            </a>
-            <a
-               href="https://cohort-pantrypal.onrender.com/guestuser/profile"
-           
-              className="inline-flex items-center justify-center pe-5 mr-3 text-base font-medium text-center text-green-900 rounded-lg bg-primary-700 hover:text-sky-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
-            >
-              Start Simplifying(guest user)
-              <svg
-                className="w-5 h-5 ml-2 -mr-1"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
+                Sign in with google (Only registered user)
+                <svg
+                  className="w-5 h-5 ml-2 -mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+              </a>
+              <a
+            //  href={url2}
+                href="https://cohort-pantrypal.onrender.com/guestuser/profile"
+                className="inline-flex items-center justify-center pe-5 mr-3 text-base font-medium text-center text-green-900 rounded-lg bg-primary-700 hover:text-sky-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-            </a>
+                Sign in using guest user
+                <svg
+                  className="w-5 h-5 ml-2 -mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+              </a>
+            </div>
           </div>
           <div class="hidden lg:flex lg:col-span-5 lg:justify-center">
             <img src={myImage} class=" w-[85%]" alt="mockup"></img>
