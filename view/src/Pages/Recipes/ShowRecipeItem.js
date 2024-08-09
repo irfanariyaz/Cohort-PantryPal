@@ -5,7 +5,7 @@ import { BsArrowLeft } from "react-icons/bs";
 
 function ShowRecipeItem() {
   const { id } = useParams();
-  console.log(id);
+ // console.log(id);
 
   const [recipe, setRecipe] = useState([]);
   const [error, setError] = useState(null);
@@ -34,7 +34,7 @@ function ShowRecipeItem() {
   if (!recipe) {
     return <div>Loading...</div>;
   }
-  console.log(recipe.totalNutrients);
+  //console.log(recipe.totalNutrients);
   return (
     <div className="recipe-item p-3">
       {/* create a go back button  */}

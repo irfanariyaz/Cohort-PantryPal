@@ -1,7 +1,6 @@
 import "./App.css";
 import React from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 import Home from "./Pages/Home";
 import Dashboard from "./Pages/Dashboard";
 import Pantry from "./Pages/Pantry";
@@ -14,6 +13,7 @@ import SearchIngredient from "./Pages/SearchIngredient.js";
 import SearchRecipe from "./Pages/SearchRecipe.js";
 import {useEffect, useState} from "react";
 import { PantryProvider } from "./Pages/context/PantryContext.js";
+
 // import ShowRecipeItem from "./Pages/ShowRecipeItem";
 
 function App() {
@@ -23,10 +23,18 @@ function App() {
     async function fetchUserProfile() {
       const url = "/user/profile";
       await fetch(url).then(async (res) => {
+       
         const json = await res.json();
-        setProfile(json);
+      
+        if (json.error){
+          setProfile(false);
+        }else{
+          setProfile(json);
+        }
+           
+      
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       });
     }
 
@@ -36,7 +44,9 @@ function App() {
   //Normal routes will be inaccessible until user logs in.
   //If user is already logged in, sends them to dashboard.
   function Protected() {
+    
     if (profile) {
+      
       return (
       <Routes>
         <Route

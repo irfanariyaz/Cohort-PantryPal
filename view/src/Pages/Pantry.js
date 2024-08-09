@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {NavLink, useNavigate} from "react-router-dom";
-import MyIngredient from "./PantryComponent/MyIngredient";
-import Result from "./PantryComponent/ResultIngredient";
+
 import axios from "axios";
 
 function Pantry(props) {
@@ -13,19 +12,19 @@ function Pantry(props) {
   //Ingredient search
   const [ingredients, setIngredients] = useState([]);
   const [ingredient, setIngredient] = useState('');
-  const [recipes, setRecipes] = useState([]);
+ // const [recipes, setRecipes] = useState([]);
   const [myIngredrients, setPantry] = useState([]);
-  const navigate = useNavigate();
-  const handleItemClick = async(ingredient) => {
-    setIngredients([]);
-    setIngredient(ingredient);  
-  }
+ // const navigate = useNavigate();
+  // const handleItemClick = async(ingredient) => {
+  //   setIngredients([]);
+  //   setIngredient(ingredient);  
+  // }
  
   //SEARCH HOOK
   useEffect(() => {
     const fetchIngredients = async () => {
       const url = `/recipes/getIngredient?ingredient=${query}`
-      console.log("rendering useEffect");
+      // console.log("rendering useEffect");
       try {
         const response = await fetch(url);
         const data = await response.json();
@@ -49,11 +48,11 @@ function Pantry(props) {
 
   const deleteIngredient = async(ingre)=>{
     setQuery('');
-    console.log("id",ingre);
+   // console.log("id",ingre);
     const endpoint = "/fridge/ingredient/delete";
     const response = await axios.post(endpoint,{ingredientID:ingre})
     const data = response.data;
-    console.log("deleter ingredient",data,"query",query);
+   // console.log("deleter ingredient",data,"query",query);
     setQuery("delete");
    
     
@@ -82,7 +81,7 @@ function Pantry(props) {
       .then(response =>response.json())
       .then((data) => {
         setRecipes(data);
-        console.log(recipes);
+     //   console.log(recipes);
         setIngredient('');
         setQuery('');
       })
@@ -135,7 +134,7 @@ return (
         {/* My Ingredients cards */}
         <div className="mr-2 mb-2 basis-1/4 bg-gray-300 p-4 rounded-lg space-y-2 animate-fade-down animate-delay-100">
         <div className="flex justify-between  flex-col ">
-         {myIngredrients.length==0?
+         {myIngredrients.length===0?
          <p>Pantry is empty</p>
         :
          <>

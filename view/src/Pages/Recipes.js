@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+
 import React from 'react';
 import { NavLink } from "react-router-dom";
 
@@ -13,18 +13,18 @@ function Recipies(props) {
   useEffect(() => {
     const url = 'https://www.themealdb.com/api/json/v1/1/categories.php';
     fetch(url).then(res=>res.json()).then(data=>{
-      console.log(data.categories);
+     // console.log(data.categories);
       setCategories(data.categories);
     })
     },[])
     const handleCategory = (category) => {
      // const url = `http://localhost:3001/recipes/category/${category}`;
       const url = `/recipes/category/${category}`;
-      console.log("response reached from category end");
+     // console.log("response reached from category end");
       axios
       .get(url)
       .then((response) => {
-        console.log("response from server",response.data.length,response.data);
+       // console.log("response from server",response.data.length,response.data);
         setRecipes(response.data);
         // console.log(recipes);
       });
@@ -33,7 +33,7 @@ function Recipies(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Perform search logic here
-    console.log("Search term:", searchTerm);
+  //  console.log("Search term:", searchTerm);
     // Update the recipes state with the search  results using axios
     
     const url = `/recipes/search/${searchTerm}`;
@@ -41,7 +41,7 @@ function Recipies(props) {
     axios
       .get(url)
       .then((response) => {
-        console.log("response from server",response.data.length,response.data);
+     //   console.log("response from server",response.data.length,response.data);
         setRecipes(response.data);
         // console.log(recipes);
       });

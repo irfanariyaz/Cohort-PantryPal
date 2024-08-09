@@ -1,4 +1,4 @@
-import { set } from 'mongoose';
+
 import React, { createContext, useState,useEffect } from 'react';
 
 // Create a context
@@ -11,7 +11,7 @@ const UserProvider = ({ children }) => {
     const [pantryList,setPantryList] = useState([]);
     const [categories, setCategories] = useState([]);
     const [reloadPantry, setReloadPantry] = useState(false);
-     console.log("reloadpantry",reloadPantry);
+   //  console.log("reloadpantry",reloadPantry);
        
     useEffect(() => {
         async function fetchUserProfile() {
@@ -41,7 +41,7 @@ const UserProvider = ({ children }) => {
       }; 
       useEffect(() => {
         const List = fetchPantry();
-        console.log("pantry list reloaded after adding to pantry",pantryList);
+     //   console.log("pantry list reloaded after adding to pantry",pantryList);
         setPantryList(List);
       },[reloadPantry]);
 
@@ -51,7 +51,7 @@ const UserProvider = ({ children }) => {
         fetch(url)
           .then((res) => res.json())
           .then((data) => {
-            console.log(data.categories);
+       //     console.log(data.categories);
             setCategories(data.categories);
           });
       }, []);

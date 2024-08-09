@@ -83,7 +83,7 @@ function Pantry(props) {
   const handleQueryClick = async(e) => {
     e.preventDefault();
   
-    console.log(queryList);
+   // console.log(queryList);
     if(queryList.length===0){
       alert("Please enter ingredients");
     }else{

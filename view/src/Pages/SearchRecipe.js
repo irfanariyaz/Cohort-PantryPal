@@ -16,7 +16,6 @@ function SearchRecipe({profile}) {
 
     const openModal = (recipeId, recipe_name) => {
       setIsOpen(true);
-      console.log(recipe_name, "RIGHTHERE");
       setModalData({
         recipeId: recipeId,
         recipe_name: recipe_name,
@@ -98,11 +97,11 @@ function SearchRecipe({profile}) {
        }    
      },[recipeSelected]);
 
-    function Missing(props) {
-        let missing = props.recipe.ingredients.length - props.recipe.counter;
-        return (<span className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold">
-            Missing {missing} ingredients</span>);
-    }
+    // function Missing(props) {
+    //     let missing = props.recipe.ingredients.length - props.recipe.counter;
+    //     return (<span className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold">
+    //         Missing {missing} ingredients</span>);
+    // }
 
     return (
         <div className="">

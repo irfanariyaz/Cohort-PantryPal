@@ -21,14 +21,14 @@ export const GrocerryList = ({isOpen,onClose,meals,fridgeID}) => {
     meals.map((meal) => {
         list.push(meal.ingredients);});
         list =[].concat(...list)
-        console.log(list.length);
+     //   console.log(list.length);
     const uniqueList = [...new Set(list)];
     const pantryItems = pantry.filter(item => (item.name));
     list = uniqueList.filter(item => !pantryItems.some(pantryItem => pantryItem.name === item));
     list.sort();
-    console.log(list);
+    //console.log(list);
     const addToPantry = async (item) => {
-        console.log("item clicked",item);
+    //    console.log("item clicked",item);
 
         if(item){
             const endpoint = `/fridge/ingredient/query?name=${item}&fridgeID=${fridgeID}`;
@@ -37,7 +37,7 @@ export const GrocerryList = ({isOpen,onClose,meals,fridgeID}) => {
           console.error(error);
          });
          const data = res.data;
-        console.log(data);
+   //     console.log(data);
         setState(!state);
         }
         

@@ -4,7 +4,7 @@ import React, { useEffect,useState } from 'react';
 import GrocerryList from './GrocerryList.js';
 import { FaTrashCan } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
-import { NavLink } from "react-router-dom";
+
 
 export default function  MealPrep(props) {
   //const fridgeId='6620f09f1e7dc4f70c80e1bc';
@@ -74,7 +74,7 @@ const createMacroData = (tableData)=>{
      
   })
   setMacro(macroData);
-  console.log("macroData", macroData);
+
 
 }
   useEffect(() => {
@@ -83,7 +83,7 @@ const createMacroData = (tableData)=>{
       const response = await axios.get(url,{params:{fridgeId:fridgeId}}).then((res) => {
         createmealPrep(res.data);
         setMeals(res.data);
-        console.log(meals, "HERE");
+      
         return res;
       });
   }
@@ -94,13 +94,13 @@ const deleteMeal = async (meal) => {
   const url= '/fridge/meal/delete';
   const response = await axios.post(url,{mealID:meal._id});
   const data = response.data;
-  console.log(data);
+  //console.log(data);
   document.location.reload(true);
 
 }
 
 
- console.log("macroData",macroData); 
+// console.log("macroData",macroData); 
  return (
     <div>
         <div class="bg-gray-100 p-5">

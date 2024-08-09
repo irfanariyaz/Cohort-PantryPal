@@ -1,5 +1,5 @@
-import React, { createContext, useState ,useContext,useEffect} from 'react';
-import { UserContext } from './UserContext';
+import React, { createContext, useState } from 'react';
+
 import axios from "axios";
 
 // Create a context
@@ -16,7 +16,7 @@ const PantryProvider = ({ children }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Perform search logic here
-    console.log("Search term:", searchTerm);
+   // console.log("Search term:", searchTerm);
     // Update the recipes state with the search  results using axios
     if (!searchTerm) {
       alert("Please enter a search term");
@@ -25,11 +25,11 @@ const PantryProvider = ({ children }) => {
       const url = `/recipes/search/${searchTerm}`;
       //got to the recipe controller in backend to get the recipes based on user's search
       axios.get(url).then((response) => {
-        console.log(
-          "response from server",
-          response.data.length,
-          response.data
-        );
+        // console.log(
+        //   "response from server",
+        //   response.data.length,
+        //   response.data
+        // );
         setRecipes(response.data);
         // console.log(recipes);
       });
@@ -39,7 +39,7 @@ const PantryProvider = ({ children }) => {
    // setRecipes([]);
     const url = `/recipes/category/${category}`;
     axios.get(url).then((response) => {
-      console.log("response from server", response.data.length, response.data);
+    //  console.log("response from server", response.data.length, response.data);
       setRecipes(response.data);
       // console.log(recipes);
     });

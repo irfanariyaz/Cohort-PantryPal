@@ -4,6 +4,7 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import usersRouter from "./routes/users.js";
+import guestUserRouter from"./routes/guestuser.js";
 import googleRouter from "./routes/oauth/google.js";
 import ingredientsRouter from "./routes/ingredient/ingredients.js";
 import recipeRouter from "./routes/recipe/recipe.js";
@@ -40,6 +41,7 @@ app.use(
 );
 
 app.use("/user", usersRouter);
+app.use("/guestuser",guestUserRouter);
 app.use("/ingredient", ingredientsRouter);
 app.use("/auth/google", googleRouter);
 app.use("/recipes", recipeRouter);

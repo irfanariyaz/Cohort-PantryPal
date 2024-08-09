@@ -18,7 +18,7 @@ function Result({ingredient, fridgeID}) {
                 'amount': '16'
             })
         }).then((res) => {
-            console.log();
+            //console.log();
             //navigate("/pantry");
         }).catch((error) => {
             console.error(error);

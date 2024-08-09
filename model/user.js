@@ -16,9 +16,10 @@ const Schema = mongoose.Schema;
  */
 
 const UserSchema = new Schema({
-    userID: {type: String, required: true, unique: true},
+    userID: {type: String, required: true},
     name: {type: String, required: true},
-    profile_pic: {type: String}
+    profile_pic: {type: String},
+    is_guest: {type: Boolean, default: false}
 });
 
 export default mongoose.model("User", UserSchema); 

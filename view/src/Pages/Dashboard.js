@@ -7,9 +7,9 @@ import { IngredientModal } from "../Modals/IngredientModal";
 import { PantryContext } from "./context/PantryContext";
 
 function Dashboard(props) {
-  const fridgeID = props.profile.fridgeID._id;
+  const fridgeID = props.profile.fridgeID._id; 
 
-  console.log("user",props.profile);
+
   const{handleSubmit,recipes,handleCategory,
         setSearchTerm} = useContext(PantryContext);
  
@@ -27,10 +27,9 @@ function Dashboard(props) {
       recipeId: recipeId,
       recipe_name: recipe_name,
       fridgeID: fridgeID,
-    });
-    console.log(modalData);
+    }); 
   };
-  console.log("isOpen", isOpen);
+ 
 
   const closeModal = () => {
     setIsOpen(false);
@@ -54,8 +53,7 @@ function Dashboard(props) {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.categories);
-        setCategories(data.categories);
+         setCategories(data.categories);
       });
   }, []);
 
@@ -64,7 +62,7 @@ function Dashboard(props) {
       const url = `/recipes/findById/${recipeSelected}`;
       const response = await axios.get(url);
       const data = await response.data.ingredients;
-      console.log("from recipe", data);
+      
       //get pantry items
       const iNeed = data.filter((item) => !pantryList.includes(item));
       const iHave = pantryList.filter((item) => data.includes(item));
@@ -84,7 +82,7 @@ function Dashboard(props) {
       });
       const data = await res.json();
       const list = data.map((item) => item.name);
-      console.log(list);
+      // console.log(list);
       setPantryList(list);
     };
 
@@ -111,7 +109,7 @@ function Dashboard(props) {
               <img
                 src={category.strCategoryThumb}
                 className={`cursor-pointer animate-fade`}
-                alt="category image"
+                alt=""
                 width={"100px"}
                 onClick={() => handleCategory(category.strCategory)}
               />
